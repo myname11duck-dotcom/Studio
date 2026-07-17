@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accueil | Studio Créatif</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="7a6cb36c8ac94c808158e11ac34168d3.jpg" alt="Logo Studio Créatif">
+                <div class="logo-text">Studio Créatif<span>Atelier &amp; Design</span></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Accueil</a></li>
+                <li><a href="apropos.html">À propos</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a href="login.html" class="nav-cta" id="navConnexion" style="margin-right:10px;">Connexion</a>
+         <a href="contact.html" class="nav-cta" id="navRdv" style="display:none;">Prendre RDV</a>
+            <a href="moncompte.html" class="nav-cta" id="navProfil" style="display:none; margin-right:10px;">👤 Profil</a>
+            <button id="navDeconnexion" style="display:none; margin-right:10px; padding:10px 18px; background:transparent; border:1px solid var(--ink); color:var(--ink); cursor:pointer; border-radius:var(--radius);">Se déconnecter</button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <span class="eyebrow">✦ Éveillez votre créativité</span>
+                <h1>Design &amp; Inspiration <em>pour vos idées</em></h1>
+                <p>Un studio pensé comme un havre minimaliste, où chaque projet mêle fraîcheur florale, rituels créatifs et outils interactifs sur-mesure.</p>
+                <div class="hero-actions">
+                    <button class="btn-primary" id="trigger-discovery">Découvrir l'univers →</button>
+                    <a href="services.html" class="btn-outline">Voir nos services</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="frame"><img src="accueil.jpg" alt="Ambiance Studio Créatif"></div>
+                <div class="hero-badge"><strong>100%</strong><span>Créations Originales</span></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="trust-strip">
+        <div class="trust-item"><div class="trust-icon">✎</div><div><h4>Sur-mesure</h4><p>Chaque projet est unique</p></div></div>
+        <div class="trust-item"><div class="trust-icon">✓</div><div><h4>Expertise</h4><p>Direction artistique soignée</p></div></div>
+        <div class="trust-item"><div class="trust-icon">⚡</div><div><h4>Réactivité</h4><p>Réponse sous 24h</p></div></div>
+        <div class="trust-item"><div class="trust-icon">♡</div><div><h4>Suivi dédié</h4><p>Un interlocuteur unique</p></div></div>
+    </div>
+
+    <section class="section">
+        <div class="section-head">
+            <h2>Les piliers de notre univers</h2>
+            <a href="apropos.html">En savoir plus →</a>
+        </div>
+        <div class="card-grid">
+            <div class="info-card">
+                <div class="thumb" style="background-image:url('accueil.jpg')"><span class="num">01</span></div>
+                <div class="body"><h3>Pureté</h3><p>Une mise en valeur de la lumière du jour et des teintes douces.</p></div>
+            </div>
+            <div class="info-card">
+                <div class="thumb" style="background-image:url('apropos.jpg')"><span class="num">02</span></div>
+                <div class="body"><h3>Rituels</h3><p>Prendre le temps d'apprécier une tasse de café ou des fleurs fraîches.</p></div>
+            </div>
+            <div class="info-card">
+                <div class="thumb" style="background-image:url('services.jpg')"><span class="num">03</span></div>
+                <div class="body"><h3>Équilibre</h3><p>Un agencement épuré conçu pour apaiser l'esprit au quotidien.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="promo-banner">
+        <div class="promo-text">
+            <span class="eyebrow">Studio de Dessin Interactif</span>
+            <h3>Esquissez votre propre motif</h3>
+            <p>Ouvrez notre canvas interactif et concevez un logo ou un motif personnalisé directement sur l'écran.</p>
+            <a href="services.html" class="btn-primary" style="background:#fff;color:var(--pink-deep);">Essayer le Studio →</a>
+        </div>
+        <div class="promo-visual" style="background-image:url('services.jpg')"></div>
+    </div>
+
+    <section class="section">
+        <div class="section-head">
+            <h2>Illustrations Inspirantes</h2>
+        </div>
+        <div class="card-grid">
+            <div class="info-card">
+                <div class="thumb" style="background-image:url('accueil.jpg')"></div>
+                <div class="body"><h3>Douceur Matinale</h3><p>Jeux d'ombres et de lumières pastel autour d'un rituel quotidien apaisant.</p></div>
+            </div>
+            <div class="info-card">
+                <div class="thumb" style="background-image:url('contact.jpg')"></div>
+                <div class="body"><h3>Support Créatif</h3><p>Peinture florale et textures organiques pour nourrir l'imagination.</p></div>
+            </div>
+            <div class="info-card">
+                <div class="thumb" style="background-image:url('apropos.jpg')"></div>
+                <div class="body"><h3>Équilibre Minimal</h3><p>Compositions épurées et teintes chaudes inspirées de la nature.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-strip">
+            <div><div class="ficon">🔒</div><h4>Confidentialité</h4><p>Vos projets restent privés</p></div>
+            <div><div class="ficon">✦</div><h4>Offres Exclusives</h4><p>Suivi et remises fidélité</p></div>
+            <div><div class="ficon">💬</div><h4>Support Dédié</h4><p>Une équipe à votre écoute</p></div>
+            <div><div class="ficon">🎁</div><h4>Programme Fidélité</h4><p>Des avantages sur mesure</p></div>
+        </div>
+        <div class="footer-bottom">© 2026 Studio Créatif — Tous droits réservés</div>
+    </footer>
+
+    <div class="modal-overlay" id="discovery-modal">
+        <div class="modal-box">
+            <button class="btn-close" id="close-discovery">&times;</button>
+            <h2>Exploration d'Accueil</h2>
+            <p class="sub">Découvrez les piliers de notre univers visuel.</p>
+            <div class="modal-grid">
+                <div class="modal-item"><div class="thumb" style="background-image:url('accueil.jpg')"></div><h4>01 / Pureté</h4><p>Une mise en valeur de la lumière du jour et des teintes douces.</p></div>
+                <div class="modal-item"><div class="thumb" style="background-image:url('apropos.jpg')"></div><h4>02 / Rituels</h4><p>Prendre le temps d'apprécier une tasse de café ou des fleurs fraîches.</p></div>
+                <div class="modal-item"><div class="thumb" style="background-image:url('services.jpg')"></div><h4>03 / Équilibre</h4><p>Un agencement épuré conçu pour apaiser l'esprit au quotidien.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const triggerBtn = document.getElementById('trigger-discovery');
+        const closeBtn = document.getElementById('close-discovery');
+        const modal = document.getElementById('discovery-modal');
+        triggerBtn.addEventListener('click', () => modal.classList.add('active'));
+        closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+    </script>
+
+    <script>
+        const utilisateurJSON = localStorage.getItem('utilisateur');
+        const navConnexion = document.getElementById('navConnexion');
+        const navRdv = document.getElementById('navRdv');
+        const navProfil = document.getElementById('navProfil');
+        const navDeconnexion = document.getElementById('navDeconnexion');
+
+if (utilisateurJSON) {
+            const utilisateur = JSON.parse(utilisateurJSON);
+
+            navConnexion.style.display = 'none';
+            navRdv.style.display = 'inline-block';
+            navProfil.style.display = 'inline-block';
+            navProfil.textContent = '👤 ' + utilisateur.prenom;
+            navDeconnexion.style.display = 'inline-block';
+
+            navDeconnexion.addEventListener('click', () => {
+
+                localStorage.removeItem('utilisateur');
+                window.location.href = 'index.html';
+            });
+        }
+    </script>
+</body>
+</html>
