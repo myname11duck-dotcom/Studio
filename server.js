@@ -1,13 +1,19 @@
 // server.js - Le serveur qui relie ton site à la base de données
 require('dotenv').config();
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
+const path = require('path'); // Nécessaire pour la gestion propre des chemins
 
 const app = express();
-app.use(cors());           // autorise ton site à communiquer avec ce serveur
-app.use(express.json({ limit: '10mb' }));   // permet de lire les données envoyées en JSON (limite augmentée pour les dessins)
+
+// 1. MIDDLEWARES
+app.use(cors());           // Autorise ton site à communiquer avec ce serveur
+app.use(express.json({ limit: '10mb' }));   // Permet de lire le JSON (limite augmentée pour les dessins)
+
+// Rend accessible tous les fichiers statiques (HTML, CSS, JS) à la racine
+app.use(express.static(path.join(__dirname)));   
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -15,8 +21,13 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
+  // Optimisation SSL pour la production en ligne
   ssl: process.env.DB_HOST === 'localhost' ? false : { rejectUnauthorized: false }
 });
+
+// ==========================================
+// 2. ROUTES API (Toujours placées AVANT les routes HTML)
+// ==========================================
 
 // Route pour enregistrer un message du formulaire de contact
 app.post('/api/contact', async (req, res) => {
@@ -44,10 +55,12 @@ app.get('/api/services', async (req, res) => {
   }
 });
 
+// Route pour s'inscrire (Sécurisée)
 app.post('/api/register', async (req, res) => {
   const { nom, prenom, email, mot_de_passe } = req.body;
   try {
     const hash = await bcrypt.hash(mot_de_passe, 10);
+    // Note : "prénom" et "mot de passe" fonctionnent si tes colonnes SQL ont exactement ces noms complexes.
     await pool.query(
       'INSERT INTO utilisateurs (nom, prénom, email, "mot de passe") VALUES ($1, $2, $3, $4)',
       [nom, prenom, email, hash]
@@ -109,6 +122,21 @@ app.get('/api/dessins/:email', async (req, res) => {
   }
 });
 
+// ==========================================
+// 3. GESTION DES PAGES HTML (CORRECTION DU "CANNOT GET /")
+// ==========================================
+
+// Envoie explicitement index.html pour la racine du site "/"
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Route de secours (Catch-all) : Si l'utilisateur demande une page inconnue, on le renvoie sur l'index.html
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// DÉMARRAGE DU SERVEUR
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log('✅ Serveur démarré sur le port ' + PORT);
