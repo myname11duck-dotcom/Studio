@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services | Studio Créatif</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="7a6cb36c8ac94c808158e11ac34168d3.jpg" alt="Logo Studio Créatif">
+                <div class="logo-text">Studio Créatif<span>Atelier &amp; Design</span></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="apropos.html">À propos</a></li>
+                <li><a href="services.html" class="active">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+            <a href="login.html" class="nav-cta" id="navConnexion" style="margin-right:10px;">Connexion</a>
+<a href="contact.html" class="nav-cta" id="navRdv" style="display:none;">Prendre RDV</a>
+<a href="moncompte.html" class="nav-cta" id="navProfil" style="display:none; margin-right:10px;">👤 Profil</a>
+<button id="navDeconnexion" style="display:none; margin-right:10px; padding:10px 18px; background:transparent; border:1px solid var(--ink); color:var(--ink); cursor:pointer; border-radius:var(--radius);">Se déconnecter</button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-text">
+                <span class="eyebrow">✦ Nos services</span>
+                <h1>Des outils <em>sur-mesure</em> pour créer</h1>
+                <p>Nous offrons des outils de personnalisation uniques. Ouvrez notre Studio de Dessin Interactif et concevez votre propre motif ou logo personnalisé directement sur l'écran.</p>
+                <div class="hero-actions">
+                    <button class="btn-primary" id="open-studio">Découvrir le Studio →</button>
+                    <a href="contact.html" class="btn-outline">Demander un devis</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="frame"><img src="services.jpg" alt="Services du studio"></div>
+                <div class="hero-badge"><strong>4</strong><span>Domaines d'Expertise</span></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="trust-strip">
+        <div class="trust-item"><div class="trust-icon">✎</div><div><h4>Illustration</h4><p>Motifs &amp; dessins originaux</p></div></div>
+        <div class="trust-item"><div class="trust-icon">◈</div><div><h4>Identité visuelle</h4><p>Logos &amp; chartes graphiques</p></div></div>
+        <div class="trust-item"><div class="trust-icon">✂</div><div><h4>Motifs textiles</h4><p>Créations sur tissus &amp; papier</p></div></div>
+        <div class="trust-item"><div class="trust-icon">🖌</div><div><h4>Atelier interactif</h4><p>Studio de dessin en ligne</p></div></div>
+    </div>
+
+    <div class="promo-banner" style="margin-top:90px;">
+        <div class="promo-text">
+            <span class="eyebrow">✦ Studio de Dessin Interactif</span>
+            <h3>Esquissez votre propre motif</h3>
+            <p>Choisissez une couleur, ajustez la taille du pinceau et laissez libre cours à votre imagination sur notre canvas en direct.</p>
+            <button class="btn-primary" id="open-studio-2" style="background:#fff;color:var(--pink-deep);border:none;">Ouvrir le Studio →</button>
+        </div>
+        <div class="promo-visual" style="background-image:url('services.jpg')"></div>
+    </div>
+
+    <section class="section">
+        <div class="section-head">
+            <h2>Ce que nous concevons</h2>
+        </div>
+        <div class="card-grid">
+            <div class="info-card">
+                <div class="thumb" style="background-image:url('accueil.jpg')"><span class="num">01</span></div>
+                <div class="body"><h3>Logos &amp; Identité</h3><p>Une signature visuelle forte, pensée pour durer et vous ressembler.</p></div>
+            </div>
+            <div class="info-card">
+                <div class="thumb" style="background-image:url('apropos.jpg')"><span class="num">02</span></div>
+                <div class="body"><h3>Motifs &amp; Textures</h3><p>Des compositions originales pour vos textiles, papiers ou emballages.</p></div>
+            </div>
+            <div class="info-card">
+                <div class="thumb" style="background-image:url('contact.jpg')"><span class="num">03</span></div>
+                <div class="body"><h3>Direction Artistique</h3><p>Un accompagnement complet, du concept à la production finale.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-strip">
+            <div><div class="ficon">🔒</div><h4>Confidentialité</h4><p>Vos projets restent privés</p></div>
+            <div><div class="ficon">✦</div><h4>Offres Exclusives</h4><p>Suivi et remises fidélité</p></div>
+            <div><div class="ficon">💬</div><h4>Support Dédié</h4><p>Une équipe à votre écoute</p></div>
+            <div><div class="ficon">🎁</div><h4>Programme Fidélité</h4><p>Des avantages sur mesure</p></div>
+        </div>
+        <div class="footer-bottom">© 2026 Studio Créatif — Tous droits réservés</div>
+    </footer>
+
+    <div class="modal-overlay" id="design-modal">
+        <div class="modal-box">
+            <button class="btn-close" id="close-studio">&times;</button>
+            <h2>Studio de Dessin</h2>
+            <p class="sub">Dessinez librement, changez de couleur et de taille de pinceau à tout moment.</p>
+            <div class="toolbar">
+                <label>Couleur <input type="color" id="brush-color" class="color-picker" value="#c98a3e"></label>
+                <label>Taille <input type="range" id="brush-size" class="brush-slider" min="1" max="20" value="5"></label>
+                <button id="clear-canvas" class="btn-tool">Effacer</button>
+            </div>
+            <canvas id="paint-canvas" width="760" height="420"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const openBtn = document.getElementById('open-studio');
+        const openBtn2 = document.getElementById('open-studio-2');
+        const closeBtn = document.getElementById('close-studio');
+        const modal = document.getElementById('design-modal');
+        const canvas = document.getElementById('paint-canvas');
+        const ctx = canvas.getContext('2d');
+        const colorPicker = document.getElementById('brush-color');
+        const sizeSlider = document.getElementById('brush-size');
+        const clearBtn = document.getElementById('clear-canvas');
+        let drawing = false;
+
+        function openModal() {
+            modal.classList.add('active');
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+        }
+        openBtn.addEventListener('click', openModal);
+        openBtn2.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+
+        function startDrawing(e) { drawing = true; draw(e); }
+        function stopDrawing() { drawing = false; ctx.beginPath(); }
+        function draw(e) {
+            if (!drawing) return;
+            ctx.strokeStyle = colorPicker.value;
+            ctx.lineWidth = sizeSlider.value;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches[0].clientX) - rect.left;
+            const y = (e.clientY || e.touches[0].clientY) - rect.top;
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+        }
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e); });
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
+        clearBtn.addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height));
+    </script>
+    <script>
+    const utilisateurJSON = localStorage.getItem('utilisateur');
+    const navConnexion = document.getElementById('navConnexion');
+    const navRdv = document.getElementById('navRdv');
+    const navProfil = document.getElementById('navProfil');
+    const navDeconnexion = document.getElementById('navDeconnexion');
+
+    if (utilisateurJSON) {
+        const utilisateur = JSON.parse(utilisateurJSON);
+        navConnexion.style.display = 'none';
+        navRdv.style.display = 'inline-block';
+        navProfil.style.display = 'inline-block';
+        navProfil.textContent = '👤 ' + utilisateur.prenom;
+        navDeconnexion.style.display = 'inline-block';
+
+        navDeconnexion.addEventListener('click', () => {
+            localStorage.removeItem('utilisateur');
+            window.location.href = 'index.html';
+        });
+    }
+</script>
+</body>
+</html>
