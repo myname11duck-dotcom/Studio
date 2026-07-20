@@ -1,9 +1,11 @@
 {
   "name": "prot11-(2)",
   "version": "1.0.0",
-  "description": "",
+  "description": "Studio Créatif - Atelier & Design",
+  "main": "server.js",
   "scripts": {
-    "dev": "vite --port=3003"
+    "dev": "vite --port=3003",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +15,7 @@
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "express": "^5.2.1",
+    "express": "^4.19.2",
     "pg": "^8.22.0",
     "vite": "^8.1.4"
   }

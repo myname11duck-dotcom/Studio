@@ -39,167 +39,105 @@
             object-fit: cover;
         }
 
-        .auth-visual .frame::after {
+        .auth-container {
+            background: white;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .auth-toggle {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .toggle-btn {
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #999;
+            cursor: pointer;
+            padding: 5px 10px;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .toggle-btn.active {
+            color: #111;
+        }
+
+        .toggle-btn.active::after {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(180deg, rgba(74,47,23,0) 60%, rgba(74,47,23,0.28) 100%);
-        }
-
-        .auth-badge {
-            position: absolute;
-            bottom: -18px;
-            right: -18px;
-            width: 108px;
-            height: 108px;
-            background: #fff;
-            border-radius: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
-            z-index: 2;
-        }
-
-        .auth-badge strong {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 20px;
-            color: var(--pink-deep);
-            line-height: 1;
-        }
-
-        .auth-badge span {
-            font-size: 8.5px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            color: var(--ink-soft);
-            margin-top: 4px;
-            max-width: 72px;
-        }
-
-        .auth-card {
-            background: #fff;
-            border-radius: 22px;
-            padding: 40px 36px 44px;
-            box-shadow: 0 20px 50px rgba(150, 100, 30, 0.1);
-            border: 1px solid rgba(74, 47, 23, 0.06);
-        }
-
-        @media (max-width: 900px) {
-            .auth-section { grid-template-columns: 1fr; }
-            .auth-visual { order: -1; }
-        }
-
-        .auth-head {
-            text-align: center;
-            margin-bottom: 28px;
-        }
-
-        .auth-head span.eyebrow {
-            background: var(--pink-pale);
-            color: var(--pink-deep);
-            border: 1px solid rgba(233, 165, 68, 0.25);
-        }
-
-        .auth-head h1 {
-            font-family: 'Cormorant Garamond', serif;
-            font-weight: 600;
-            font-size: 30px;
-            margin-top: 14px;
-            color: var(--ink);
-        }
-
-        .auth-head p {
-            font-size: 13px;
-            color: var(--ink-soft);
-            margin-top: 6px;
-        }
-
-        .auth-tabs {
-            display: flex;
-            gap: 6px;
-            background: var(--pink-pale);
-            padding: 6px;
-            border-radius: 30px;
-            margin-bottom: 28px;
-        }
-
-        .auth-tabs button {
-            flex: 1;
-            padding: 11px;
-            border: none;
-            background: transparent;
-            color: var(--ink-soft);
-            font-family: 'Montserrat', sans-serif;
-            font-size: 12.5px;
-            font-weight: 600;
-            letter-spacing: 0.4px;
-            border-radius: 24px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .auth-tabs button.active {
-            background: linear-gradient(135deg, var(--pink-deep), var(--pink-mid));
-            color: #fff;
-            box-shadow: 0 6px 14px rgba(233, 79, 130, 0.3);
+            bottom: -12px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #111;
         }
 
         .auth-form {
             display: none;
-            flex-direction: column;
-            gap: 16px;
         }
 
         .auth-form.active {
-            display: flex;
+            display: block;
         }
 
-        .auth-form input {
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
             width: 100%;
-            border: 1px solid rgba(74, 47, 23, 0.15);
-            border-radius: 10px;
-            padding: 13px 16px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 13.5px;
-            color: var(--ink);
-            background: var(--pink-pale);
-        }
-
-        .auth-form input:focus {
-            outline: 2px solid var(--pink-mid);
-            outline-offset: 1px;
-        }
-
-        .auth-form button[type="submit"] {
-            margin-top: 4px;
-            background: var(--ink);
-            color: #fff;
-            border: none;
-            padding: 14px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 12.5px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .auth-form button[type="submit"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.18);
-        }
-
-        .auth-message {
-            margin-top: 20px;
             padding: 12px 16px;
-            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #111;
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: #111;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover {
+            background: #333;
+        }
+
+        #messageBox {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 10px;
             text-align: center;
-            font-size: 13px;
+            font-weight: 500;
             display: none;
         }
     </style>
@@ -218,82 +156,91 @@
                 <li><a href="services.html">Services</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
-            <a href="login.html" class="nav-cta">Connexion</a>
+            <a href="login.html" class="nav-cta active">Connexion</a>
         </nav>
     </header>
 
     <section class="auth-section">
         <div class="auth-visual">
-            <div class="frame"><img src="login-visual.jpg" alt="Ambiance douce et créative"></div>
-            <div class="auth-badge"><strong>✦</strong><span>Votre Univers Créatif</span></div>
+            <div class="frame">
+                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=1000" alt="Art Visuel">
+            </div>
         </div>
 
-        <div class="auth-card">
-            <div class="auth-head">
-                <span class="eyebrow">✦ Votre espace</span>
-                <h1>Bienvenue</h1>
-                <p>Connectez-vous ou créez votre compte pour continuer</p>
+        <div class="auth-container">
+            <div class="auth-toggle">
+                <button class="toggle-btn active" onclick="switchForm('login')">Se connecter</button>
+                <button class="toggle-btn" onclick="switchForm('register')">S'inscrire</button>
             </div>
 
-            <div class="auth-tabs">
-                <button id="tabLogin" class="active">Se connecter</button>
-                <button id="tabRegister">Créer un compte</button>
-            </div>
+            <div id="messageBox"></div>
 
             <form id="loginForm" class="auth-form active">
-                <input type="email" id="loginEmail" placeholder="Email" required>
-                <input type="password" id="loginPassword" placeholder="Mot de passe" required>
-                <button type="submit">Se connecter →</button>
+                <div class="form-group">
+                    <label for="loginEmail">Adresse e-mail</label>
+                    <input type="email" id="loginEmail" required placeholder="exemple@domaine.com">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Mot de passe</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••">
+                </div>
+                <button type="submit" class="submit-btn">Connexion</button>
             </form>
 
             <form id="registerForm" class="auth-form">
-                <input type="text" id="registerNom" placeholder="Nom" required>
-                <input type="text" id="registerPrenom" placeholder="Prénom" required>
-                <input type="email" id="registerEmail" placeholder="Email" required>
-                <input type="password" id="registerPassword" placeholder="Mot de passe" required>
-                <button type="submit">Créer mon compte →</button>
+                <div class="form-group">
+                    <label for="registerNom">Nom</label>
+                    <input type="text" id="registerNom" required placeholder="Dupont">
+                </div>
+                <div class="form-group">
+                    <label for="registerPrenom">Prénom</label>
+                    <input type="text" id="registerPrenom" required placeholder="Jean">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Adresse e-mail</label>
+                    <input type="email" id="registerEmail" required placeholder="jean.dupont@exemple.com">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Mot de passe</label>
+                    <input type="password" id="registerPassword" required placeholder="Minimum 6 caractères">
+                </div>
+                <button type="submit" class="submit-btn">Créer mon compte</button>
             </form>
-
-            <div id="authMessage" class="auth-message"></div>
         </div>
     </section>
 
-    <footer>
-        <div class="footer-strip">
-            <div><div class="ficon">🔒</div><h4>Confidentialité</h4><p>Vos projets restent privés</p></div>
-            <div><div class="ficon">✦</div><h4>Offres Exclusives</h4><p>Suivi et remises fidélité</p></div>
-            <div><div class="ficon">💬</div><h4>Support Dédié</h4><p>Une équipe à votre écoute</p></div>
-            <div><div class="ficon">🎁</div><h4>Programme Fidélité</h4><p>Des avantages sur mesure</p></div>
-        </div>
-        <div class="footer-bottom">© 2026 Studio Créatif — Tous droits réservés</div>
-    </footer>
-
     <script>
-        const tabLogin = document.getElementById('tabLogin');
-        const tabRegister = document.getElementById('tabRegister');
+        const messageBox = document.getElementById('messageBox');
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
-        const authMessage = document.getElementById('authMessage');
 
-        tabLogin.addEventListener('click', () => {
-            tabLogin.classList.add('active');
-            tabRegister.classList.remove('active');
-            loginForm.classList.add('active');
-            registerForm.classList.remove('active');
-        });
+        function switchForm(type) {
+            const buttons = document.querySelectorAll('.toggle-btn');
+            messageBox.style.display = 'none';
+            
+            if(type === 'login') {
+                buttons[0].classList.add('active');
+                buttons[1].classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            } else {
+                buttons[0].classList.remove('active');
+                buttons[1].classList.add('active');
+                loginForm.classList.remove('active');
+                registerForm.classList.add('active');
+            }
+        }
 
-        tabRegister.addEventListener('click', () => {
-            tabRegister.classList.add('active');
-            tabLogin.classList.remove('active');
-            registerForm.classList.add('active');
-            loginForm.classList.remove('active');
-        });
-
-        function afficherMessage(texte, succes) {
-            authMessage.textContent = texte;
-            authMessage.style.display = 'block';
-            authMessage.style.background = succes ? '#fdf3e1' : '#fbe3e3';
-            authMessage.style.color = succes ? '#8a5a12' : '#8a2b2b';
+        function afficherMessage(texte, estSucces) {
+            messageBox.textContent = texte;
+            messageBox.style.display = 'block';
+            if(estSucces) {
+                messageBox.style.background = '#e6f4ea';
+                messageBox.style.color = '#137333';
+            } else {
+                messageBox.style.background = '#fce8e6';
+                messageBox.style.color = '#c5221f';
+            }
         }
 
         loginForm.addEventListener('submit', async (e) => {
@@ -302,7 +249,7 @@
             const mot_de_passe = document.getElementById('loginPassword').value;
 
             try {
-                const res = await fetch('/api/login', {
+                const res = await fetch('http://localhost:3001/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, mot_de_passe })
@@ -311,7 +258,8 @@
                 afficherMessage(data.message, data.success);
                 if (data.success) {
                     loginForm.reset();
-                    localStorage.setItem('utilisateur', JSON.stringify({ prenom: data.nom, email: email }));
+                    // Correction ici : stockage de prenom au lieu de nom
+                    localStorage.setItem('utilisateur', JSON.stringify({ prenom: data.prenom, email: email }));
                     window.location.href = 'index.html';
                 }
             } catch (err) {
@@ -327,7 +275,7 @@
             const mot_de_passe = document.getElementById('registerPassword').value;
 
             try {
-                const res = await fetch('/api/register', {
+                const res = await fetch('http://localhost:3001/api/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ nom, prenom, email, mot_de_passe })
