@@ -1,0 +1,600 @@
+/* ===========================
+   POLICE ET RESET
+=========================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+    overflow-x:hidden;
+    color:#fff;
+    background:#111;
+
+}
+
+/* ===========================
+      FOND
+=========================== */
+
+.background{
+
+    position:fixed;
+    inset:0;
+
+    background:
+    linear-gradient(rgba(30,20,10,.45),
+    rgba(20,15,10,.55)),
+    url("../images/background.jpg");
+
+    background-size:cover;
+    background-position:center;
+    background-attachment:fixed;
+
+    z-index:-2;
+
+}
+
+.background::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    backdrop-filter:blur(10px);
+
+    background:rgba(255,255,255,.05);
+
+}
+
+/* ===========================
+      HEADER
+=========================== */
+
+header{
+
+    height:80px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 40px;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(15px);
+
+    border-bottom:1px solid rgba(255,255,255,.15);
+
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    font-size:24px;
+
+    font-weight:700;
+
+}
+
+.logo i{
+
+    color:#ffb347;
+
+    font-size:28px;
+
+}
+
+.header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:25px;
+
+}
+
+.notification{
+
+    width:48px;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.12);
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+}
+
+.notification:hover{
+
+    background:#ffb347;
+
+    transform:scale(1.1);
+
+}
+
+.user{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.user img{
+
+    width:50px;
+
+    height:50px;
+
+    border-radius:50%;
+
+    border:3px solid #ffb347;
+
+}
+
+.user h3{
+
+    font-size:17px;
+
+}
+
+.user p{
+
+    font-size:13px;
+
+    opacity:.7;
+
+}
+
+/* ===========================
+      CONTAINER
+=========================== */
+
+.container{
+
+    display:flex;
+
+    min-height:calc(100vh - 80px);
+
+}
+
+/* ===========================
+      SIDEBAR
+=========================== */
+
+.sidebar{
+
+    width:310px;
+
+    padding:30px;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(18px);
+
+    border-right:1px solid rgba(255,255,255,.15);
+
+}
+
+.profile-card{
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:25px;
+
+    padding:30px;
+
+    text-align:center;
+
+    margin-bottom:30px;
+
+    box-shadow:0 15px 35px rgba(0,0,0,.25);
+
+}
+
+.profile-card img{
+
+    width:120px;
+
+    height:120px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:4px solid #ffb347;
+
+}
+
+.profile-card h2{
+
+    margin-top:15px;
+
+}
+
+.profile-card span{
+
+    opacity:.8;
+
+}
+
+.stats{
+
+    display:flex;
+
+    justify-content:space-around;
+
+    margin-top:25px;
+
+}
+
+.stats h3{
+
+    color:#ffb347;
+
+}
+
+/* ===========================
+      MENU
+=========================== */
+
+nav{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+
+}
+
+nav a{
+
+    color:white;
+
+    text-decoration:none;
+
+    padding:16px;
+
+    border-radius:15px;
+
+    transition:.3s;
+
+    display:flex;
+
+    gap:15px;
+
+    align-items:center;
+
+}
+
+nav a:hover{
+
+    background:#ffb347;
+
+    color:#222;
+
+    transform:translateX(8px);
+
+}
+
+/* ===========================
+      MAIN
+=========================== */
+
+main{
+
+    flex:1;
+
+    padding:35px;
+
+}
+
+.top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}
+
+.top h1{
+
+    font-size:38px;
+
+}
+
+.top p{
+
+    opacity:.75;
+
+}
+
+.save{
+
+    background:#ffb347;
+
+    color:#222;
+
+    border:none;
+
+    padding:15px 30px;
+
+    border-radius:50px;
+
+    cursor:pointer;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.save:hover{
+
+    transform:translateY(-4px);
+
+}
+
+/* ===========================
+      TOOLBAR
+=========================== */
+
+.toolbar{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:15px;
+
+    padding:25px;
+
+    border-radius:25px;
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(15px);
+
+    margin-bottom:25px;
+
+}
+
+.toolbar button{
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    background:white;
+
+    transition:.3s;
+
+}
+
+.toolbar button:hover{
+
+    background:#ffb347;
+
+    transform:scale(1.06);
+
+}
+
+.toolbar label{
+
+    display:block;
+
+    margin-bottom:5px;
+
+}
+
+input[type=color]{
+
+    width:55px;
+
+    height:45px;
+
+    border:none;
+
+}
+
+input[type=range]{
+
+    width:150px;
+
+}
+
+/* ===========================
+      CANVAS
+=========================== */
+
+.canvas-card{
+
+    background:rgba(255,255,255,.08);
+
+    backdrop-filter:blur(15px);
+
+    border-radius:30px;
+
+    padding:25px;
+
+    box-shadow:0 15px 40px rgba(0,0,0,.25);
+
+}
+
+canvas{
+
+    width:100%;
+
+    background:white;
+
+    border-radius:20px;
+
+}
+
+/* ===========================
+      GALERIE
+=========================== */
+
+.gallery{
+
+    margin-top:40px;
+
+}
+
+.gallery h2{
+
+    margin-bottom:20px;
+
+}
+
+.gallery-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+
+    gap:20px;
+
+}
+
+.drawing{
+
+    background:rgba(255,255,255,.08);
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    transition:.4s;
+
+}
+
+.drawing:hover{
+
+    transform:translateY(-8px);
+
+}
+
+.drawing img{
+
+    width:100%;
+
+    display:block;
+
+}
+
+.add{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    min-height:180px;
+
+    font-size:45px;
+
+    color:#ffb347;
+
+}
+
+/* ===========================
+      RESPONSIVE
+=========================== */
+
+@media(max-width:1000px){
+
+.container{
+
+flex-direction:column;
+
+}
+
+.sidebar{
+
+width:100%;
+
+}
+
+header{
+
+padding:20px;
+
+}
+
+.top{
+
+flex-direction:column;
+
+gap:20px;
+
+align-items:flex-start;
+
+}
+
+}
+.toolbar button{
+
+    transition:.3s;
+
+}
+
+.toolbar button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+
+}
+
+canvas{
+
+    transition:.3s;
+
+}
+
+.canvas-card:hover{
+
+    transform:translateY(-4px);
+
+}
