@@ -1,8 +1,304 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Mon compte</title><link rel="stylesheet" href="style.css"><style>
-body{background:url("télécharger (4).jpg") center/cover fixed;display:flex;justify-content:center;align-items:center;min-height:100vh}
-body:before{content:"";position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(4px)}
-.back{position:fixed;top:20px;left:20px;z-index:2;background:#ff8c42;color:#fff;padding:12px 18px;border-radius:30px;text-decoration:none}
-.wrap{position:relative;z-index:1;width:95%;max-width:1300px;height:90vh;background:rgba(255,255,255,.12);backdrop-filter:blur(10px);display:flex;border-radius:20px}
-.side{width:260px;background:#1d3557;color:#fff;padding:20px}.main{flex:1;display:flex;justify-content:center;align-items:center;flex-direction:column}
-canvas{background:#fff;border-radius:15px}.tools button,.tools input{width:100%;margin:8px 0;padding:10px}
-</style></head><body><a class="back" href="index.html">🏠 Retour à l'accueil</a><div class="wrap"><div class="side"><h2>Mon Compte</h2><div class="tools"><input type="color" id="c"><input type="range" id="s" min="1" max="30" value="4"><button onclick="e=false">✏️ Crayon</button><button onclick="e=true">🩹 Gomme</button><button onclick="clr()">🗑 Effacer</button><button onclick="dl()">📥 Télécharger</button></div></div><div class="main"><canvas id="cv" width="850" height="600"></canvas></div></div><script>let e=false,cv=document.getElementById('cv'),x=cv.getContext('2d'),d=false;cv.onmousedown=()=>d=true;cv.onmouseup=()=>{d=false;x.beginPath()};cv.onmousemove=f=>{if(!d)return;let r=cv.getBoundingClientRect();x.lineWidth=s.value;x.lineCap='round';x.strokeStyle=e?'white':c.value;x.lineTo(f.clientX-r.left,f.clientY-r.top);x.stroke();x.beginPath();x.moveTo(f.clientX-r.left,f.clientY-r.top)};function clr(){x.clearRect(0,0,cv.width,cv.height)}function dl(){let a=document.createElement('a');a.href=cv.toDataURL();a.download='dessin.png';a.click()}</script></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Compte - Espace Créatif</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #d97736;
+            --primary-hover: #b85d20;
+            --bg-overlay: rgba(35, 23, 18, 0.45);
+            --card-bg: rgba(255, 251, 245, 0.75);
+            --sidebar-bg: rgba(255, 248, 240, 0.85);
+            --text-dark: #3c2a21;
+            --text-muted: #7c6a5e;
+            --shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --radius: 24px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: url("Golden Hour Calm Aesthetic sunset moment.jpg") center/cover no-repeat fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Voile doux */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background: var(--bg-overlay);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 0;
+        }
+
+        /* Bouton Retour */
+        .back {
+            position: fixed;
+            top: 24px;
+            left: 24px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.85);
+            color: var(--text-dark);
+            padding: 12px 22px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back:hover {
+            background: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Conteneur principal */
+        .wrap {
+            position: relative;
+            z-index: 1;
+            width: 92%;
+            max-width: 1250px;
+            height: 85vh;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .side {
+            width: 300px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid rgba(217, 119, 54, 0.15);
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .side h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            letter-spacing: -0.5px;
+        }
+
+        .tools {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .tool-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .tool-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Entrées & Sélecteurs */
+        input[type="color"] {
+            
+            border: none;
+            width: 100%;
+            height: 45px;
+            border-radius: 12px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        input[type="color"]::-webkit-color-swatch {
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+
+        /* Boutons */
+        .tools button {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tools button:hover {
+            background: #ffffff;
+            border-color: rgba(217, 119, 54, 0.3);
+            transform: translateY(-1px);
+        }
+
+        .tools button.btn-primary {
+            background: var(--primary);
+            color: #ffffff;
+            margin-top: 10px;
+        }
+
+        .tools button.btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        /* Zone Canvas */
+        .main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 24px;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        canvas {
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(60, 42, 33, 0.08);
+            cursor: crosshair;
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <a class="back" href="index.html">
+        <span>🏠</span> Retour à l'accueil
+    </a>
+
+    <div class="wrap">
+        <aside class="side">
+            <h2>Mon Compte</h2>
+            
+            <div class="tools">
+                <div class="tool-group">
+                    <label for="c">Couleur</label>
+                    <input type="color" id="c" value="#3c2a21">
+                </div>
+
+                <div class="tool-group">
+                    <label for="s">Épaisseur</label>
+                    <input type="range" id="s" min="1" max="30" value="4">
+                </div>
+
+                <button id="btn-pencil">✏️ Crayon</button>
+                <button id="btn-eraser">🩹 Gomme</button>
+                <button id="btn-clear">🗑 Effacer</button>
+                <button id="btn-download" class="btn-primary">📥 Télécharger</button>
+            </div>
+        </aside>
+
+        <main class="main">
+            <canvas id="cv" width="850" height="600"></canvas>
+        </main>
+    </div>
+
+    <script>
+        let isEraser = false;
+        let isDrawing = false;
+
+        const cv = document.getElementById('cv');
+        const ctx = cv.getContext('2d');
+        const colorPicker = document.getElementById('c');
+        const sizePicker = document.getElementById('s');
+
+        // Événements Canvas
+        cv.addEventListener('mousedown', (e) => {
+            isDrawing = true;
+            draw(e);
+        });
+
+        cv.addEventListener('mouseup', () => {
+            isDrawing = false;
+            ctx.beginPath();
+        });
+
+        cv.addEventListener('mouseleave', () => {
+            isDrawing = false;
+            ctx.beginPath();
+        });
+
+        cv.addEventListener('mousemove', draw);
+
+        function draw(e) {
+            if (!isDrawing) return;
+
+            const rect = cv.getBoundingClientRect();
+            ctx.lineWidth = sizePicker.value;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = isEraser ? '#ffffff' : colorPicker.value;
+
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+
+        // Actions Boutons
+        document.getElementById('btn-pencil').addEventListener('click', () => isEraser = false);
+        document.getElementById('btn-eraser').addEventListener('click', () => isEraser = true);
+        
+        document.getElementById('btn-clear').addEventListener('click', () => {
+            ctx.clearRect(0, 0, cv.width, cv.height);
+        });
+
+        document.getElementById('btn-download').addEventListener('click', () => {
+            const link = document.createElement('a');
+            link.href = cv.toDataURL();
+            link.download = 'mon-dessin.png';
+            link.click();
+        });
+    </script>
+
+</body>
+</html>
