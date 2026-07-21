@@ -1,16 +1,9 @@
-// ===============================
-// ATTENTE DU CHARGEMENT DU DOM
-// ===============================
-
 document.addEventListener("DOMContentLoaded", () => {
-    
-    // Récupération du Canvas et du Contexte 2D
+    // 1. Récupération des éléments HTML
     const canvas = document.getElementById("canvas");
     if (!canvas) return;
-    
     const ctx = canvas.getContext("2d");
 
-    // Récupération des commandes de l'interface
     const colorPicker = document.getElementById("colorPicker");
     const brushSize = document.getElementById("brushSize");
 
@@ -23,61 +16,50 @@ document.addEventListener("DOMContentLoaded", () => {
     const undoBtn = document.getElementById("undo");
     const redoBtn = document.getElementById("redo");
     const downloadBtn = document.getElementById("download");
+    const galleryGrid = document.getElementById("galleryGrid");
 
-    // Couleur de fond (fond crème du thème Golden Hour)
     const CANVAS_BG_COLOR = "#fcfaf7";
 
     let isDrawing = false;
     let isEraser = false;
 
-    // ===============================
-    // INITIALISATION DE LA TOILE
-    // ===============================
-
+    // 2. Initialisation du Canvas
     function setupCanvas() {
-        // Aligne la résolution du canvas sur sa taille réelle affichée à l'écran
         const rect = canvas.getBoundingClientRect();
         canvas.width = rect.width || 1200;
         canvas.height = 600;
 
-        // Configuration visuelle du trait
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
 
-        // Peindre le fond initial
+        resetCanvas();
+    }
+
+    function resetCanvas() {
         ctx.fillStyle = CANVAS_BG_COLOR;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
     setupCanvas();
 
-    // ===============================
-    // CALCUL PRÉCIS DU CURSEUR
-    // ===============================
-
+    // 3. Calcul des Coordonnées
     function getCoordinates(e) {
         const rect = canvas.getBoundingClientRect();
-        
         let clientX = e.clientX;
         let clientY = e.clientY;
 
-        // Support Écran Tactile (Mobile / Tablette)
         if (e.touches && e.touches.length > 0) {
             clientX = e.touches[0].clientX;
             clientY = e.touches[0].clientY;
         }
 
-        // Calcul avec mise à l'échelle
         return {
             x: (clientX - rect.left) * (canvas.width / rect.width),
             y: (clientY - rect.top) * (canvas.height / rect.height)
         };
     }
 
-    // ===============================
-    // TRAÇAGE ET DESSIN
-    // ===============================
-
+    // 4. Action de dessin
     function startDrawing(e) {
         isDrawing = true;
         const pos = getCoordinates(e);
@@ -105,35 +87,21 @@ document.addEventListener("DOMContentLoaded", () => {
         if (isDrawing) {
             isDrawing = false;
             ctx.beginPath();
-            saveState(); // Sauvegarde le trait dans l'historique
+            saveState();
         }
     }
 
-    // ===============================
-    // ÉVÉNEMENTS (SOURIS & TACTILE)
-    // ===============================
-
-    // Souris
+    // Événements Souris & Tactile
     canvas.addEventListener("mousedown", startDrawing);
     canvas.addEventListener("mousemove", draw);
     canvas.addEventListener("mouseup", stopDrawing);
     canvas.addEventListener("mouseleave", stopDrawing);
 
-    // Tactile
-    canvas.addEventListener("touchstart", (e) => {
-        e.preventDefault();
-        startDrawing(e);
-    });
-    canvas.addEventListener("touchmove", (e) => {
-        e.preventDefault();
-        draw(e);
-    });
+    canvas.addEventListener("touchstart", (e) => { e.preventDefault(); startDrawing(e); });
+    canvas.addEventListener("touchmove", (e) => { e.preventDefault(); draw(e); });
     canvas.addEventListener("touchend", stopDrawing);
 
-    // ===============================
-    // GESTION DES OUTILS
-    // ===============================
-
+    // 5. Outils (Crayon / Gomme / Couleur)
     if (pencilBtn) {
         pencilBtn.addEventListener("click", () => {
             isEraser = false;
@@ -158,45 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ===============================
-    // NOUVELLE TOILE / CLEAR
-    // ===============================
-
-    function resetCanvas() {
-        ctx.fillStyle = CANVAS_BG_COLOR;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-    }
-
-    function createNewCanvas() {
-        if (confirm("Voulez-vous créer une nouvelle canvas ? Le dessin actuel sera effacé.")) {
-            resetCanvas();
-            history = [];
-            historyStep = -1;
-            saveState();
-        }
-    }
-
-    if (newCanvasBtn) newCanvasBtn.addEventListener("click", createNewCanvas);
-    if (sidebarNewCanvas) {
-        sidebarNewCanvas.addEventListener("click", (e) => {
-            e.preventDefault();
-            createNewCanvas();
-        });
-    }
-
-    if (clearBtn) {
-        clearBtn.addEventListener("click", () => {
-            if (confirm("Effacer tout le dessin ?")) {
-                resetCanvas();
-                saveState();
-            }
-        });
-    }
-
-    // ===============================
-    // HISTORIQUE (ANNULER / REFAIRE)
-    // ===============================
-
+    // 6. Historique (Annuler / Refaire)
     let history = [];
     let historyStep = -1;
 
@@ -235,10 +165,98 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ===============================
-    // TÉLÉCHARGEMENT
-    // ===============================
+    if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+            if (confirm("Effacer tout le dessin ?")) {
+                resetCanvas();
+                saveState();
+            }
+        });
+    }
 
+    // 7. SAUVEGARDE DANS LE SITE (GALERIE LOCALSTORAGE)
+    function loadSavedDrawings() {
+        if (!galleryGrid) return;
+
+        const savedImages = JSON.parse(localStorage.getItem("mes_creations") || "[]");
+        
+        // Vider la galerie
+        galleryGrid.innerHTML = "";
+
+        // Réafficher les dessins enregistrés
+        savedImages.forEach((dataUrl, index) => {
+            const div = document.createElement("div");
+            div.className = "drawing";
+            div.innerHTML = `
+                <img src="${dataUrl}" alt="Création ${index + 1}">
+                <button class="delete-btn" data-index="${index}" style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.6); color:white; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer;">✕</button>
+            `;
+            
+            // Clic sur une image pour la recharger sur le canvas
+            div.querySelector("img").addEventListener("click", () => {
+                const img = new Image();
+                img.src = dataUrl;
+                img.onload = () => {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 0, 0);
+                    saveState();
+                };
+            });
+
+            galleryGrid.appendChild(div);
+        });
+
+        // Ajouter le bouton d'ajout rapide "+"
+        const addDiv = document.createElement("div");
+        addDiv.className = "drawing add";
+        addDiv.id = "addDrawingBtn";
+        addDiv.innerHTML = `<i class="fa-solid fa-plus"></i>`;
+        addDiv.addEventListener("click", () => {
+            resetCanvas();
+            saveState();
+        });
+        galleryGrid.appendChild(addDiv);
+
+        // Événements pour supprimer un dessin
+        document.querySelectorAll(".delete-btn").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                const idx = parseInt(btn.getAttribute("data-index"));
+                deleteDrawing(idx);
+            });
+        });
+    }
+
+    function saveDrawingToSite() {
+        const imageData = canvas.toDataURL("image/png");
+        let savedImages = JSON.parse(localStorage.getItem("mes_creations") || "[]");
+
+        // Ajoute la nouvelle création au début du tableau
+        savedImages.unshift(imageData);
+
+        // Sauvegarde dans le localStorage
+        localStorage.setItem("mes_creations", JSON.stringify(savedImages));
+
+        // Recharge la galerie
+        loadSavedDrawings();
+
+        alert("Votre création a été sauvegardée dans 'Mes créations' ! 🎨");
+    }
+
+    function deleteDrawing(index) {
+        if (confirm("Voulez-vous supprimer ce dessin de vos créations ?")) {
+            let savedImages = JSON.parse(localStorage.getItem("mes_creations") || "[]");
+            savedImages.splice(index, 1);
+            localStorage.setItem("mes_creations", JSON.stringify(savedImages));
+            loadSavedDrawings();
+        }
+    }
+
+    if (saveBtn) {
+        saveBtn.addEventListener("click", saveDrawingToSite);
+    }
+
+    // Télécharger en fichier PNG
     if (downloadBtn) {
         downloadBtn.addEventListener("click", () => {
             const link = document.createElement("a");
@@ -248,32 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ===============================
-    // SAUVEGARDE BASE DE DONNÉES
-    // ===============================
-
-    if (saveBtn) {
-        saveBtn.addEventListener("click", async () => {
-            const imageData = canvas.toDataURL("image/png");
-
-            try {
-                const response = await fetch("/api/sauvegarder-dessin", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ image: imageData })
-                });
-
-                if (response.ok) {
-                    alert("Dessin enregistré dans la base de données ! 🎨");
-                } else {
-                    alert("Erreur lors de la sauvegarde.");
-                }
-            } catch (error) {
-                alert("Image capturée ! (API backend non joignable)");
-            }
-        });
-    }
-
-    // Sauvegarder l'état vierge de départ
+    // Charger les dessins au démarrage
+    loadSavedDrawings();
     saveState();
 });
