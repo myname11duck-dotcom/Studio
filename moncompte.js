@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. Récupération des éléments HTML
+    // ===============================
+    // 1. RÉCUPÉRATION DES ÉLÉMENTS
+    // ===============================
     const canvas = document.getElementById("canvas");
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -16,14 +18,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const undoBtn = document.getElementById("undo");
     const redoBtn = document.getElementById("redo");
     const downloadBtn = document.getElementById("download");
-    const galleryGrid = document.getElementById("galleryGrid");
+    const galleryGrid = document.querySelector(".gallery-grid");
 
     const CANVAS_BG_COLOR = "#fcfaf7";
 
     let isDrawing = false;
     let isEraser = false;
 
-    // 2. Initialisation du Canvas
+    // ===============================
+    // 2. INITIALISATION ET TAILLE
+    // ===============================
     function setupCanvas() {
         const rect = canvas.getBoundingClientRect();
         canvas.width = rect.width || 1200;
@@ -42,7 +46,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setupCanvas();
 
-    // 3. Calcul des Coordonnées
+    // ===============================
+    // 3. CALCUL DES COORDONNÉES
+    // ===============================
     function getCoordinates(e) {
         const rect = canvas.getBoundingClientRect();
         let clientX = e.clientX;
@@ -59,7 +65,9 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     }
 
-    // 4. Action de dessin
+    // ===============================
+    // 4. ACTION DE DESSIN
+    // ===============================
     function startDrawing(e) {
         isDrawing = true;
         const pos = getCoordinates(e);
@@ -101,7 +109,9 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.addEventListener("touchmove", (e) => { e.preventDefault(); draw(e); });
     canvas.addEventListener("touchend", stopDrawing);
 
-    // 5. Outils (Crayon / Gomme / Couleur)
+    // ===============================
+    // 5. BOUTONS OUTILS
+    // ===============================
     if (pencilBtn) {
         pencilBtn.addEventListener("click", () => {
             isEraser = false;
@@ -126,7 +136,42 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 6. Historique (Annuler / Refaire)
+    // ===============================
+    // 6. CREATION D'UNE NOUVELLE TOILE
+    // ===============================
+    function createNewCanvas() {
+        if (confirm("Créer une nouvelle canvas ? Le dessin actuel sera effacé.")) {
+            resetCanvas();
+            history = [];
+            historyStep = -1;
+            saveState();
+            // Remonte doucement la page vers la zone de dessin
+            canvas.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+
+    // Attachement de la fonction aux boutons
+    if (newCanvasBtn) newCanvasBtn.addEventListener("click", createNewCanvas);
+    
+    if (sidebarNewCanvas) {
+        sidebarNewCanvas.addEventListener("click", (e) => {
+            e.preventDefault();
+            createNewCanvas();
+        });
+    }
+
+    if (clearBtn) {
+        clearBtn.addEventListener("click", () => {
+            if (confirm("Effacer tout le dessin ?")) {
+                resetCanvas();
+                saveState();
+            }
+        });
+    }
+
+    // ===============================
+    // 7. HISTORIQUE (ANNULER / REFAIRE)
+    // ===============================
     let history = [];
     let historyStep = -1;
 
@@ -165,34 +210,26 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    if (clearBtn) {
-        clearBtn.addEventListener("click", () => {
-            if (confirm("Effacer tout le dessin ?")) {
-                resetCanvas();
-                saveState();
-            }
-        });
-    }
-
-    // 7. SAUVEGARDE DANS LE SITE (GALERIE LOCALSTORAGE)
+    // ===============================
+    // 8. GALERIE & SAUVEGARDE DANS LE SITE
+    // ===============================
     function loadSavedDrawings() {
         if (!galleryGrid) return;
 
         const savedImages = JSON.parse(localStorage.getItem("mes_creations") || "[]");
-        
-        // Vider la galerie
         galleryGrid.innerHTML = "";
 
-        // Réafficher les dessins enregistrés
+        // Affirmation des créations existantes
         savedImages.forEach((dataUrl, index) => {
             const div = document.createElement("div");
             div.className = "drawing";
+            div.style.position = "relative";
             div.innerHTML = `
                 <img src="${dataUrl}" alt="Création ${index + 1}">
                 <button class="delete-btn" data-index="${index}" style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.6); color:white; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer;">✕</button>
             `;
             
-            // Clic sur une image pour la recharger sur le canvas
+            // Recharger le dessin au clic sur la vignette
             div.querySelector("img").addEventListener("click", () => {
                 const img = new Image();
                 img.src = dataUrl;
@@ -200,24 +237,25 @@ document.addEventListener("DOMContentLoaded", () => {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     ctx.drawImage(img, 0, 0);
                     saveState();
+                    canvas.scrollIntoView({ behavior: 'smooth' });
                 };
             });
 
             galleryGrid.appendChild(div);
         });
 
-        // Ajouter le bouton d'ajout rapide "+"
+        // Génération du bouton "PLUS (+)" pour créer une nouvelle toile
         const addDiv = document.createElement("div");
         addDiv.className = "drawing add";
         addDiv.id = "addDrawingBtn";
         addDiv.innerHTML = `<i class="fa-solid fa-plus"></i>`;
-        addDiv.addEventListener("click", () => {
-            resetCanvas();
-            saveState();
-        });
+        
+        // 🎯 ACTION SUR LE BOUTON PLUS (+)
+        addDiv.addEventListener("click", createNewCanvas);
+        
         galleryGrid.appendChild(addDiv);
 
-        // Événements pour supprimer un dessin
+        // Bouton de suppression
         document.querySelectorAll(".delete-btn").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 e.stopPropagation();
@@ -231,20 +269,15 @@ document.addEventListener("DOMContentLoaded", () => {
         const imageData = canvas.toDataURL("image/png");
         let savedImages = JSON.parse(localStorage.getItem("mes_creations") || "[]");
 
-        // Ajoute la nouvelle création au début du tableau
         savedImages.unshift(imageData);
-
-        // Sauvegarde dans le localStorage
         localStorage.setItem("mes_creations", JSON.stringify(savedImages));
 
-        // Recharge la galerie
         loadSavedDrawings();
-
-        alert("Votre création a été sauvegardée dans 'Mes créations' ! 🎨");
+        alert("Votre création a été enregistrée dans la galerie ! 🎨");
     }
 
     function deleteDrawing(index) {
-        if (confirm("Voulez-vous supprimer ce dessin de vos créations ?")) {
+        if (confirm("Voulez-vous supprimer ce dessin ?")) {
             let savedImages = JSON.parse(localStorage.getItem("mes_creations") || "[]");
             savedImages.splice(index, 1);
             localStorage.setItem("mes_creations", JSON.stringify(savedImages));
@@ -256,7 +289,6 @@ document.addEventListener("DOMContentLoaded", () => {
         saveBtn.addEventListener("click", saveDrawingToSite);
     }
 
-    // Télécharger en fichier PNG
     if (downloadBtn) {
         downloadBtn.addEventListener("click", () => {
             const link = document.createElement("a");
@@ -266,7 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Charger les dessins au démarrage
+    // Charger la galerie et enregistrer la toile initiale
     loadSavedDrawings();
     saveState();
 });
