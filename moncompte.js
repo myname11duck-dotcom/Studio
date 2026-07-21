@@ -10,6 +10,11 @@ const brushSize = document.getElementById("brushSize");
 
 const pencilBtn = document.getElementById("pencil");
 const eraserBtn = document.getElementById("eraser");
+const newCanvasBtn = document.getElementById("newCanvasBtn");
+const sidebarNewCanvas = document.getElementById("sidebarNewCanvas");
+const saveBtn = document.getElementById("saveBtn");
+
+const CANVAS_BG_COLOR = "#fcfaf7"; // Couleur crème douce du thème Golden Hour
 
 let drawing = false;
 let eraser = false;
@@ -18,184 +23,129 @@ ctx.lineCap = "round";
 ctx.lineJoin = "round";
 
 // ===============================
-// CANVAS RESPONSIVE
+// CANVAS RESPONSIVE & INIT
 // ===============================
 
 function resizeCanvas() {
-
-    const image = ctx.getImageData(0,0,canvas.width,canvas.height);
-
+    const image = ctx.getImageData(0, 0, canvas.width, canvas.height);
     canvas.width = canvas.offsetWidth;
     canvas.height = 700;
-
-    ctx.putImageData(image,0,0);
-
+    ctx.putImageData(image, 0, 0);
 }
 
-window.addEventListener("load",resizeCanvas);
-window.addEventListener("resize",resizeCanvas);
+function initCanvas() {
+    ctx.fillStyle = CANVAS_BG_COLOR;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+window.addEventListener("load", () => {
+    resizeCanvas();
+    initCanvas();
+    setTimeout(saveState, 200);
+});
+
+window.addEventListener("resize", resizeCanvas);
 
 // ===============================
-// DÉBUT DU DESSIN
+// DÉBUT & FIN DU DESSIN
 // ===============================
 
-function startDrawing(e){
-
+function startDrawing(e) {
     drawing = true;
-
     draw(e);
-
 }
 
-// ===============================
-// FIN DU DESSIN
-// ===============================
-
-function stopDrawing(){
-
+function stopDrawing() {
     drawing = false;
-
     ctx.beginPath();
-
 }
 
 // ===============================
 // DESSIN
 // ===============================
 
-function draw(e){
-
-    if(!drawing) return;
+function draw(e) {
+    if (!drawing) return;
 
     const rect = canvas.getBoundingClientRect();
-
     const x = e.clientX - rect.left;
-
     const y = e.clientY - rect.top;
 
     ctx.lineWidth = brushSize.value;
+    ctx.strokeStyle = eraser ? CANVAS_BG_COLOR : colorPicker.value;
 
-    ctx.strokeStyle = eraser ? "#FFFFFF" : colorPicker.value;
-
-    ctx.lineTo(x,y);
-
+    ctx.lineTo(x, y);
     ctx.stroke();
-
     ctx.beginPath();
-
-    ctx.moveTo(x,y);
-
+    ctx.moveTo(x, y);
 }
 
-// ===============================
-// SOURIS
-// ===============================
+// Événements Souris
+canvas.addEventListener("mousedown", startDrawing);
+canvas.addEventListener("mouseup", stopDrawing);
+canvas.addEventListener("mouseleave", stopDrawing);
+canvas.addEventListener("mousemove", draw);
 
-canvas.addEventListener("mousedown",startDrawing);
-
-canvas.addEventListener("mouseup",stopDrawing);
-
-canvas.addEventListener("mouseleave",stopDrawing);
-
-canvas.addEventListener("mousemove",draw);
-
-// ===============================
-// ÉCRAN TACTILE
-// ===============================
-
-canvas.addEventListener("touchstart",(e)=>{
-
+// Événements Tactiles
+canvas.addEventListener("touchstart", (e) => {
     e.preventDefault();
-
     const touch = e.touches[0];
-
-    startDrawing({
-
-        clientX:touch.clientX,
-
-        clientY:touch.clientY
-
-    });
-
+    startDrawing({ clientX: touch.clientX, clientY: touch.clientY });
 });
 
-canvas.addEventListener("touchmove",(e)=>{
-
+canvas.addEventListener("touchmove", (e) => {
     e.preventDefault();
-
     const touch = e.touches[0];
-
-    draw({
-
-        clientX:touch.clientX,
-
-        clientY:touch.clientY
-
-    });
-
+    draw({ clientX: touch.clientX, clientY: touch.clientY });
 });
 
-canvas.addEventListener("touchend",stopDrawing);
+canvas.addEventListener("touchend", stopDrawing);
 
 // ===============================
-// OUTILS
+// OUTILS ET BROSSE
 // ===============================
 
-pencilBtn.addEventListener("click",()=>{
-
+pencilBtn.addEventListener("click", () => {
     eraser = false;
-
     pencilBtn.classList.add("active");
-
     eraserBtn.classList.remove("active");
-
 });
 
-eraserBtn.addEventListener("click",()=>{
-
+eraserBtn.addEventListener("click", () => {
     eraser = true;
-
     eraserBtn.classList.add("active");
-
     pencilBtn.classList.remove("active");
+});
 
+brushSize.addEventListener("input", () => {
+    canvas.style.cursor = "crosshair";
+});
+
+colorPicker.addEventListener("change", () => {
+    eraser = false;
+    pencilBtn.classList.add("active");
+    eraserBtn.classList.remove("active");
 });
 
 // ===============================
-// CURSEUR
+// CREER UNE NOUVELLE TOILE
 // ===============================
 
-brushSize.addEventListener("input",()=>{
-
-    canvas.style.cursor="crosshair";
-
-});
-
-colorPicker.addEventListener("change",()=>{
-
-    eraser=false;
-
-});
-
-// ===============================
-// FOND BLANC
-// ===============================
-
-function initCanvas(){
-
-    ctx.fillStyle="#FFFFFF";
-
-    ctx.fillRect(0,0,canvas.width,canvas.height);
-
+function createNewCanvas() {
+    if (confirm("Voulez-vous créer une nouvelle toile ? Le dessin en cours sera effacé s'il n'est pas sauvegardé.")) {
+        initCanvas();
+        history = [];
+        historyStep = -1;
+        saveState();
+    }
 }
 
-window.onload=()=>{
+if (newCanvasBtn) newCanvasBtn.addEventListener("click", createNewCanvas);
+if (sidebarNewCanvas) sidebarNewCanvas.addEventListener("click", (e) => {
+    e.preventDefault();
+    createNewCanvas();
+});
 
-    resizeCanvas();
-
-    initCanvas();
-
-}
 // =====================================
 // HISTORIQUE (ANNULER / REFAIRE)
 // =====================================
@@ -203,122 +153,92 @@ window.onload=()=>{
 let history = [];
 let historyStep = -1;
 
-// Sauvegarde l'état du canvas
 function saveState() {
-
     historyStep++;
-
-    // Si on dessine après un annuler,
-    // on supprime les états suivants.
     if (historyStep < history.length) {
         history.length = historyStep;
     }
-
     history.push(canvas.toDataURL());
-
 }
 
-// Recharge une image
-function restoreState(index){
-
+function restoreState(index) {
     const img = new Image();
-
     img.src = history[index];
-
     img.onload = () => {
-
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-
-        ctx.drawImage(img,0,0);
-
-    }
-
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0);
+    };
 }
 
-// Sauvegarde après chaque trait
-canvas.addEventListener("mouseup",saveState);
-canvas.addEventListener("touchend",saveState);
-
-// =====================================
-// ANNULER
-// =====================================
+canvas.addEventListener("mouseup", saveState);
+canvas.addEventListener("touchend", saveState);
 
 const undoBtn = document.getElementById("undo");
-
-undoBtn.addEventListener("click",()=>{
-
-    if(historyStep > 0){
-
+undoBtn.addEventListener("click", () => {
+    if (historyStep > 0) {
         historyStep--;
-
         restoreState(historyStep);
-
     }
-
 });
-
-// =====================================
-// REFAIRE
-// =====================================
 
 const redoBtn = document.getElementById("redo");
-
-redoBtn.addEventListener("click",()=>{
-
-    if(historyStep < history.length-1){
-
+redoBtn.addEventListener("click", () => {
+    if (historyStep < history.length - 1) {
         historyStep++;
-
         restoreState(historyStep);
-
     }
-
 });
-
-// =====================================
-// EFFACER
-// =====================================
 
 const clearBtn = document.getElementById("clear");
-
-clearBtn.addEventListener("click",()=>{
-
-    if(confirm("Effacer tout le dessin ?")){
-
-        ctx.fillStyle="#FFFFFF";
-
-        ctx.fillRect(0,0,canvas.width,canvas.height);
-
+clearBtn.addEventListener("click", () => {
+    if (confirm("Effacer tout le dessin ?")) {
+        initCanvas();
         saveState();
-
     }
-
 });
 
 // =====================================
-// TELECHARGEMENT
+// TÉLÉCHARGEMENT
 // =====================================
 
-const downloadBtn=document.getElementById("download");
-
-downloadBtn.addEventListener("click",()=>{
-
-    const link=document.createElement("a");
-
-    link.download="dessin.png";
-
-    link.href=canvas.toDataURL("image/png");
-
+const downloadBtn = document.getElementById("download");
+downloadBtn.addEventListener("click", () => {
+    const link = document.createElement("a");
+    link.download = "dessin.png";
+    link.href = canvas.toDataURL("image/png");
     link.click();
-
 });
 
 // =====================================
-// PREMIERE SAUVEGARDE
+// SAUVEGARDE EN BASE DE DONNÉES (API)
 // =====================================
 
-window.addEventListener("load",()=>{
+if (saveBtn) {
+    saveBtn.addEventListener("click", async () => {
+        const imageData = canvas.toDataURL("image/png");
 
-    setTimeout(saveState,200);
+        try {
+            // Remplace l'URL ci-dessous par l'adresse de ton API / serveur
+            const response = await fetch("/api/sauvegarder-dessin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    image: imageData,
+                    date: new Date().toISOString()
+                })
+            });
 
-});
+            if (response.ok) {
+                alert("Votre dessin a bien été enregistré dans la base de données ! 🎨");
+            } else {
+                alert("Erreur lors de l'enregistrement du dessin.");
+            }
+        } catch (error) {
+            console.error("Erreur serveur :", error);
+            // Fallback d'affichage si l'API backend n'est pas encore prête
+            alert("Dessin capturé sous forme d'image ! (Assurez-vous que votre serveur API est bien configuré).");
+        }
+    });
+}

@@ -9,11 +9,9 @@
 
     <link rel="stylesheet" href="moncompte.css">
 
-    <!-- Font Awesome -->
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <!-- Police -->
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
         rel="stylesheet">
@@ -21,10 +19,7 @@
 
 <body>
 
-    <!-- Fond -->
     <div class="background"></div>
-
-    <!-- HEADER -->
 
     <header>
 
@@ -57,11 +52,7 @@
 
     </header>
 
-    <!-- CONTENU -->
-
     <div class="container">
-
-        <!-- SIDEBAR -->
 
         <aside class="sidebar">
 
@@ -95,16 +86,14 @@
 
             </div>
 
-            <!-- Menu -->
-
             <nav>
 
-                <a href="#">
+                <a href="index.html">
                     <i class="fa-solid fa-house"></i>
                     Accueil
                 </a>
 
-                <a href="#">
+                <a href="#" id="sidebarNewCanvas">
                     <i class="fa-solid fa-palette"></i>
                     Nouveau dessin
                 </a>
@@ -133,8 +122,6 @@
 
         </aside>
 
-        <!-- CENTRE -->
-
         <main>
 
             <section class="top">
@@ -149,14 +136,12 @@
 
                 </div>
 
-                <button class="save">
+                <button class="save" id="saveBtn">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                     Sauvegarder
                 </button>
 
             </section>
-
-            <!-- OUTILS -->
 
             <section class="toolbar">
 
@@ -164,7 +149,7 @@
 
                     <label>Couleur</label>
 
-                    <input type="color" id="colorPicker">
+                    <input type="color" id="colorPicker" value="#1a1412">
 
                 </div>
 
@@ -175,17 +160,21 @@
                     <input type="range"
                         id="brushSize"
                         min="1"
-                        max="40"
+                        max="50"
                         value="5">
 
                 </div>
 
-                <button id="pencil">
+                <button id="pencil" class="active">
                     ✏️ Crayon
                 </button>
 
                 <button id="eraser">
                     🩹 Gomme
+                </button>
+
+                <button id="newCanvasBtn">
+                    📄 Nouvelle toile
                 </button>
 
                 <button id="undo">
@@ -206,8 +195,6 @@
 
             </section>
 
-            <!-- CANVAS -->
-
             <section class="canvas-card">
 
                 <canvas
@@ -218,13 +205,11 @@
 
             </section>
 
-            <!-- GALERIE -->
-
             <section class="gallery">
 
                 <h2>Mes créations</h2>
 
-                <div class="gallery-grid">
+                <div class="gallery-grid" id="galleryGrid">
 
                     <div class="drawing">
                         <img src="images/demo1.jpg">
@@ -238,7 +223,7 @@
                         <img src="images/demo3.jpg">
                     </div>
 
-                    <div class="drawing add">
+                    <div class="drawing add" id="addDrawingBtn">
 
                         <i class="fa-solid fa-plus"></i>
 
