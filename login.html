@@ -249,7 +249,7 @@
             const mot_de_passe = document.getElementById('loginPassword').value;
 
             try {
-                const res = await fetch('http://localhost:3001/api/login', {
+                const res = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, mot_de_passe })
@@ -275,7 +275,7 @@
             const mot_de_passe = document.getElementById('registerPassword').value;
 
             try {
-                const res = await fetch('http://localhost:3001/api/register', {
+                const res = await fetch('/api/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ nom, prenom, email, mot_de_passe })
