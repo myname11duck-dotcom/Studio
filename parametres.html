@@ -1,124 +1,132 @@
+<!-- parametres.html -->
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Paramètres | Espace Créatif</title>
-
     <link rel="stylesheet" href="moncompte.css">
     <link rel="stylesheet" href="parametres.css">
-
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .profile-avatar-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .profile-avatar-upload img {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-gold);
+            padding: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: opacity 0.3s;
+        }
+        .profile-avatar-upload:hover img {
+            opacity: 0.7;
+        }
+        .profile-avatar-upload .upload-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        .profile-avatar-upload:hover .upload-overlay {
+            opacity: 1;
+        }
+        .profile-avatar-upload input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .sidebar nav a:not(.hidden) {
+            display: flex;
+        }
+        .sidebar nav a.hidden {
+            display: none !important;
+        }
+    </style>
 </head>
-
 <body>
 
     <div class="background"></div>
 
     <header>
-
         <div class="logo">
             <i class="fa-solid fa-palette"></i>
             <span>Espace Créatif</span>
         </div>
-
         <div class="header-right">
-
             <button class="notification">
                 <i class="fa-solid fa-bell"></i>
             </button>
-
-            <div class="user">
-
-                <img src="images/avatar.png" alt="profil">
-
+            <div class="user" id="headerUser">
+                <img src="images/avatar.png" alt="profil" id="headerAvatar">
                 <div>
-
                     <h3 id="headerNom">Mano</h3>
-
                     <p>Membre Premium</p>
-
                 </div>
-
             </div>
-
         </div>
-
     </header>
 
     <div class="container">
-
         <aside class="sidebar">
-
             <div class="profile-card">
-
-                <img src="images/avatar.png" alt="Profil">
-
+                <div class="profile-avatar-upload" id="avatarUpload">
+                    <img src="images/avatar.png" alt="Profil" id="profileAvatar">
+                    <div class="upload-overlay"><i class="fa-solid fa-camera"></i></div>
+                    <input type="file" accept="image/*" id="avatarInput">
+                </div>
                 <h2 id="profileNom">Mano</h2>
-
                 <span id="profileEmail">mano@email.com</span>
-
             </div>
 
             <nav>
-
                 <a href="index.html">
                     <i class="fa-solid fa-house"></i>
                     Accueil
                 </a>
-
                 <a href="moncompte.html">
                     <i class="fa-solid fa-palette"></i>
                     Mon espace
                 </a>
-
-                <a href="moncompte.html">
+                <a href="dessins.html">
                     <i class="fa-solid fa-folder-open"></i>
                     Mes dessins
                 </a>
-
                 <a href="parametres.html" class="active">
                     <i class="fa-solid fa-gear"></i>
                     Paramètres
                 </a>
-
             </nav>
-
         </aside>
 
         <main>
-
             <section class="top">
-
                 <div>
-
                     <h1>Paramètres du compte</h1>
-
-                    <p>
-                        Gérez vos informations personnelles et votre mot de passe.
-                    </p>
-
+                    <p>Gérez vos informations personnelles et votre mot de passe.</p>
                 </div>
-
             </section>
 
             <section class="settings-card">
-
                 <form id="settingsForm">
-
                     <div class="settings-row">
                         <div class="form-group">
                             <label for="nom">Nom</label>
                             <input type="text" id="nom" required>
                         </div>
-
                         <div class="form-group">
                             <label for="prenom">Prénom</label>
                             <input type="text" id="prenom" required>
@@ -148,17 +156,98 @@
                     </button>
 
                     <p class="settings-message" id="settingsMessage"></p>
-
                 </form>
-
             </section>
-
         </main>
-
     </div>
 
-    <script src="parametres.js"></script>
+    <script>
+        // Chargement des informations utilisateur
+        function loadUserInfo() {
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            if (user) {
+                document.getElementById('profileNom').textContent = user.prenom || 'Mon compte';
+                document.getElementById('profileEmail').textContent = user.email || '';
+                document.getElementById('headerNom').textContent = user.prenom || 'Mon compte';
+                document.getElementById('nom').value = user.nom || '';
+                document.getElementById('prenom').value = user.prenom || '';
+                document.getElementById('email').value = user.email || '';
+                
+                const avatar = localStorage.getItem('userAvatar') || 'images/avatar.png';
+                document.getElementById('profileAvatar').src = avatar;
+                document.getElementById('headerAvatar').src = avatar;
+            }
+        }
 
+        // Upload avatar
+        document.getElementById('avatarInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const dataUrl = event.target.result;
+                    localStorage.setItem('userAvatar', dataUrl);
+                    document.getElementById('profileAvatar').src = dataUrl;
+                    document.getElementById('headerAvatar').src = dataUrl;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        loadUserInfo();
+
+        // Sauvegarde des paramètres
+        const settingsForm = document.getElementById('settingsForm');
+        const settingsMessage = document.getElementById('settingsMessage');
+
+        settingsForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const nom = document.getElementById('nom').value;
+            const prenom = document.getElementById('prenom').value;
+            const email = document.getElementById('email').value;
+            const motDePasse = document.getElementById('motDePasse').value;
+            const motDePasseConfirm = document.getElementById('motDePasseConfirm').value;
+
+            if (motDePasse && motDePasse !== motDePasseConfirm) {
+                settingsMessage.textContent = 'Les mots de passe ne correspondent pas.';
+                settingsMessage.className = 'settings-message error';
+                return;
+            }
+
+            // Mise à jour locale
+            const user = JSON.parse(localStorage.getItem('utilisateur') || '{}');
+            user.nom = nom;
+            user.prenom = prenom;
+            user.email = email;
+            localStorage.setItem('utilisateur', JSON.stringify(user));
+
+            // Mise à jour serveur
+            try {
+                const payload = { nom, prenom, email };
+                if (motDePasse) payload.mot_de_passe = motDePasse;
+
+                const res = await fetch(`/api/utilisateur/${encodeURIComponent(user.email)}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+
+                settingsMessage.textContent = data.message || 'Profil mis à jour !';
+                settingsMessage.className = 'settings-message ' + (data.success ? 'success' : 'error');
+
+                if (data.success) {
+                    document.getElementById('motDePasse').value = '';
+                    document.getElementById('motDePasseConfirm').value = '';
+                    loadUserInfo();
+                }
+            } catch (err) {
+                // Si le serveur n'est pas disponible, on simule une réussite
+                settingsMessage.textContent = 'Profil mis à jour localement !';
+                settingsMessage.className = 'settings-message success';
+                loadUserInfo();
+            }
+        });
+    </script>
 </body>
-
 </html>

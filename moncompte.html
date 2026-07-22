@@ -1,239 +1,211 @@
+<!-- moncompte.html -->
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Mon Compte | Espace Créatif</title>
-
     <link rel="stylesheet" href="moncompte.css">
-
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .profile-avatar-upload {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .profile-avatar-upload img {
+            width: 95px;
+            height: 95px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-gold);
+            padding: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: opacity 0.3s;
+        }
+        .profile-avatar-upload:hover img {
+            opacity: 0.7;
+        }
+        .profile-avatar-upload .upload-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 20px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+        .profile-avatar-upload:hover .upload-overlay {
+            opacity: 1;
+        }
+        .profile-avatar-upload input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+        .sidebar nav a:not(.hidden) {
+            display: flex;
+        }
+        .sidebar nav a.hidden {
+            display: none !important;
+        }
+    </style>
 </head>
-
 <body>
 
     <div class="background"></div>
 
     <header>
-
         <div class="logo">
             <i class="fa-solid fa-palette"></i>
             <span>Espace Créatif</span>
         </div>
-
         <div class="header-right">
-
             <button class="notification">
                 <i class="fa-solid fa-bell"></i>
             </button>
-
-            <div class="user">
-
-                <img src="images/avatar.png" alt="profil">
-
+            <div class="user" id="headerUser">
+                <img src="images/avatar.png" alt="profil" id="headerAvatar">
                 <div>
-
-                    <h3>Mano</h3>
-
+                    <h3 id="headerNom">Mano</h3>
                     <p>Membre Premium</p>
-
                 </div>
-
             </div>
-
         </div>
-
     </header>
 
     <div class="container">
-
         <aside class="sidebar">
-
             <div class="profile-card">
-
-                <img src="images/avatar.png" alt="Profil">
-
-                <h2>Mano</h2>
-
-                <span>mano@email.com</span>
-
-                <div class="stats">
-
-                    <div>
-
-                        <h3>12</h3>
-
-                        <p>Dessins</p>
-
-                    </div>
-
-                    <div>
-
-                        <h3>4</h3>
-
-                        <p>Favoris</p>
-
-                    </div>
-
+                <div class="profile-avatar-upload" id="avatarUpload">
+                    <img src="images/avatar.png" alt="Profil" id="profileAvatar">
+                    <div class="upload-overlay"><i class="fa-solid fa-camera"></i></div>
+                    <input type="file" accept="image/*" id="avatarInput">
                 </div>
-
+                <h2 id="profileNom">Mano</h2>
+                <span id="profileEmail">mano@email.com</span>
+                <div class="stats">
+                    <div>
+                        <h3 id="statsDessins">0</h3>
+                        <p>Dessins</p>
+                    </div>
+                    <div>
+                        <h3 id="statsFavoris">0</h3>
+                        <p>Favoris</p>
+                    </div>
+                </div>
             </div>
 
             <nav>
-
                 <a href="index.html">
                     <i class="fa-solid fa-house"></i>
                     Accueil
                 </a>
-
-                <a href="#" id="sidebarNewCanvas">
+                <a href="moncompte.html" class="active">
                     <i class="fa-solid fa-palette"></i>
-                    Nouveau dessin
+                    Mon espace
                 </a>
-
-                <a href="#">
+                <a href="dessins.html">
                     <i class="fa-solid fa-folder-open"></i>
                     Mes dessins
                 </a>
-
-                <a href="#">
-                    <i class="fa-solid fa-heart"></i>
-                    Favoris
-                </a>
-
                 <a href="parametres.html">
                     <i class="fa-solid fa-gear"></i>
                     Paramètres
                 </a>
-
             </nav>
-
         </aside>
 
         <main>
-
             <section class="top">
-
                 <div>
-
                     <h1>Mon espace créatif</h1>
-
-                    <p>
-                        Laissez parler votre imagination.
-                    </p>
-
+                    <p>Laissez parler votre imagination.</p>
                 </div>
-
                 <button class="save" id="saveBtn">
                     <i class="fa-solid fa-cloud-arrow-up"></i>
                     Sauvegarder
                 </button>
-
             </section>
 
             <section class="toolbar">
-
                 <div>
-
                     <label>Couleur</label>
-
                     <input type="color" id="colorPicker" value="#1a1412">
-
                 </div>
-
                 <div>
-
                     <label>Taille</label>
-
-                    <input type="range"
-                        id="brushSize"
-                        min="1"
-                        max="50"
-                        value="5">
-
+                    <input type="range" id="brushSize" min="1" max="50" value="5">
                 </div>
-
-                <button id="pencil" class="active">
-                    ✏️ Crayon
-                </button>
-
-                <button id="eraser">
-                    🩹 Gomme
-                </button>
-
-                <button id="newCanvasBtn">
-                    📄 Nouvelle toile
-                </button>
-
-                <button id="undo">
-                    ↩ Annuler
-                </button>
-
-                <button id="redo">
-                    ↪ Refaire
-                </button>
-
-                <button id="clear">
-                    🗑 Effacer
-                </button>
-
-                <button id="download" class="download">
-                    📥 Télécharger
-                </button>
-
+                <button id="pencil" class="active">✏️ Crayon</button>
+                <button id="eraser">🩹 Gomme</button>
+                <button id="newCanvasBtn">📄 Nouvelle toile</button>
+                <button id="undo">↩ Annuler</button>
+                <button id="redo">↪ Refaire</button>
+                <button id="clear">🗑 Effacer</button>
+                <button id="download" class="download">📥 Télécharger</button>
             </section>
 
             <section class="canvas-card">
-
-                <canvas
-                    id="canvas"
-                    width="1200"
-                    height="700">
-                </canvas>
-
+                <canvas id="canvas" width="1200" height="700"></canvas>
             </section>
 
             <section class="gallery">
-
                 <h2>Mes créations</h2>
-
-                <div class="gallery-grid" id="galleryGrid">
-
-                    <div class="drawing">
-                        <img src="images/demo1.jpg">
-                    </div>
-
-                    <div class="drawing">
-                        <img src="images/demo2.jpg">
-                    </div>
-
-                    <div class="drawing">
-                        <img src="images/demo3.jpg">
-                    </div>
-
-                    <div class="drawing add" id="addDrawingBtn">
-
-                        <i class="fa-solid fa-plus"></i>
-
-                    </div>
-
-                </div>
-
+                <div class="gallery-grid" id="galleryGrid"></div>
             </section>
-
         </main>
-
     </div>
 
+    <script>
+        // Chargement des informations utilisateur
+        function loadUserInfo() {
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            if (user) {
+                document.getElementById('profileNom').textContent = user.prenom || 'Mon compte';
+                document.getElementById('profileEmail').textContent = user.email || '';
+                document.getElementById('headerNom').textContent = user.prenom || 'Mon compte';
+                
+                const avatar = localStorage.getItem('userAvatar') || 'images/avatar.png';
+                document.getElementById('profileAvatar').src = avatar;
+                document.getElementById('headerAvatar').src = avatar;
+            }
+        }
+
+        // Upload avatar
+        document.getElementById('avatarInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const dataUrl = event.target.result;
+                    localStorage.setItem('userAvatar', dataUrl);
+                    document.getElementById('profileAvatar').src = dataUrl;
+                    document.getElementById('headerAvatar').src = dataUrl;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        loadUserInfo();
+
+        // Comptage des dessins et favoris
+        function updateStats() {
+            const dessins = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
+            document.getElementById('statsDessins').textContent = dessins.length;
+            document.getElementById('statsFavoris').textContent = dessins.filter(d => d.favori).length;
+        }
+        updateStats();
+
+        // Écouter les changements de localStorage pour les stats
+        window.addEventListener('storage', updateStats);
+    </script>
+
     <script src="moncompte.js"></script>
-
 </body>
-
 </html>

@@ -1,3 +1,4 @@
+// moncompte.js
 document.addEventListener("DOMContentLoaded", () => {
     // ===============================
     // 1. RÉCUPÉRATION DES ÉLÉMENTS
@@ -12,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const pencilBtn = document.getElementById("pencil");
     const eraserBtn = document.getElementById("eraser");
     const newCanvasBtn = document.getElementById("newCanvasBtn");
-    const sidebarNewCanvas = document.getElementById("sidebarNewCanvas");
     const saveBtn = document.getElementById("saveBtn");
     const clearBtn = document.getElementById("clear");
     const undoBtn = document.getElementById("undo");
@@ -145,20 +145,11 @@ document.addEventListener("DOMContentLoaded", () => {
             history = [];
             historyStep = -1;
             saveState();
-            // Remonte doucement la page vers la zone de dessin
             canvas.scrollIntoView({ behavior: 'smooth' });
         }
     }
 
-    // Attachement de la fonction aux boutons
     if (newCanvasBtn) newCanvasBtn.addEventListener("click", createNewCanvas);
-    
-    if (sidebarNewCanvas) {
-        sidebarNewCanvas.addEventListener("click", (e) => {
-            e.preventDefault();
-            createNewCanvas();
-        });
-    }
 
     if (clearBtn) {
         clearBtn.addEventListener("click", () => {
@@ -219,7 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const savedImages = JSON.parse(localStorage.getItem("mes_creations") || "[]");
         galleryGrid.innerHTML = "";
 
-        // Affirmation des créations existantes
         savedImages.forEach((dataUrl, index) => {
             const div = document.createElement("div");
             div.className = "drawing";
@@ -229,7 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 <button class="delete-btn" data-index="${index}" style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.6); color:white; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer;">✕</button>
             `;
             
-            // Recharger le dessin au clic sur la vignette
             div.querySelector("img").addEventListener("click", () => {
                 const img = new Image();
                 img.src = dataUrl;
@@ -244,18 +233,13 @@ document.addEventListener("DOMContentLoaded", () => {
             galleryGrid.appendChild(div);
         });
 
-        // Génération du bouton "PLUS (+)" pour créer une nouvelle toile
         const addDiv = document.createElement("div");
         addDiv.className = "drawing add";
         addDiv.id = "addDrawingBtn";
         addDiv.innerHTML = `<i class="fa-solid fa-plus"></i>`;
-        
-        // 🎯 ACTION SUR LE BOUTON PLUS (+)
         addDiv.addEventListener("click", createNewCanvas);
-        
         galleryGrid.appendChild(addDiv);
 
-        // Bouton de suppression
         document.querySelectorAll(".delete-btn").forEach(btn => {
             btn.addEventListener("click", (e) => {
                 e.stopPropagation();
@@ -298,7 +282,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Charger la galerie et enregistrer la toile initiale
     loadSavedDrawings();
     saveState();
 });

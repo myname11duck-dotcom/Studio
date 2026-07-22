@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -5,6 +6,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil | Studio Créatif</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .user-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px 12px 6px 6px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .user-profile-header:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .user-profile-header img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+        .user-profile-header span {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .user-profile-header .fa-chevron-down {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+        }
+        .nav-cta {
+            background: var(--ink);
+            color: #fff !important;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 12px 22px;
+            border-radius: 30px;
+            transition: transform 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+        }
+        .nav-cta:hover { transform: translateY(-2px); }
+    </style>
 </head>
 <body>
 
@@ -21,7 +71,9 @@
                 <li><a href="contact.html">Contact</a></li>
                 <li><a href="dessins.html">Mes Dessins</a></li>
             </ul>
-            <a href="contact.html" class="nav-cta">Prendre RDV</a>
+            <div id="headerRight">
+                <!-- Remplacé par JS -->
+            </div>
         </nav>
     </header>
 
@@ -32,7 +84,7 @@
                 <h1>Design &amp; Inspiration <em>pour vos idées</em></h1>
                 <p>Un studio pensé comme un havre minimaliste, où chaque projet mêle fraîcheur florale, rituels créatifs et outils interactifs sur-mesure.</p>
                 <div class="hero-actions">
-                    <button class="btn-primary" id="trigger-discovery">Découvrir l'univers →</button>
+                    <button class="btn-primary" id="triggerDiscovery">Découvrir l'univers →</button>
                     <a href="services.html" class="btn-outline">Voir nos services</a>
                 </div>
             </div>
@@ -76,7 +128,7 @@
             <span class="eyebrow">Studio de Dessin Interactif</span>
             <h3>Esquissez votre propre motif</h3>
             <p>Ouvrez notre canvas interactif et concevez un logo ou un motif personnalisé directement sur l'écran.</p>
-            <a href="services.html" class="btn-primary" style="background:#fff;color:var(--pink-deep);">Essayer le Studio →</a>
+            <a href="#" class="btn-primary" style="background:#fff;color:var(--pink-deep);" id="openStudioBtn">Essayer le Studio →</a>
         </div>
         <div class="promo-visual" style="background-image:url('services.jpg')"></div>
     </div>
@@ -125,12 +177,68 @@
     </div>
 
     <script>
-        const triggerBtn = document.getElementById('trigger-discovery');
+        // Header management
+        function updateHeader() {
+            const headerRight = document.getElementById('headerRight');
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            
+            if (user && user.prenom) {
+                const avatar = localStorage.getItem('userAvatar') || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.prenom) + '&background=e5a968&color=fff&size=128';
+                headerRight.innerHTML = `
+                    <a href="moncompte.html" class="user-profile-header">
+                        <img src="${avatar}" alt="${user.prenom}">
+                        <span>${user.prenom}</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+                `;
+            } else {
+                headerRight.innerHTML = `<a href="login.html" class="nav-cta">Connexion</a>`;
+            }
+        }
+
+        // Redirection "Découvrir le studio"
+        document.getElementById('triggerDiscovery').addEventListener('click', function() {
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            if (user && user.prenom) {
+                window.location.href = 'moncompte.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Redirection "Essayer le Studio"
+        document.getElementById('openStudioBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            if (user && user.prenom) {
+                window.location.href = 'moncompte.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Modal
+        const triggerBtn = document.getElementById('triggerDiscovery');
         const closeBtn = document.getElementById('close-discovery');
         const modal = document.getElementById('discovery-modal');
-        triggerBtn.addEventListener('click', () => modal.classList.add('active'));
-        closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+        if (triggerBtn) {
+            triggerBtn.addEventListener('click', function(e) {
+                if (!e.target.closest('.btn-primary')) {
+                    modal.classList.add('active');
+                }
+            });
+        }
+        if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
+        if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
+        updateHeader();
+
+        // Écouter les changements de localStorage pour mettre à jour le header
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'utilisateur' || e.key === 'userAvatar') {
+                updateHeader();
+            }
+        });
     </script>
 </body>
 </html>
