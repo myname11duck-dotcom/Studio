@@ -1,4 +1,4 @@
-// moncompte.js
+// moncompte.js - Version avec nom des créations
 document.addEventListener("DOMContentLoaded", () => {
     // ===============================
     // 1. RÉCUPÉRATION DES ÉLÉMENTS
@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.classList.add('active');
             currentBrush = btn.dataset.type;
             
-            // Désactiver la gomme si active
             if (isEraser) {
                 isEraser = false;
                 if (pencilBtn) pencilBtn.classList.add('active');
@@ -95,51 +94,17 @@ document.addEventListener("DOMContentLoaded", () => {
         
         switch(currentBrush) {
             case 'marker':
-                return {
-                    color: color,
-                    size: size * 1.2,
-                    opacity: 0.8,
-                    lineCap: 'square'
-                };
+                return { color, size: size * 1.2, opacity: 0.8, lineCap: 'square' };
             case 'spray':
-                return {
-                    color: color,
-                    size: size * 2,
-                    opacity: 0.3,
-                    lineCap: 'round',
-                    spray: true
-                };
+                return { color, size: size * 2, opacity: 0.3, lineCap: 'round', spray: true };
             case 'watercolor':
-                return {
-                    color: color,
-                    size: size * 1.5,
-                    opacity: 0.5,
-                    lineCap: 'round',
-                    watercolor: true
-                };
+                return { color, size: size * 1.5, opacity: 0.5, lineCap: 'round', watercolor: true };
             case 'calligraphy':
-                return {
-                    color: color,
-                    size: size * 1.8,
-                    opacity: 0.9,
-                    lineCap: 'butt',
-                    calligraphy: true
-                };
+                return { color, size: size * 1.8, opacity: 0.9, lineCap: 'butt', calligraphy: true };
             case 'pencil':
-                return {
-                    color: color,
-                    size: size * 0.8,
-                    opacity: 0.7,
-                    lineCap: 'round',
-                    pencil: true
-                };
-            default: // classic
-                return {
-                    color: color,
-                    size: size,
-                    opacity: 1,
-                    lineCap: 'round'
-                };
+                return { color, size: size * 0.8, opacity: 0.7, lineCap: 'round', pencil: true };
+            default:
+                return { color, size, opacity: 1, lineCap: 'round' };
         }
     }
 
@@ -153,7 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.lineWidth = style.size;
 
         if (currentBrush === 'spray') {
-            // Pour l'aérosol, on dessine plusieurs petits points
             for (let i = 0; i < 30; i++) {
                 const angle = Math.random() * Math.PI * 2;
                 const radius = Math.random() * style.size;
@@ -200,7 +164,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.lineCap = style.lineCap || 'round';
 
         if (currentBrush === 'calligraphy') {
-            // Effet calligraphie : variation de largeur selon la direction
             const angle = Math.atan2(pos.y - ctx.lastY || 1, pos.x - ctx.lastX || 1);
             ctx.save();
             ctx.translate(pos.x, pos.y);
@@ -214,7 +177,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (currentBrush === 'watercolor') {
-            // Effet aquarelle : légère fluctuation
             ctx.shadowColor = ctx.strokeStyle;
             ctx.shadowBlur = style.size * 0.3;
         } else {
@@ -222,7 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (currentBrush === 'pencil') {
-            // Effet crayon : lignes légèrement irrégulières
             ctx.setLineDash([2, 1]);
         } else {
             ctx.setLineDash([]);
@@ -248,7 +209,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Événements Souris & Tactile
     canvas.addEventListener("mousedown", startDrawing);
     canvas.addEventListener("mousemove", draw);
     canvas.addEventListener("mouseup", stopDrawing);
@@ -351,7 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ===============================
-    // 9. GALERIE & SAUVEGARDE
+    // 9. GALERIE & SAUVEGARDE AVEC NOM
     // ===============================
     function loadSavedDrawings() {
         if (!galleryGrid) return;
@@ -364,13 +324,14 @@ document.addEventListener("DOMContentLoaded", () => {
             div.className = "drawing";
             div.style.position = "relative";
             div.innerHTML = `
-                <img src="${dataUrl}" alt="Création ${index + 1}">
+                <img src="${dataUrl.image || dataUrl}" alt="${dataUrl.nom || 'Création'}">
+                <div style="position:absolute; bottom:0; left:0; right:0; background:rgba(0,0,0,0.5); color:white; padding:4px 8px; font-size:11px; text-align:center; backdrop-filter:blur(4px);">${dataUrl.nom || 'Sans nom'}</div>
                 <button class="delete-btn" data-index="${index}" style="position:absolute; top:8px; right:8px; background:rgba(0,0,0,0.6); color:white; border:none; border-radius:50%; width:28px; height:28px; cursor:pointer;">✕</button>
             `;
             
             div.querySelector("img").addEventListener("click", () => {
                 const img = new Image();
-                img.src = dataUrl;
+                img.src = dataUrl.image || dataUrl;
                 img.onload = () => {
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     ctx.drawImage(img, 0, 0);
@@ -399,14 +360,45 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function saveDrawingToSite() {
+        const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+        if (!user || !user.email) {
+            alert('Vous devez être connecté pour sauvegarder un dessin.');
+            return;
+        }
+
+        // Demander le nom du dessin
+        const drawingName = prompt('Donnez un nom à votre création :', 'Mon dessin');
+        if (drawingName === null) return; // Annulé
+
         const imageData = canvas.toDataURL("image/png");
         let savedImages = JSON.parse(localStorage.getItem("mes_creations") || "[]");
 
-        savedImages.unshift(imageData);
+        // Créer l'objet avec le nom, l'email et l'image
+        const drawingObject = {
+            image: imageData,
+            nom: drawingName || 'Sans nom',
+            email: user.email,
+            date: new Date().toLocaleDateString('fr-FR'),
+            favori: false
+        };
+
+        savedImages.unshift(drawingObject);
         localStorage.setItem("mes_creations", JSON.stringify(savedImages));
 
+        // Sauvegarder aussi dans studio_dessins pour la recherche
+        const studioDrawings = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
+        studioDrawings.unshift({
+            id: Date.now().toString(),
+            image: imageData,
+            nom: drawingName || 'Sans nom',
+            email: user.email,
+            date: new Date().toLocaleDateString('fr-FR'),
+            favori: false
+        });
+        localStorage.setItem('studio_dessins', JSON.stringify(studioDrawings));
+
         loadSavedDrawings();
-        alert("Votre création a été enregistrée dans la galerie ! 🎨");
+        alert(`Votre création "${drawingName || 'Sans nom'}" a été enregistrée ! 🎨`);
     }
 
     function deleteDrawing(index) {
@@ -414,6 +406,21 @@ document.addEventListener("DOMContentLoaded", () => {
             let savedImages = JSON.parse(localStorage.getItem("mes_creations") || "[]");
             savedImages.splice(index, 1);
             localStorage.setItem("mes_creations", JSON.stringify(savedImages));
+            
+            // Mettre à jour aussi studio_dessins
+            const studioDrawings = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
+            // On ne peut pas supprimer facilement par index, on recrée la liste
+            // Pour simplifier, on vide et on recrée à partir de mes_creations
+            const newStudioDrawings = savedImages.map((img, i) => ({
+                id: Date.now().toString() + i,
+                image: img.image || img,
+                nom: img.nom || 'Sans nom',
+                email: img.email || '',
+                date: img.date || new Date().toLocaleDateString('fr-FR'),
+                favori: img.favori || false
+            }));
+            localStorage.setItem('studio_dessins', JSON.stringify(newStudioDrawings));
+            
             loadSavedDrawings();
         }
     }

@@ -1,4 +1,4 @@
-<!-- index.html - Version avec affichage des créations d'un utilisateur -->
+<!-- index.html - Version avec noms des créations et recherche -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -176,7 +176,7 @@
             position: absolute;
             top: calc(100% + 8px);
             right: 0;
-            width: 480px;
+            width: 520px;
             max-height: 500px;
             overflow-y: auto;
             background: #fff;
@@ -294,7 +294,7 @@
         .profile-modal-box {
             background: #fff;
             width: 100%;
-            max-width: 800px;
+            max-width: 850px;
             max-height: 86vh;
             overflow-y: auto;
             border-radius: 22px;
@@ -381,12 +381,27 @@
             overflow: hidden;
             border: 1px solid rgba(74, 47, 23, 0.06);
             background: var(--pink-pale);
+            position: relative;
         }
 
         .profile-modal-box .creations-grid .creation-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+        }
+
+        .profile-modal-box .creations-grid .creation-item .creation-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.6);
+            color: #fff;
+            padding: 6px 12px;
+            font-size: 11px;
+            font-weight: 500;
+            text-align: center;
+            backdrop-filter: blur(4px);
         }
 
         .profile-modal-box .creations-grid .no-creations {
@@ -517,6 +532,37 @@
 
         .btn-outline:hover { background: #fff; color: var(--pink-deep); }
 
+        /* ===== BADGE DE RECHERCHE PAR NOM ===== */
+        .search-type-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 6px;
+            border-left: 1px solid rgba(74, 47, 23, 0.1);
+            margin-left: 4px;
+        }
+
+        .search-type-toggle button {
+            background: none;
+            border: none;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--ink-soft);
+            font-weight: 500;
+        }
+
+        .search-type-toggle button.active {
+            background: var(--pink-deep);
+            color: #fff;
+        }
+
+        .search-type-toggle button:hover:not(.active) {
+            background: var(--pink-pale);
+        }
+
         @media (max-width: 1024px) {
             .header-search {
                 width: 140px;
@@ -584,6 +630,10 @@
             .profile-modal-box .creations-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .search-type-toggle button {
+                font-size: 9px;
+                padding: 2px 6px;
+            }
         }
     </style>
 </head>
@@ -604,8 +654,12 @@
             <div class="header-right">
                 <!-- ===== RECHERCHE ===== -->
                 <div class="header-search" id="headerSearch">
-                    <input type="text" id="searchInputHeader" placeholder="Rechercher un utilisateur...">
+                    <input type="text" id="searchInputHeader" placeholder="Rechercher...">
                     <button class="clear-btn-header" id="clearSearchHeader"><i class="fas fa-times"></i></button>
+                    <div class="search-type-toggle">
+                        <button class="active" data-type="users" id="searchUsers">👤</button>
+                        <button data-type="drawings" id="searchDrawings">🎨</button>
+                    </div>
                     <button class="search-icon-btn" id="searchBtnHeader"><i class="fas fa-search"></i></button>
                     <!-- Dropdown résultats -->
                     <div class="search-dropdown" id="searchDropdown">
@@ -754,9 +808,7 @@
 
         // ===== RÉCUPÉRER LES DESSINS D'UN UTILISATEUR =====
         function getUserDrawings(email) {
-            // Récupérer tous les dessins stockés
             const allDrawings = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
-            // Filtrer par email
             return allDrawings.filter(d => d.email === email);
         }
 
@@ -823,20 +875,27 @@
                 },
             ];
 
-            // Ajouter des dessins simulés pour les utilisateurs fictifs
-            mockUsers.forEach(user => {
+            // Ajouter des dessins simulés avec noms
+            const drawingNames = [
+                'Crépuscule doré', 'Jardin secret', 'Onde marine', 'Forêt enchantée',
+                'Lumière du matin', 'Rêve d\'été', 'Horizon lointain', 'Mélodie silencieuse',
+                'Danse des feuilles', 'Reflet d\'automne', 'Brume matinale', 'Étoile filante'
+            ];
+
+            mockUsers.forEach((user, index) => {
                 const userDrawings = getUserDrawings(user.email);
                 if (userDrawings.length > 0) {
                     user.drawings = userDrawings;
                 } else {
-                    // Créer des dessins simulés pour la démonstration
-                    const numDrawings = Math.floor(Math.random() * 5) + 1;
+                    const numDrawings = Math.floor(Math.random() * 4) + 2;
                     user.drawings = [];
                     for (let i = 0; i < numDrawings; i++) {
+                        const nameIndex = (index + i) % drawingNames.length;
                         user.drawings.push({
                             image: `https://picsum.photos/seed/${user.email}${i}/200/200`,
                             date: new Date(Date.now() - i * 86400000).toLocaleDateString('fr-FR'),
-                            favori: Math.random() > 0.7
+                            favori: Math.random() > 0.7,
+                            nom: drawingNames[(nameIndex + i * 2) % drawingNames.length]
                         });
                     }
                 }
@@ -855,7 +914,6 @@
                         drawings: userDrawings
                     });
                 } else {
-                    // Mettre à jour les dessins de l'utilisateur existant
                     const existingUser = users.find(u => u.email === currentUser.email);
                     if (existingUser) {
                         const userDrawings = getUserDrawings(currentUser.email);
@@ -866,8 +924,30 @@
             return users;
         }
 
+        // ===== RECHERCHE DE DESSINS PAR NOM =====
+        function searchDrawingsByName(query) {
+            const allUsers = getAllUsers();
+            const searchTerm = query.toLowerCase().trim();
+            const results = [];
+
+            allUsers.forEach(user => {
+                if (user.drawings && user.drawings.length > 0) {
+                    user.drawings.forEach(drawing => {
+                        if (drawing.nom && drawing.nom.toLowerCase().includes(searchTerm)) {
+                            results.push({
+                                drawing: drawing,
+                                user: user
+                            });
+                        }
+                    });
+                }
+            });
+
+            return results;
+        }
+
         // ===== AFFICHER LE PROFIL UTILISATEUR =====
-        function showUserProfile(user) {
+        function showUserProfile(user, highlightDrawing = null) {
             const modal = document.getElementById('profileModal');
             const header = document.getElementById('profileHeader');
             const creations = document.getElementById('profileCreations');
@@ -888,11 +968,13 @@
             `;
 
             if (user.drawings && user.drawings.length > 0) {
-                creations.innerHTML = user.drawings.map(d => `
-                    <div class="creation-item">
-                        <img src="${d.image}" alt="Création">
+                let drawingsHtml = user.drawings.map(d => `
+                    <div class="creation-item" style="${highlightDrawing && d.nom === highlightDrawing ? 'border: 3px solid var(--pink-deep);' : ''}">
+                        <img src="${d.image}" alt="${d.nom || 'Création'}">
+                        <div class="creation-name">${d.nom || 'Sans nom'}</div>
                     </div>
                 `).join('');
+                creations.innerHTML = drawingsHtml;
             } else {
                 creations.innerHTML = `
                     <div class="no-creations">
@@ -906,7 +988,31 @@
             modal.classList.add('active');
         }
 
-        // ===== RECHERCHE =====
+        // ===== RECHERCHE PRINCIPALE =====
+        let searchMode = 'users'; // 'users' ou 'drawings'
+
+        // Toggle de recherche
+        document.getElementById('searchUsers').addEventListener('click', function() {
+            document.getElementById('searchUsers').classList.add('active');
+            document.getElementById('searchDrawings').classList.remove('active');
+            searchMode = 'users';
+            document.getElementById('searchInputHeader').placeholder = 'Rechercher un utilisateur...';
+            // Si un texte est déjà présent, relancer la recherche
+            if (document.getElementById('searchInputHeader').value.trim()) {
+                performSearch(document.getElementById('searchInputHeader').value);
+            }
+        });
+
+        document.getElementById('searchDrawings').addEventListener('click', function() {
+            document.getElementById('searchDrawings').classList.add('active');
+            document.getElementById('searchUsers').classList.remove('active');
+            searchMode = 'drawings';
+            document.getElementById('searchInputHeader').placeholder = 'Rechercher une création...';
+            if (document.getElementById('searchInputHeader').value.trim()) {
+                performSearch(document.getElementById('searchInputHeader').value);
+            }
+        });
+
         function performSearch(query) {
             const dropdown = document.getElementById('searchDropdown');
             const dropdownResults = document.getElementById('dropdownResults');
@@ -917,53 +1023,93 @@
                 return;
             }
 
-            const users = getAllUsers();
             const searchTerm = query.toLowerCase().trim();
 
-            const results = users.filter(user => {
-                const fullName = (user.prenom + ' ' + user.nom).toLowerCase();
-                const fullNameReverse = (user.nom + ' ' + user.prenom).toLowerCase();
-                return fullName.includes(searchTerm) || 
-                       fullNameReverse.includes(searchTerm) ||
-                       user.email.toLowerCase().includes(searchTerm) ||
-                       user.prenom.toLowerCase().includes(searchTerm) ||
-                       user.nom.toLowerCase().includes(searchTerm);
-            });
+            if (searchMode === 'users') {
+                // Recherche d'utilisateurs
+                const users = getAllUsers();
+                const results = users.filter(user => {
+                    const fullName = (user.prenom + ' ' + user.nom).toLowerCase();
+                    const fullNameReverse = (user.nom + ' ' + user.prenom).toLowerCase();
+                    return fullName.includes(searchTerm) || 
+                           fullNameReverse.includes(searchTerm) ||
+                           user.email.toLowerCase().includes(searchTerm) ||
+                           user.prenom.toLowerCase().includes(searchTerm) ||
+                           user.nom.toLowerCase().includes(searchTerm);
+                });
 
-            dropdown.classList.add('active');
-            dropdownHeader.textContent = `${results.length} résultat${results.length > 1 ? 's' : ''}`;
+                dropdown.classList.add('active');
+                dropdownHeader.textContent = `👤 ${results.length} utilisateur${results.length > 1 ? 's' : ''}`;
 
-            if (results.length === 0) {
-                dropdownResults.innerHTML = `
-                    <div class="no-results-dropdown">
-                        <i class="fas fa-user-slash"></i>
-                        <p>Aucun utilisateur trouvé pour "<strong>${query}</strong>"</p>
+                if (results.length === 0) {
+                    dropdownResults.innerHTML = `
+                        <div class="no-results-dropdown">
+                            <i class="fas fa-user-slash"></i>
+                            <p>Aucun utilisateur trouvé pour "<strong>${query}</strong>"</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                dropdownResults.innerHTML = results.map(user => {
+                    const numDrawings = user.drawings ? user.drawings.length : 0;
+                    return `
+                        <div class="result-item" data-email="${user.email}" data-type="user">
+                            <img src="${user.avatar}" alt="${user.prenom} ${user.nom}">
+                            <div class="info">
+                                <h4>${user.prenom} ${user.nom}</h4>
+                                <p>${user.email}</p>
+                            </div>
+                            <span class="badge">📸 ${numDrawings}</span>
+                        </div>
+                    `;
+                }).join('');
+
+            } else {
+                // Recherche de dessins par nom
+                const drawingResults = searchDrawingsByName(query);
+                
+                dropdown.classList.add('active');
+                dropdownHeader.textContent = `🎨 ${drawingResults.length} création${drawingResults.length > 1 ? 's' : ''}`;
+
+                if (drawingResults.length === 0) {
+                    dropdownResults.innerHTML = `
+                        <div class="no-results-dropdown">
+                            <i class="fas fa-paint-brush"></i>
+                            <p>Aucune création trouvée pour "<strong>${query}</strong>"</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                dropdownResults.innerHTML = drawingResults.map(({drawing, user}) => `
+                    <div class="result-item" data-email="${user.email}" data-drawingname="${drawing.nom}" data-type="drawing">
+                        <img src="${drawing.image}" alt="${drawing.nom}" style="border-color:var(--pink-soft);">
+                        <div class="info">
+                            <h4>${drawing.nom}</h4>
+                            <p>par ${user.prenom} ${user.nom}</p>
+                        </div>
+                        <span class="badge">${drawing.favori ? '⭐' : '📸'}</span>
                     </div>
-                `;
-                return;
+                `).join('');
             }
 
-            dropdownResults.innerHTML = results.map(user => {
-                const numDrawings = user.drawings ? user.drawings.length : 0;
-                return `
-                    <div class="result-item" data-email="${user.email}">
-                        <img src="${user.avatar}" alt="${user.prenom} ${user.nom}">
-                        <div class="info">
-                            <h4>${user.prenom} ${user.nom}</h4>
-                            <p>${user.email}</p>
-                        </div>
-                        <span class="badge">📸 ${numDrawings}</span>
-                    </div>
-                `;
-            }).join('');
-
+            // Gestion des clics sur les résultats
             document.querySelectorAll('.result-item').forEach(item => {
                 item.addEventListener('click', function() {
                     const email = this.dataset.email;
+                    const type = this.dataset.type;
                     const user = getAllUsers().find(u => u.email === email);
+                    
                     if (user) {
-                        showUserProfile(user);
+                        if (type === 'drawing') {
+                            const drawingName = this.dataset.drawingname;
+                            showUserProfile(user, drawingName);
+                        } else {
+                            showUserProfile(user);
+                        }
                     }
+                    
                     document.getElementById('searchDropdown').classList.remove('active');
                     document.getElementById('searchInputHeader').value = '';
                     document.getElementById('clearSearchHeader').classList.remove('visible');
@@ -1012,7 +1158,6 @@
             searchInput.focus();
         });
 
-        // Fermer le dropdown en cliquant ailleurs
         document.addEventListener('click', function(e) {
             const searchContainer = document.getElementById('headerSearch');
             if (!searchContainer.contains(e.target)) {
@@ -1051,20 +1196,6 @@
                 window.location.href = 'login.html';
             }
         });
-
-        // ===== MODAL =====
-        const triggerBtn = document.getElementById('trigger-discovery');
-        const closeBtn = document.getElementById('close-discovery');
-        const modal = document.getElementById('discovery-modal');
-        if (triggerBtn) {
-            triggerBtn.addEventListener('click', function(e) {
-                if (!e.target.closest('.btn-primary')) {
-                    modal.classList.add('active');
-                }
-            });
-        }
-        if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-        if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 
         updateHeader();
         window.addEventListener('storage', updateHeader);
