@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Paramètres | Espace Créatif</title>
+
+    <link rel="stylesheet" href="moncompte.css">
+    <link rel="stylesheet" href="parametres.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="background"></div>
+
+    <header>
+
+        <div class="logo">
+            <i class="fa-solid fa-palette"></i>
+            <span>Espace Créatif</span>
+        </div>
+
+        <div class="header-right">
+
+            <button class="notification">
+                <i class="fa-solid fa-bell"></i>
+            </button>
+
+            <div class="user">
+
+                <img src="images/avatar.png" alt="profil">
+
+                <div>
+
+                    <h3 id="headerNom">Mano</h3>
+
+                    <p>Membre Premium</p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <div class="container">
+
+        <aside class="sidebar">
+
+            <div class="profile-card">
+
+                <img src="images/avatar.png" alt="Profil">
+
+                <h2 id="profileNom">Mano</h2>
+
+                <span id="profileEmail">mano@email.com</span>
+
+            </div>
+
+            <nav>
+
+                <a href="index.html">
+                    <i class="fa-solid fa-house"></i>
+                    Accueil
+                </a>
+
+                <a href="moncompte.html">
+                    <i class="fa-solid fa-palette"></i>
+                    Mon espace
+                </a>
+
+                <a href="moncompte.html">
+                    <i class="fa-solid fa-folder-open"></i>
+                    Mes dessins
+                </a>
+
+                <a href="parametres.html" class="active">
+                    <i class="fa-solid fa-gear"></i>
+                    Paramètres
+                </a>
+
+            </nav>
+
+        </aside>
+
+        <main>
+
+            <section class="top">
+
+                <div>
+
+                    <h1>Paramètres du compte</h1>
+
+                    <p>
+                        Gérez vos informations personnelles et votre mot de passe.
+                    </p>
+
+                </div>
+
+            </section>
+
+            <section class="settings-card">
+
+                <form id="settingsForm">
+
+                    <div class="settings-row">
+                        <div class="form-group">
+                            <label for="nom">Nom</label>
+                            <input type="text" id="nom" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prenom">Prénom</label>
+                            <input type="text" id="prenom" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+
+                    <div class="settings-divider"></div>
+
+                    <div class="form-group">
+                        <label for="motDePasse">Nouveau mot de passe</label>
+                        <input type="password" id="motDePasse" placeholder="Laisser vide pour ne pas changer">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="motDePasseConfirm">Confirmer le mot de passe</label>
+                        <input type="password" id="motDePasseConfirm" placeholder="Laisser vide pour ne pas changer">
+                    </div>
+
+                    <button type="submit" class="save" id="settingsSaveBtn">
+                        <i class="fa-solid fa-check"></i>
+                        Enregistrer les modifications
+                    </button>
+
+                    <p class="settings-message" id="settingsMessage"></p>
+
+                </form>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="parametres.js"></script>
+
+</body>
+
+</html>

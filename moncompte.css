@@ -474,7 +474,7 @@ canvas {
 
 .add:hover {
     border-color: var(--accent-gold);
-    background: rgba(229, 169, 104, 0.08);
+    background: rgba(229, 169, 104, 0.997);
 }
 
 /* ===========================

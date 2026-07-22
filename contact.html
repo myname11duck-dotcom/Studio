@@ -19,11 +19,9 @@
                 <li><a href="apropos.html">À propos</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="contact.html" class="active">Contact</a></li>
+                <li><a href="dessins.html">Mes Dessins</a></li>
             </ul>
-            <a href="login.html" class="nav-cta" id="navConnexion" style="margin-right:10px;">Connexion</a>
-<a href="contact.html" class="nav-cta" id="navRdv" style="display:none;">Prendre RDV</a>
-<a href="moncompte.html" class="nav-cta" id="navProfil" style="display:none; margin-right:10px;">👤 Profil</a>
-<button id="navDeconnexion" style="display:none; margin-right:10px; padding:10px 18px; background:transparent; border:1px solid var(--ink); color:var(--ink); cursor:pointer; border-radius:var(--radius);">Se déconnecter</button>
+            <a href="contact.html" class="nav-cta">Prendre RDV</a>
         </nav>
     </header>
 
@@ -57,10 +55,10 @@
             <h2>Commençons une Histoire</h2>
         </div>
         <div class="contact-layout">
-            <form class="contact-form" id="contactForm">
-                <div class="form-row"><label>Nom complet</label><input type="text" id="nomContact" placeholder="Votre nom"></div>
-                <div class="form-row"><label>Email</label><input type="email" id="emailContact" placeholder="vous@exemple.com"></div>
-                <div class="form-row"><label>Votre message</label><textarea id="messageContact" placeholder="Parlez-nous de votre projet..."></textarea></div>
+            <form class="contact-form" onsubmit="return false;">
+                <div class="form-row"><label>Nom complet</label><input type="text" placeholder="Votre nom"></div>
+                <div class="form-row"><label>Email</label><input type="email" placeholder="vous@exemple.com"></div>
+                <div class="form-row"><label>Votre message</label><textarea placeholder="Parlez-nous de votre projet..."></textarea></div>
                 <button class="btn-primary" type="submit">Envoyer le message →</button>
             </form>
             <div class="card-grid" style="grid-template-columns:1fr; gap:20px;">
@@ -104,52 +102,5 @@
         closeBtn.addEventListener('click', () => modal.classList.remove('active'));
         modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
     </script>
-    <script>
-    document.getElementById('contactForm').addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        const nom = document.getElementById('nomContact').value;
-        const email = document.getElementById('emailContact').value;
-        const message = document.getElementById('messageContact').value;
-
-        try {
-            const response = await fetch('http://localhost:3001/api/contact', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nom, email, message })
-            });
-
-            if (response.ok) {
-                alert('Merci ! Votre message a bien été envoyé.');
-                document.getElementById('contactForm').reset();
-            } else {
-                alert('Une erreur est survenue, veuillez réessayer.');
-            }
-        } catch (error) {
-            alert('Impossible de contacter le serveur. Vérifiez qu\'il est bien démarré.');
-        }
-    });
-</script>
-<script>
-    const utilisateurJSON = localStorage.getItem('utilisateur');
-    const navConnexion = document.getElementById('navConnexion');
-    const navRdv = document.getElementById('navRdv');
-    const navProfil = document.getElementById('navProfil');
-    const navDeconnexion = document.getElementById('navDeconnexion');
-
-    if (utilisateurJSON) {
-        const utilisateur = JSON.parse(utilisateurJSON);
-        navConnexion.style.display = 'none';
-        navRdv.style.display = 'inline-block';
-        navProfil.style.display = 'inline-block';
-        navProfil.textContent = '👤 ' + utilisateur.prenom;
-        navDeconnexion.style.display = 'inline-block';
-
-        navDeconnexion.addEventListener('click', () => {
-            localStorage.removeItem('utilisateur');
-            window.location.href = 'index.html';
-        });
-    }
-</script>
 </body>
 </html>

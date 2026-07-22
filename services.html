@@ -19,11 +19,9 @@
                 <li><a href="apropos.html">À propos</a></li>
                 <li><a href="services.html" class="active">Services</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li><a href="dessins.html">Mes Dessins</a></li>
             </ul>
-            <a href="login.html" class="nav-cta" id="navConnexion" style="margin-right:10px;">Connexion</a>
-<a href="contact.html" class="nav-cta" id="navRdv" style="display:none;">Prendre RDV</a>
-<a href="moncompte.html" class="nav-cta" id="navProfil" style="display:none; margin-right:10px;">👤 Profil</a>
-<button id="navDeconnexion" style="display:none; margin-right:10px; padding:10px 18px; background:transparent; border:1px solid var(--ink); color:var(--ink); cursor:pointer; border-radius:var(--radius);">Se déconnecter</button>
+            <a href="contact.html" class="nav-cta">Prendre RDV</a>
         </nav>
     </header>
 
@@ -101,8 +99,10 @@
                 <label>Couleur <input type="color" id="brush-color" class="color-picker" value="#c98a3e"></label>
                 <label>Taille <input type="range" id="brush-size" class="brush-slider" min="1" max="20" value="5"></label>
                 <button id="clear-canvas" class="btn-tool">Effacer</button>
+                <button id="save-canvas" class="btn-tool btn-tool-save">Sauvegarder</button>
             </div>
             <canvas id="paint-canvas" width="760" height="420"></canvas>
+            <p class="save-confirm" id="save-confirm">Dessin enregistré ✓ — <a href="dessins.html">voir mes dessins</a></p>
         </div>
     </div>
 
@@ -148,27 +148,22 @@
         canvas.addEventListener('touchend', stopDrawing);
         canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e); });
         clearBtn.addEventListener('click', () => ctx.clearRect(0, 0, canvas.width, canvas.height));
-    </script>
-    <script>
-    const utilisateurJSON = localStorage.getItem('utilisateur');
-    const navConnexion = document.getElementById('navConnexion');
-    const navRdv = document.getElementById('navRdv');
-    const navProfil = document.getElementById('navProfil');
-    const navDeconnexion = document.getElementById('navDeconnexion');
 
-    if (utilisateurJSON) {
-        const utilisateur = JSON.parse(utilisateurJSON);
-        navConnexion.style.display = 'none';
-        navRdv.style.display = 'inline-block';
-        navProfil.style.display = 'inline-block';
-        navProfil.textContent = '👤 ' + utilisateur.prenom;
-        navDeconnexion.style.display = 'inline-block';
-
-        navDeconnexion.addEventListener('click', () => {
-            localStorage.removeItem('utilisateur');
-            window.location.href = 'index.html';
+        const saveBtn = document.getElementById('save-canvas');
+        const saveConfirm = document.getElementById('save-confirm');
+        saveBtn.addEventListener('click', () => {
+            const dataUrl = canvas.toDataURL('image/png');
+            const dessins = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
+            dessins.unshift({
+                id: Date.now().toString(),
+                image: dataUrl,
+                date: new Date().toLocaleDateString('fr-FR'),
+                favori: false
+            });
+            localStorage.setItem('studio_dessins', JSON.stringify(dessins));
+            saveConfirm.classList.add('visible');
+            setTimeout(() => saveConfirm.classList.remove('visible'), 3000);
         });
-    }
-</script>
+    </script>
 </body>
 </html>
