@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mes Dessins | Studio Créatif</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="7a6cb36c8ac94c808158e11ac34168d3.jpg" alt="Logo Studio Créatif">
+                <div class="logo-text">Studio Créatif<span>Atelier &amp; Design</span></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="apropos.html">À propos</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="dessins.html" class="active">Mes Dessins</a></li>
+            </ul>
+            <a href="contact.html" class="nav-cta">Prendre RDV</a>
+        </nav>
+    </header>
+
+    <section class="hero" style="padding-bottom:70px;">
+        <div class="hero-inner" style="grid-template-columns:1fr;">
+            <div class="hero-text" style="max-width:640px;">
+                <span class="eyebrow">✦ Votre galerie personnelle</span>
+                <h1>Mes <em>Dessins</em></h1>
+                <p>Retrouvez ici toutes vos créations réalisées dans le Studio de Dessin Interactif, et marquez vos préférées en favori.</p>
+                <div class="hero-actions">
+                    <a href="services.html" class="btn-primary">Créer un nouveau dessin →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="padding-top:50px;">
+        <div class="gallery-toolbar">
+            <button class="filter-btn active" data-filter="tous">Tous</button>
+            <button class="filter-btn" data-filter="favoris">★ Favoris</button>
+        </div>
+
+        <div class="drawing-grid" id="drawing-grid"></div>
+
+        <div class="empty-state" id="empty-state" style="display:none;">
+            <h3>Aucun dessin pour le moment</h3>
+            <p>Ouvrez le Studio de Dessin et laissez libre cours à votre imagination.</p>
+            <a href="services.html">Ouvrir le Studio →</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-strip">
+            <div><div class="ficon">🔒</div><h4>Confidentialité</h4><p>Vos projets restent privés</p></div>
+            <div><div class="ficon">✦</div><h4>Offres Exclusives</h4><p>Suivi et remises fidélité</p></div>
+            <div><div class="ficon">💬</div><h4>Support Dédié</h4><p>Une équipe à votre écoute</p></div>
+            <div><div class="ficon">🎁</div><h4>Programme Fidélité</h4><p>Des avantages sur mesure</p></div>
+        </div>
+        <div class="footer-bottom">© 2026 Studio Créatif — Tous droits réservés</div>
+    </footer>
+
+    <script>
+        const grid = document.getElementById('drawing-grid');
+        const emptyState = document.getElementById('empty-state');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        let currentFilter = 'tous';
+
+        function getDessins() {
+            return JSON.parse(localStorage.getItem('studio_dessins') || '[]');
+        }
+
+        function saveDessins(dessins) {
+            localStorage.setItem('studio_dessins', JSON.stringify(dessins));
+        }
+
+        function render() {
+            const dessins = getDessins();
+            const filtered = currentFilter === 'favoris' ? dessins.filter(d => d.favori) : dessins;
+
+            grid.innerHTML = '';
+
+            if (filtered.length === 0) {
+                emptyState.style.display = 'block';
+                emptyState.querySelector('h3').textContent = currentFilter === 'favoris'
+                    ? 'Aucun favori pour le moment'
+                    : 'Aucun dessin pour le moment';
+                grid.style.display = 'none';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            grid.style.display = 'grid';
+
+            filtered.forEach(d => {
+                const card = document.createElement('div');
+                card.className = 'drawing-card';
+                card.innerHTML = `
+                    <div class="thumb"><img src="${d.image}" alt="Dessin du ${d.date}"></div>
+                    <div class="body">
+                        <span class="date">${d.date}</span>
+                        <div class="drawing-actions">
+                            <button class="fav-btn ${d.favori ? 'active' : ''}" data-id="${d.id}" title="Ajouter aux favoris">★</button>
+                            <button class="delete-btn" data-id="${d.id}" title="Supprimer">✕</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        grid.addEventListener('click', (e) => {
+            const favBtn = e.target.closest('.fav-btn');
+            const delBtn = e.target.closest('.delete-btn');
+
+            if (favBtn) {
+                const id = favBtn.dataset.id;
+                const dessins = getDessins();
+                const d = dessins.find(x => x.id === id);
+                if (d) d.favori = !d.favori;
+                saveDessins(dessins);
+                render();
+            }
+
+            if (delBtn) {
+                const id = delBtn.dataset.id;
+                let dessins = getDessins();
+                dessins = dessins.filter(x => x.id !== id);
+                saveDessins(dessins);
+                render();
+            }
+        });
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                render();
+            });
+        });
+
+        render();
+    </script>
+</body>
+</html>
