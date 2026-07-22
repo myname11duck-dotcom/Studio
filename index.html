@@ -1,4 +1,4 @@
-<!-- index.html - Version corrigée avec profils utilisateurs -->
+<!-- index.html - Version avec affichage des comptes existants -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1180,10 +1180,11 @@
             }
         }
 
-        // ===== RÉCUPÉRER TOUS LES UTILISATEURS =====
+        // ===== RÉCUPÉRER TOUS LES UTILISATEURS (Y COMPRIS CEUX DU LOCALSTORAGE) =====
         function getAllUsers() {
             const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
             
+            // 1. Récupérer les utilisateurs simulés
             const mockUsers = [
                 { 
                     nom: 'Martin', 
@@ -1243,6 +1244,7 @@
                 },
             ];
 
+            // 2. Ajouter des dessins simulés pour les utilisateurs mock
             const drawingNames = [
                 'Crépuscule doré', 'Jardin secret', 'Onde marine', 'Forêt enchantée',
                 'Lumière du matin', 'Rêve d\'été', 'Horizon lointain', 'Mélodie silencieuse',
@@ -1263,20 +1265,79 @@
                 }
             });
 
-            let users = [...mockUsers];
-            if (currentUser && currentUser.email) {
-                const exists = users.some(u => u.email === currentUser.email);
+            // 3. Récupérer les utilisateurs du localStorage (ceux qui se sont inscrits)
+            const storedUsers = JSON.parse(localStorage.getItem('registered_users') || '[]');
+            
+            // Ajouter les utilisateurs stockés à la liste
+            storedUsers.forEach(storedUser => {
+                // Vérifier si l'utilisateur n'est pas déjà dans la liste
+                const exists = mockUsers.some(u => u.email === storedUser.email);
                 if (!exists) {
-                    users.unshift({
+                    const userDrawings = getUserDrawings(storedUser.email);
+                    mockUsers.push({
+                        nom: storedUser.nom || '',
+                        prenom: storedUser.prenom || '',
+                        email: storedUser.email,
+                        avatar: storedUser.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(storedUser.prenom || 'User') + '&background=e5a968&color=fff&size=128',
+                        drawings: userDrawings.length > 0 ? userDrawings : []
+                    });
+                } else {
+                    // Mettre à jour les dessins de l'utilisateur existant
+                    const existingUser = mockUsers.find(u => u.email === storedUser.email);
+                    if (existingUser) {
+                        const userDrawings = getUserDrawings(storedUser.email);
+                        if (userDrawings.length > 0) {
+                            existingUser.drawings = userDrawings;
+                        }
+                    }
+                }
+            });
+
+            // 4. Ajouter l'utilisateur actuellement connecté s'il n'est pas déjà dans la liste
+            if (currentUser && currentUser.email) {
+                const exists = mockUsers.some(u => u.email === currentUser.email);
+                if (!exists) {
+                    const userDrawings = getUserDrawings(currentUser.email);
+                    mockUsers.unshift({
                         nom: currentUser.nom || '',
                         prenom: currentUser.prenom || '',
                         email: currentUser.email,
                         avatar: localStorage.getItem('userAvatar') || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUser.prenom || 'User') + '&background=e5a968&color=fff&size=128',
-                        drawings: []
+                        drawings: userDrawings
                     });
+                } else {
+                    const existingUser = mockUsers.find(u => u.email === currentUser.email);
+                    if (existingUser) {
+                        const userDrawings = getUserDrawings(currentUser.email);
+                        if (userDrawings.length > 0) {
+                            existingUser.drawings = userDrawings;
+                        }
+                        // Mettre à jour l'avatar
+                        const avatar = localStorage.getItem('userAvatar');
+                        if (avatar) {
+                            existingUser.avatar = avatar;
+                        }
+                    }
                 }
             }
-            return users;
+
+            return mockUsers;
+        }
+
+        // ===== RÉCUPÉRER LES DESSINS D'UN UTILISATEUR =====
+        function getUserDrawings(email) {
+            const allDrawings = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
+            return allDrawings.filter(d => d.email === email);
+        }
+
+        // ===== ENREGISTRER UN NOUVEL UTILISATEUR DANS LE LOCALSTORAGE =====
+        function registerUser(nom, prenom, email) {
+            let users = JSON.parse(localStorage.getItem('registered_users') || '[]');
+            const exists = users.some(u => u.email === email);
+            if (!exists) {
+                users.push({ nom, prenom, email });
+                localStorage.setItem('registered_users', JSON.stringify(users));
+            }
         }
 
         // ===== AFFICHER LE PROFIL UTILISATEUR =====
@@ -1358,14 +1419,21 @@
 
             if (searchMode === 'users') {
                 const users = getAllUsers();
+                const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+                
                 const results = users.filter(user => {
                     const fullName = (user.prenom + ' ' + user.nom).toLowerCase();
                     const fullNameReverse = (user.nom + ' ' + user.prenom).toLowerCase();
-                    return fullName.includes(searchTerm) || 
+                    const match = fullName.includes(searchTerm) || 
                            fullNameReverse.includes(searchTerm) ||
                            user.email.toLowerCase().includes(searchTerm) ||
                            user.prenom.toLowerCase().includes(searchTerm) ||
                            user.nom.toLowerCase().includes(searchTerm);
+                    // Exclure l'utilisateur actuel des résultats
+                    if (match && currentUser && currentUser.email) {
+                        return user.email !== currentUser.email;
+                    }
+                    return match;
                 });
 
                 dropdown.classList.add('active');
@@ -1652,8 +1720,23 @@
         if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
         if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 
+        // ===== ENREGISTRER L'UTILISATEUR ACTUEL DANS LA LISTE =====
+        const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+        if (currentUser && currentUser.email) {
+            registerUser(currentUser.nom || '', currentUser.prenom || '', currentUser.email);
+        }
+
         updateHeader();
-        window.addEventListener('storage', updateHeader);
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'utilisateur' || e.key === 'userAvatar') {
+                updateHeader();
+                // Réenregistrer l'utilisateur si les infos changent
+                const updatedUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+                if (updatedUser && updatedUser.email) {
+                    registerUser(updatedUser.nom || '', updatedUser.prenom || '', updatedUser.email);
+                }
+            }
+        });
     </script>
 </body>
 </html>
