@@ -17,6 +17,7 @@
             background: rgba(255, 255, 255, 0.1);
             transition: background 0.3s;
             border: 1px solid rgba(255, 255, 255, 0.15);
+            text-decoration: none;
         }
         .user-profile-header:hover {
             background: rgba(255, 255, 255, 0.2);
@@ -52,8 +53,15 @@
             gap: 8px;
             border: none;
             cursor: pointer;
+            text-decoration: none;
         }
         .nav-cta:hover { transform: translateY(-2px); }
+        nav .nav-cta-btn {
+            display: none !important;
+        }
+        .nav-links li a[href="dessins.html"] {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -69,11 +77,8 @@
                 <li><a href="apropos.html">À propos</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="dessins.html">Mes Dessins</a></li>
             </ul>
-            <div id="headerRight">
-                <!-- Remplacé par JS -->
-            </div>
+            <div id="headerRight"></div>
         </nav>
     </header>
 
@@ -177,7 +182,6 @@
     </div>
 
     <script>
-        // Header management
         function updateHeader() {
             const headerRight = document.getElementById('headerRight');
             const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
@@ -196,7 +200,6 @@
             }
         }
 
-        // Redirection "Découvrir le studio"
         document.getElementById('triggerDiscovery').addEventListener('click', function() {
             const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
             if (user && user.prenom) {
@@ -206,7 +209,6 @@
             }
         });
 
-        // Redirection "Essayer le Studio"
         document.getElementById('openStudioBtn').addEventListener('click', function(e) {
             e.preventDefault();
             const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
@@ -217,28 +219,8 @@
             }
         });
 
-        // Modal
-        const triggerBtn = document.getElementById('triggerDiscovery');
-        const closeBtn = document.getElementById('close-discovery');
-        const modal = document.getElementById('discovery-modal');
-        if (triggerBtn) {
-            triggerBtn.addEventListener('click', function(e) {
-                if (!e.target.closest('.btn-primary')) {
-                    modal.classList.add('active');
-                }
-            });
-        }
-        if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-        if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
-
         updateHeader();
-
-        // Écouter les changements de localStorage pour mettre à jour le header
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'utilisateur' || e.key === 'userAvatar') {
-                updateHeader();
-            }
-        });
+        window.addEventListener('storage', updateHeader);
     </script>
 </body>
 </html>

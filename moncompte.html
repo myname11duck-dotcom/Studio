@@ -48,11 +48,54 @@
             opacity: 0;
             cursor: pointer;
         }
-        .sidebar nav a:not(.hidden) {
-            display: flex;
-        }
         .sidebar nav a.hidden {
             display: none !important;
+        }
+        .brush-tools {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+            padding: 0 8px;
+        }
+        .brush-tools button {
+            border: var(--glass-border);
+            padding: 8px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text-cream);
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .brush-tools button:hover {
+            background: rgba(229, 169, 104, 0.15);
+            color: var(--accent-gold);
+        }
+        .brush-tools button.active {
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+            border-color: transparent;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(229, 169, 104, 0.3);
+        }
+        .brush-tools .separator {
+            width: 1px;
+            height: 28px;
+            background: rgba(229, 169, 104, 0.15);
+            margin: 0 4px;
+        }
+        .brush-tools label {
+            font-size: 12px;
+            opacity: 0.7;
+        }
+        .toolbar .brush-tools {
+            border-right: 1px solid rgba(229, 169, 104, 0.2);
+            padding-right: 12px;
         }
     </style>
 </head>
@@ -110,10 +153,6 @@
                     <i class="fa-solid fa-palette"></i>
                     Mon espace
                 </a>
-                <a href="dessins.html">
-                    <i class="fa-solid fa-folder-open"></i>
-                    Mes dessins
-                </a>
                 <a href="parametres.html">
                     <i class="fa-solid fa-gear"></i>
                     Paramètres
@@ -142,6 +181,15 @@
                     <label>Taille</label>
                     <input type="range" id="brushSize" min="1" max="50" value="5">
                 </div>
+                <div class="brush-tools">
+                    <span style="font-size:12px;opacity:0.7;margin-right:4px;">Pinceau :</span>
+                    <button class="brush-type active" data-type="classic" title="Classique">✏️</button>
+                    <button class="brush-type" data-type="marker" title="Marqueur">🖊️</button>
+                    <button class="brush-type" data-type="spray" title="Aérosol">💨</button>
+                    <button class="brush-type" data-type="watercolor" title="Aquarelle">🎨</button>
+                    <button class="brush-type" data-type="calligraphy" title="Calligraphie">🖋️</button>
+                    <button class="brush-type" data-type="pencil" title="Crayon papier">✎</button>
+                </div>
                 <button id="pencil" class="active">✏️ Crayon</button>
                 <button id="eraser">🩹 Gomme</button>
                 <button id="newCanvasBtn">📄 Nouvelle toile</button>
@@ -163,7 +211,6 @@
     </div>
 
     <script>
-        // Chargement des informations utilisateur
         function loadUserInfo() {
             const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
             if (user) {
@@ -177,7 +224,6 @@
             }
         }
 
-        // Upload avatar
         document.getElementById('avatarInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -194,15 +240,12 @@
 
         loadUserInfo();
 
-        // Comptage des dessins et favoris
         function updateStats() {
             const dessins = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
             document.getElementById('statsDessins').textContent = dessins.length;
             document.getElementById('statsFavoris').textContent = dessins.filter(d => d.favori).length;
         }
         updateStats();
-
-        // Écouter les changements de localStorage pour les stats
         window.addEventListener('storage', updateStats);
     </script>
 

@@ -1,3 +1,4 @@
+<!-- apropos.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -5,6 +6,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>À Propos | Studio Créatif</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .user-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px 12px 6px 6px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-decoration: none;
+        }
+        .user-profile-header:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .user-profile-header img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+        .user-profile-header span {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .user-profile-header .fa-chevron-down {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+        }
+        .nav-cta {
+            background: var(--ink);
+            color: #fff !important;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 12px 22px;
+            border-radius: 30px;
+            transition: transform 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .nav-cta:hover { transform: translateY(-2px); }
+        nav .nav-cta-btn {
+            display: none !important;
+        }
+        .nav-links li a[href="dessins.html"] {
+            display: none !important;
+        }
+    </style>
 </head>
 <body>
 
@@ -19,9 +77,8 @@
                 <li><a href="apropos.html" class="active">À Propos</a></li>
                 <li><a href="services.html">Services</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="dessins.html">Mes Dessins</a></li>
             </ul>
-            <a href="contact.html" class="nav-cta">Prendre RDV</a>
+            <div id="headerRight"></div>
         </nav>
     </header>
 
@@ -105,6 +162,24 @@
     </div>
 
     <script>
+        function updateHeader() {
+            const headerRight = document.getElementById('headerRight');
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            
+            if (user && user.prenom) {
+                const avatar = localStorage.getItem('userAvatar') || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.prenom) + '&background=e5a968&color=fff&size=128';
+                headerRight.innerHTML = `
+                    <a href="moncompte.html" class="user-profile-header">
+                        <img src="${avatar}" alt="${user.prenom}">
+                        <span>${user.prenom}</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+                `;
+            } else {
+                headerRight.innerHTML = `<a href="login.html" class="nav-cta">Connexion</a>`;
+            }
+        }
+
         const triggerBtn = document.getElementById('trigger-discovery');
         const univLink = document.getElementById('open-univers-link');
         const closeBtn = document.getElementById('close-discovery');
@@ -113,6 +188,9 @@
         univLink.addEventListener('click', (e) => { e.preventDefault(); modal.classList.add('active'); });
         closeBtn.addEventListener('click', () => modal.classList.remove('active'));
         modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+
+        updateHeader();
+        window.addEventListener('storage', updateHeader);
     </script>
 </body>
 </html>

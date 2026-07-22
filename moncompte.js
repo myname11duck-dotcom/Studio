@@ -24,9 +24,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let isDrawing = false;
     let isEraser = false;
+    let currentBrush = 'classic';
 
     // ===============================
-    // 2. INITIALISATION ET TAILLE
+    // 2. GESTION DES PINCEAUX
+    // ===============================
+    const brushTypes = document.querySelectorAll('.brush-type');
+    
+    brushTypes.forEach(btn => {
+        btn.addEventListener('click', () => {
+            brushTypes.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentBrush = btn.dataset.type;
+            
+            // Désactiver la gomme si active
+            if (isEraser) {
+                isEraser = false;
+                if (pencilBtn) pencilBtn.classList.add('active');
+                if (eraserBtn) eraserBtn.classList.remove('active');
+            }
+        });
+    });
+
+    // ===============================
+    // 3. INITIALISATION ET TAILLE
     // ===============================
     function setupCanvas() {
         const rect = canvas.getBoundingClientRect();
@@ -47,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setupCanvas();
 
     // ===============================
-    // 3. CALCUL DES COORDONNÉES
+    // 4. CALCUL DES COORDONNÉES
     // ===============================
     function getCoordinates(e) {
         const rect = canvas.getBoundingClientRect();
@@ -66,35 +87,163 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ===============================
-    // 4. ACTION DE DESSIN
+    // 5. ACTION DE DESSIN AVEC DIFFÉRENTS PINCEAUX
     // ===============================
+    function getBrushStyle() {
+        const size = parseInt(brushSize ? brushSize.value : 5);
+        const color = isEraser ? CANVAS_BG_COLOR : (colorPicker ? colorPicker.value : "#1a1412");
+        
+        switch(currentBrush) {
+            case 'marker':
+                return {
+                    color: color,
+                    size: size * 1.2,
+                    opacity: 0.8,
+                    lineCap: 'square'
+                };
+            case 'spray':
+                return {
+                    color: color,
+                    size: size * 2,
+                    opacity: 0.3,
+                    lineCap: 'round',
+                    spray: true
+                };
+            case 'watercolor':
+                return {
+                    color: color,
+                    size: size * 1.5,
+                    opacity: 0.5,
+                    lineCap: 'round',
+                    watercolor: true
+                };
+            case 'calligraphy':
+                return {
+                    color: color,
+                    size: size * 1.8,
+                    opacity: 0.9,
+                    lineCap: 'butt',
+                    calligraphy: true
+                };
+            case 'pencil':
+                return {
+                    color: color,
+                    size: size * 0.8,
+                    opacity: 0.7,
+                    lineCap: 'round',
+                    pencil: true
+                };
+            default: // classic
+                return {
+                    color: color,
+                    size: size,
+                    opacity: 1,
+                    lineCap: 'round'
+                };
+        }
+    }
+
     function startDrawing(e) {
         isDrawing = true;
         const pos = getCoordinates(e);
 
-        ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
+        const style = getBrushStyle();
+        ctx.globalAlpha = style.opacity;
+        ctx.lineCap = style.lineCap || 'round';
+        ctx.lineWidth = style.size;
 
-        ctx.lineWidth = brushSize ? brushSize.value : 5;
-        ctx.strokeStyle = isEraser ? CANVAS_BG_COLOR : (colorPicker ? colorPicker.value : "#1a1412");
+        if (currentBrush === 'spray') {
+            // Pour l'aérosol, on dessine plusieurs petits points
+            for (let i = 0; i < 30; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.random() * style.size;
+                const x = pos.x + Math.cos(angle) * radius;
+                const y = pos.y + Math.sin(angle) * radius;
+                ctx.beginPath();
+                ctx.arc(x, y, Math.random() * 2 + 0.5, 0, Math.PI * 2);
+                ctx.fillStyle = style.color;
+                ctx.fill();
+            }
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        } else {
+            ctx.strokeStyle = style.color;
+            ctx.beginPath();
+            ctx.moveTo(pos.x, pos.y);
+        }
     }
 
     function draw(e) {
         if (!isDrawing) return;
 
         const pos = getCoordinates(e);
+        const style = getBrushStyle();
 
-        ctx.lineWidth = brushSize ? brushSize.value : 5;
-        ctx.strokeStyle = isEraser ? CANVAS_BG_COLOR : (colorPicker ? colorPicker.value : "#1a1412");
+        if (currentBrush === 'spray') {
+            ctx.globalAlpha = style.opacity;
+            for (let i = 0; i < 20; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const radius = Math.random() * style.size;
+                const x = pos.x + Math.cos(angle) * radius;
+                const y = pos.y + Math.sin(angle) * radius;
+                ctx.beginPath();
+                ctx.arc(x, y, Math.random() * 2 + 0.5, 0, Math.PI * 2);
+                ctx.fillStyle = style.color;
+                ctx.fill();
+            }
+            return;
+        }
+
+        ctx.globalAlpha = style.opacity;
+        ctx.lineWidth = style.size;
+        ctx.strokeStyle = isEraser ? CANVAS_BG_COLOR : style.color;
+        ctx.lineCap = style.lineCap || 'round';
+
+        if (currentBrush === 'calligraphy') {
+            // Effet calligraphie : variation de largeur selon la direction
+            const angle = Math.atan2(pos.y - ctx.lastY || 1, pos.x - ctx.lastX || 1);
+            ctx.save();
+            ctx.translate(pos.x, pos.y);
+            ctx.rotate(angle);
+            ctx.fillStyle = ctx.strokeStyle;
+            ctx.fillRect(-style.size/4, -style.size/2, style.size/2, style.size);
+            ctx.restore();
+            ctx.lastX = pos.x;
+            ctx.lastY = pos.y;
+            return;
+        }
+
+        if (currentBrush === 'watercolor') {
+            // Effet aquarelle : légère fluctuation
+            ctx.shadowColor = ctx.strokeStyle;
+            ctx.shadowBlur = style.size * 0.3;
+        } else {
+            ctx.shadowBlur = 0;
+        }
+
+        if (currentBrush === 'pencil') {
+            // Effet crayon : lignes légèrement irrégulières
+            ctx.setLineDash([2, 1]);
+        } else {
+            ctx.setLineDash([]);
+        }
 
         ctx.lineTo(pos.x, pos.y);
         ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+
+        ctx.shadowBlur = 0;
+        ctx.setLineDash([]);
     }
 
     function stopDrawing() {
         if (isDrawing) {
             isDrawing = false;
             ctx.beginPath();
+            ctx.globalAlpha = 1;
+            ctx.shadowBlur = 0;
+            ctx.setLineDash([]);
             saveState();
         }
     }
@@ -110,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
     canvas.addEventListener("touchend", stopDrawing);
 
     // ===============================
-    // 5. BOUTONS OUTILS
+    // 6. BOUTONS OUTILS
     // ===============================
     if (pencilBtn) {
         pencilBtn.addEventListener("click", () => {
@@ -137,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ===============================
-    // 6. CREATION D'UNE NOUVELLE TOILE
+    // 7. CREATION D'UNE NOUVELLE TOILE
     // ===============================
     function createNewCanvas() {
         if (confirm("Créer une nouvelle canvas ? Le dessin actuel sera effacé.")) {
@@ -161,7 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ===============================
-    // 7. HISTORIQUE (ANNULER / REFAIRE)
+    // 8. HISTORIQUE (ANNULER / REFAIRE)
     // ===============================
     let history = [];
     let historyStep = -1;
@@ -202,7 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ===============================
-    // 8. GALERIE & SAUVEGARDE DANS LE SITE
+    // 9. GALERIE & SAUVEGARDE
     // ===============================
     function loadSavedDrawings() {
         if (!galleryGrid) return;
