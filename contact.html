@@ -1,4 +1,4 @@
-<!-- contact.html -->
+<!-- contact.html - Version avec bouton Espace créatif -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -62,6 +62,46 @@
         .nav-links li a[href="dessins.html"] {
             display: none !important;
         }
+        .btn-espace-creatif {
+            background: var(--gold);
+            color: var(--ink) !important;
+            font-weight: 700;
+            border: none;
+            padding: 15px 30px;
+            font-size: 12.5px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-espace-creatif:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+            background: #f7d17a;
+        }
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            color: #fff;
+            padding: 15px 28px;
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-outline:hover { background: #fff; color: var(--pink-deep); }
     </style>
 </head>
 <body>
@@ -90,7 +130,7 @@
                 <p>Écrivez-nous pour initier une future collaboration, une idée de concept ou toute demande artistique. Nous répondons sous 24h.</p>
                 <div class="hero-actions">
                     <a href="#contact-form" class="btn-primary">Envoyer un message →</a>
-                    <button class="btn-outline" id="trigger-discovery">Nos formules</button>
+                    <a href="#" class="btn-espace-creatif" id="espaceCreatifBtn">🎨 Espace créatif →</a>
                 </div>
             </div>
             <div class="hero-visual">
@@ -170,12 +210,16 @@
             }
         }
 
-        const triggerBtn = document.getElementById('trigger-discovery');
-        const closeBtn = document.getElementById('close-discovery');
-        const modal = document.getElementById('discovery-modal');
-        triggerBtn.addEventListener('click', () => modal.classList.add('active'));
-        closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-        modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+        // Bouton Espace créatif
+        document.getElementById('espaceCreatifBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            if (user && user.prenom) {
+                window.location.href = 'moncompte.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
 
         // Formulaire de contact
         document.getElementById('contactForm').addEventListener('submit', function(e) {

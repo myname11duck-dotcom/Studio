@@ -1,3 +1,4 @@
+<!-- services.html - Version avec le même thème -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -5,6 +6,103 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Services | Studio Créatif</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .user-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px 12px 6px 6px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-decoration: none;
+        }
+        .user-profile-header:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .user-profile-header img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+        .user-profile-header span {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .user-profile-header .fa-chevron-down {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+        }
+        .nav-cta {
+            background: var(--ink);
+            color: #fff !important;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 12px 22px;
+            border-radius: 30px;
+            transition: transform 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .nav-cta:hover { transform: translateY(-2px); }
+        nav .nav-cta-btn {
+            display: none !important;
+        }
+        .nav-links li a[href="dessins.html"] {
+            display: none !important;
+        }
+        .btn-espace-creatif {
+            background: var(--gold);
+            color: var(--ink) !important;
+            font-weight: 700;
+            border: none;
+            padding: 15px 30px;
+            font-size: 12.5px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-espace-creatif:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+            background: #f7d17a;
+        }
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            color: #fff;
+            padding: 15px 28px;
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-outline:hover { background: #fff; color: var(--pink-deep); }
+    </style>
 </head>
 <body>
 
@@ -19,9 +117,8 @@
                 <li><a href="apropos.html">À propos</a></li>
                 <li><a href="services.html" class="active">Services</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                <li><a href="dessins.html">Mes Dessins</a></li>
             </ul>
-            <a href="contact.html" class="nav-cta">Prendre RDV</a>
+            <div id="headerRight"></div>
         </nav>
     </header>
 
@@ -32,7 +129,7 @@
                 <h1>Des outils <em>sur-mesure</em> pour créer</h1>
                 <p>Nous offrons des outils de personnalisation uniques. Ouvrez notre Studio de Dessin Interactif et concevez votre propre motif ou logo personnalisé directement sur l'écran.</p>
                 <div class="hero-actions">
-                    <button class="btn-primary" id="open-studio">Découvrir le Studio →</button>
+                    <a href="#" class="btn-espace-creatif" id="espaceCreatifBtn">🎨 Espace créatif →</a>
                     <a href="contact.html" class="btn-outline">Demander un devis</a>
                 </div>
             </div>
@@ -55,7 +152,7 @@
             <span class="eyebrow">✦ Studio de Dessin Interactif</span>
             <h3>Esquissez votre propre motif</h3>
             <p>Choisissez une couleur, ajustez la taille du pinceau et laissez libre cours à votre imagination sur notre canvas en direct.</p>
-            <button class="btn-primary" id="open-studio-2" style="background:#fff;color:var(--pink-deep);border:none;">Ouvrir le Studio →</button>
+            <a href="#" class="btn-primary" style="background:#fff;color:var(--pink-deep);border:none;" id="openStudioBtn">Ouvrir le Studio →</a>
         </div>
         <div class="promo-visual" style="background-image:url('services.jpg')"></div>
     </div>
@@ -102,11 +199,52 @@
                 <button id="save-canvas" class="btn-tool btn-tool-save">Sauvegarder</button>
             </div>
             <canvas id="paint-canvas" width="760" height="420"></canvas>
-            <p class="save-confirm" id="save-confirm">Dessin enregistré ✓ — <a href="dessins.html">voir mes dessins</a></p>
+            <p class="save-confirm" id="save-confirm">Dessin enregistré ✓ — <a href="moncompte.html">voir mes dessins</a></p>
         </div>
     </div>
 
     <script>
+        function updateHeader() {
+            const headerRight = document.getElementById('headerRight');
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            
+            if (user && user.prenom) {
+                const avatar = localStorage.getItem('userAvatar') || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.prenom) + '&background=e5a968&color=fff&size=128';
+                headerRight.innerHTML = `
+                    <a href="moncompte.html" class="user-profile-header">
+                        <img src="${avatar}" alt="${user.prenom}">
+                        <span>${user.prenom}</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </a>
+                `;
+            } else {
+                headerRight.innerHTML = `<a href="login.html" class="nav-cta">Connexion</a>`;
+            }
+        }
+
+        // Bouton Espace créatif
+        document.getElementById('espaceCreatifBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            if (user && user.prenom) {
+                window.location.href = 'moncompte.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Bouton Essayer le Studio
+        document.getElementById('openStudioBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            if (user && user.prenom) {
+                window.location.href = 'moncompte.html';
+            } else {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // MODAL STUDIO
         const openBtn = document.getElementById('open-studio');
         const openBtn2 = document.getElementById('open-studio-2');
         const closeBtn = document.getElementById('close-studio');
@@ -119,12 +257,21 @@
         let drawing = false;
 
         function openModal() {
-            modal.classList.add('active');
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            if (user && user.prenom) {
+                modal.classList.add('active');
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+            } else {
+                window.location.href = 'login.html';
+            }
         }
-        openBtn.addEventListener('click', openModal);
-        openBtn2.addEventListener('click', openModal);
+        if (document.getElementById('open-studio')) {
+            document.getElementById('open-studio').addEventListener('click', openModal);
+        }
+        if (document.getElementById('open-studio-2')) {
+            document.getElementById('open-studio-2').addEventListener('click', openModal);
+        }
         closeBtn.addEventListener('click', () => modal.classList.remove('active'));
 
         function startDrawing(e) { drawing = true; draw(e); }
@@ -164,6 +311,9 @@
             saveConfirm.classList.add('visible');
             setTimeout(() => saveConfirm.classList.remove('visible'), 3000);
         });
+
+        updateHeader();
+        window.addEventListener('storage', updateHeader);
     </script>
 </body>
 </html>
