@@ -1,4 +1,4 @@
-<!-- index.html - Version corrigée avec tous les utilisateurs -->
+<!-- index.html - Version simplifiée et corrigée -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        /* ===== HEADER AVEC RECHERCHE ===== */
+        /* ===== HEADER ===== */
         header {
             position: sticky;
             top: 0;
@@ -399,297 +399,7 @@
 
         .btn-outline:hover { background: #fff; color: var(--pink-deep); }
 
-        /* ===== ANIMATION DE PRÉSENTATION ===== */
-        .demo-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(26, 20, 18, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .demo-overlay.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .demo-container {
-            background: #fff;
-            border-radius: 24px;
-            max-width: 900px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 40px;
-            position: relative;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
-        }
-
-        .demo-container .btn-close-demo {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            background: var(--pink-pale);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            color: var(--pink-deep);
-            font-size: 22px;
-            cursor: pointer;
-            transition: background 0.3s;
-            z-index: 10;
-        }
-
-        .demo-container .btn-close-demo:hover {
-            background: var(--pink-soft);
-        }
-
-        .demo-container h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 32px;
-            font-weight: 600;
-            color: var(--ink);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .demo-container h2 i {
-            color: var(--pink-deep);
-        }
-
-        .demo-container .demo-subtitle {
-            color: var(--ink-soft);
-            font-size: 15px;
-            margin-bottom: 30px;
-        }
-
-        .demo-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .demo-step {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 16px 20px;
-            border-radius: 16px;
-            background: var(--pink-pale);
-            border: 1px solid rgba(74, 47, 23, 0.06);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .demo-step:hover {
-            transform: translateX(6px);
-            border-color: var(--pink-deep);
-            box-shadow: 0 4px 15px rgba(201, 138, 62, 0.1);
-        }
-
-        .demo-step .step-number {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--pink-deep), var(--pink-mid));
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 700;
-            flex-shrink: 0;
-            font-family: 'Cormorant Garamond', serif;
-        }
-
-        .demo-step .step-content {
-            flex: 1;
-        }
-
-        .demo-step .step-content h4 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--ink);
-            margin: 0 0 2px;
-        }
-
-        .demo-step .step-content p {
-            font-size: 13px;
-            color: var(--ink-soft);
-            margin: 0;
-        }
-
-        .demo-step .step-icon {
-            font-size: 28px;
-            opacity: 0.4;
-            transition: opacity 0.3s;
-        }
-
-        .demo-step:hover .step-icon {
-            opacity: 1;
-        }
-
-        .demo-step .step-arrow {
-            color: var(--pink-deep);
-            font-size: 14px;
-            opacity: 0;
-            transform: translateX(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .demo-step:hover .step-arrow {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .demo-progress {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 24px 0 20px;
-        }
-
-        .demo-progress .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--pink-soft);
-            transition: all 0.3s ease;
-        }
-
-        .demo-progress .dot.active {
-            background: var(--pink-deep);
-            width: 28px;
-            border-radius: 20px;
-        }
-
-        .demo-progress .dot.done {
-            background: var(--pink-mid);
-        }
-
-        .demo-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(74, 47, 23, 0.06);
-        }
-
-        .demo-controls .btn-demo {
-            padding: 10px 28px;
-            border-radius: 30px;
-            border: none;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .demo-controls .btn-demo-prev {
-            background: var(--pink-pale);
-            color: var(--ink-soft);
-        }
-
-        .demo-controls .btn-demo-prev:hover {
-            background: var(--pink-soft);
-        }
-
-        .demo-controls .btn-demo-next {
-            background: linear-gradient(135deg, var(--pink-deep), var(--pink-mid));
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(201, 138, 62, 0.3);
-        }
-
-        .demo-controls .btn-demo-next:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(201, 138, 62, 0.4);
-        }
-
-        .demo-controls .btn-demo-start {
-            background: linear-gradient(135deg, var(--pink-deep), var(--pink-mid));
-            color: #fff;
-            padding: 12px 40px;
-            box-shadow: 0 4px 15px rgba(201, 138, 62, 0.3);
-        }
-
-        .demo-controls .btn-demo-start:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(201, 138, 62, 0.4);
-        }
-
-        .demo-controls .step-counter {
-            font-size: 13px;
-            color: var(--ink-soft);
-            font-weight: 500;
-        }
-
-        .demo-badge {
-            display: inline-block;
-            background: #e74c3c;
-            color: #fff;
-            font-size: 9px;
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 20px;
-            margin-left: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: pulse-badge 2s infinite;
-        }
-
-        @keyframes pulse-badge {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .demo-trigger-btn {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: #fff;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Montserrat', sans-serif;
-            animation: pulse-btn 2s infinite;
-        }
-
-        .demo-trigger-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
-        }
-
-        @keyframes pulse-btn {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
-            50% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
-        }
-
-        .demo-trigger-btn i {
-            font-size: 14px;
-        }
-
-        /* ===== MODAL PROFIL UTILISATEUR ===== */
+        /* ===== MODAL PROFIL ===== */
         .profile-modal-overlay {
             position: fixed;
             inset: 0;
@@ -849,6 +559,38 @@
             font-size: 14px;
         }
 
+        /* ===== BOUTON DÉMO ===== */
+        .demo-trigger-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Montserrat', sans-serif;
+            animation: pulse-btn 2s infinite;
+        }
+
+        .demo-trigger-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        @keyframes pulse-btn {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            50% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
+        }
+
+        .demo-trigger-btn i {
+            font-size: 14px;
+        }
+
         @media (max-width: 1024px) {
             .header-search {
                 width: 140px;
@@ -905,29 +647,6 @@
             .user-profile-header span {
                 display: none;
             }
-            .demo-container {
-                padding: 24px;
-                margin: 10px;
-            }
-            .demo-container h2 {
-                font-size: 24px;
-            }
-            .demo-step {
-                padding: 12px 16px;
-                flex-wrap: wrap;
-            }
-            .demo-step .step-icon {
-                display: none;
-            }
-            .demo-controls {
-                flex-wrap: wrap;
-                gap: 12px;
-                justify-content: center;
-            }
-            .search-type-toggle button {
-                font-size: 9px;
-                padding: 2px 6px;
-            }
             .profile-modal-box {
                 padding: 24px;
                 margin: 10px;
@@ -939,6 +658,424 @@
             .profile-modal-box .creations-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
+            .search-type-toggle button {
+                font-size: 9px;
+                padding: 2px 6px;
+            }
+        }
+
+        /* ===== HERO ET AUTRES SECTIONS (copié de style.css) ===== */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #d98f3b 0%, #eeb35f 48%, #ffe0a0 100%);
+            padding: 70px 6% 110px;
+        }
+
+        .hero::before, .hero::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.14);
+            filter: blur(2px);
+        }
+
+        .hero::before { width: 260px; height: 260px; top: -80px; right: 12%; }
+        .hero::after { width: 140px; height: 140px; bottom: 10%; right: 30%; background: rgba(255,255,255,0.1); }
+
+        .hero-inner {
+            max-width: 1240px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            font-size: 54px;
+            line-height: 1.08;
+            color: #fff;
+            margin-bottom: 20px;
+            max-width: 520px;
+        }
+
+        .hero-text h1 em {
+            font-style: normal;
+            color: #fff2c4;
+        }
+
+        .hero-text p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 15.5px;
+            line-height: 1.7;
+            max-width: 440px;
+            margin-bottom: 34px;
+            font-weight: 300;
+        }
+
+        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-visual .frame {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 4/5;
+            border-radius: 34px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(150, 100, 30, 0.35);
+            border: 6px solid rgba(255,255,255,0.35);
+        }
+
+        .hero-visual .frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-badge {
+            position: absolute;
+            bottom: -18px;
+            left: -18px;
+            width: 108px;
+            height: 108px;
+            background: #fff;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            box-shadow: 0 14px 30px rgba(0,0,0,0.18);
+        }
+
+        .hero-badge strong {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            color: var(--pink-deep);
+            line-height: 1;
+        }
+
+        .hero-badge span {
+            font-size: 9px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--ink-soft);
+            margin-top: 4px;
+            max-width: 70px;
+        }
+
+        .trust-strip {
+            max-width: 1140px;
+            margin: -58px auto 0;
+            position: relative;
+            z-index: 3;
+            background: #fff;
+            border-radius: var(--radius);
+            box-shadow: 0 20px 50px rgba(150, 100, 30, 0.1);
+            padding: 30px 20px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 20px;
+            border-right: 1px solid rgba(74,47,23,0.08);
+        }
+
+        .trust-item:last-child { border-right: none; }
+
+        .trust-icon {
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--pink-pale);
+            color: var(--pink-deep);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .trust-item h4 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+        .trust-item p { font-size: 11.5px; color: var(--ink-soft); }
+
+        .section {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 90px 6% 40px;
+        }
+
+        .section-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 36px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .section-head h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 34px;
+            font-weight: 600;
+        }
+
+        .section-head a {
+            color: var(--pink-deep);
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-decoration: none;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 26px;
+        }
+
+        .info-card {
+            background: #fff;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(74,47,23,0.06);
+            box-shadow: 0 12px 30px rgba(150,100,30,0.06);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            cursor: pointer;
+        }
+
+        .info-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(150,100,30,0.14); }
+
+        .info-card .thumb {
+            height: 170px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .info-card .thumb::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(74,47,23,0.35) 100%);
+        }
+
+        .info-card .num {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            background: rgba(255,255,255,0.9);
+            color: var(--pink-deep);
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 11px;
+            border-radius: 20px;
+            z-index: 2;
+        }
+
+        .info-card .body { padding: 18px 20px 22px; }
+        .info-card h3 { font-family: 'Cormorant Garamond', serif; font-size: 20px; margin-bottom: 8px; }
+        .info-card p { font-size: 13px; color: var(--ink-soft); line-height: 1.6; }
+
+        .promo-banner {
+            background: linear-gradient(120deg, #e3a544, #c98a3e);
+            border-radius: 22px;
+            padding: 46px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 30px;
+            flex-wrap: wrap;
+            position: relative;
+            overflow: hidden;
+            margin: 90px 6% 0;
+        }
+
+        .promo-banner::after {
+            content: '';
+            position: absolute;
+            width: 300px; height: 300px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
+            right: -80px; top: -100px;
+        }
+
+        .promo-text { position: relative; z-index: 2; max-width: 460px; }
+        .promo-text .eyebrow { 
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: #fff;
+            font-size: 12px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 7px 16px;
+            border-radius: 30px;
+            margin-bottom: 22px;
+        }
+        .promo-text h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+        .promo-text p { color: rgba(255,255,255,0.9); font-size: 14px; margin-bottom: 22px; }
+
+        .promo-visual {
+            width: 220px;
+            height: 220px;
+            border-radius: 20px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            flex-shrink: 0;
+        }
+
+        .btn-primary {
+            background: var(--ink);
+            color: #fff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(0,0,0,0.25); }
+
+        footer {
+            margin-top: 100px;
+            background: var(--pink-pale);
+            padding: 40px 6%;
+        }
+
+        .footer-strip {
+            max-width: 1140px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .footer-strip div h4 { font-size: 12.5px; font-weight: 600; margin-bottom: 4px; }
+        .footer-strip div p { font-size: 11px; color: var(--ink-soft); }
+        .footer-strip .ficon { font-size: 20px; color: var(--pink-deep); margin-bottom: 8px; }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 11.5px;
+            color: var(--ink-soft);
+            margin-top: 26px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(74,47,23,0.08);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(40, 26, 12, 0.55);
+            backdrop-filter: blur(6px);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+
+        .modal-box {
+            background: #fff;
+            width: 100%;
+            max-width: 880px;
+            max-height: 86vh;
+            overflow-y: auto;
+            border-radius: 22px;
+            padding: 44px;
+            position: relative;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.3);
+        }
+
+        .modal-box h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 30px;
+            color: var(--pink-deep);
+            margin-bottom: 8px;
+        }
+
+        .modal-box .sub { color: var(--ink-soft); font-size: 13.5px; margin-bottom: 26px; }
+
+        .btn-close {
+            position: absolute;
+            top: 20px; right: 24px;
+            background: var(--pink-pale);
+            border: none;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            color: var(--pink-deep);
+            font-size: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-close:hover { background: var(--pink-soft); }
+
+        .modal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .modal-item .thumb {
+            height: 130px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        .modal-item h4 { font-size: 14px; margin-bottom: 6px; }
+        .modal-item p { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; }
+
+        @media (max-width: 900px) {
+            .hero-inner { grid-template-columns: 1fr; }
+            .hero-visual { order: -1; }
+            .trust-strip, .card-grid, .footer-strip { grid-template-columns: repeat(2, 1fr); }
+            .trust-item { border-right: none; padding: 10px 0; }
+            .promo-banner { flex-direction: column; text-align: center; }
+            .promo-text { max-width: 100%; }
+            .modal-grid { grid-template-columns: 1fr; }
+            .hero-text h1 { font-size: 36px; }
         }
     </style>
 </head>
@@ -961,12 +1098,8 @@
                     <i class="fa-solid fa-play"></i> Visite guidée
                 </button>
                 <div class="header-search" id="headerSearch">
-                    <input type="text" id="searchInputHeader" placeholder="Rechercher...">
+                    <input type="text" id="searchInputHeader" placeholder="Rechercher un utilisateur...">
                     <button class="clear-btn-header" id="clearSearchHeader"><i class="fas fa-times"></i></button>
-                    <div class="search-type-toggle">
-                        <button class="active" data-type="users" id="searchUsers">👤</button>
-                        <button data-type="drawings" id="searchDrawings">🎨</button>
-                    </div>
                     <button class="search-icon-btn" id="searchBtnHeader"><i class="fas fa-search"></i></button>
                     <div class="search-dropdown" id="searchDropdown">
                         <div class="dropdown-header" id="dropdownHeader">Résultats</div>
@@ -1077,91 +1210,20 @@
         </div>
     </div>
 
-    <!-- ===== MODAL PROFIL UTILISATEUR ===== -->
+    <!-- ===== MODAL PROFIL ===== -->
     <div class="profile-modal-overlay" id="profileModal">
         <div class="profile-modal-box">
             <button class="btn-close-modal" id="closeProfileModal">&times;</button>
-            <div class="profile-header" id="profileHeader">
-                <!-- Rempli par JS -->
-            </div>
+            <div class="profile-header" id="profileHeader"></div>
             <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--ink);margin-bottom:16px;">Ses créations</h3>
-            <div class="creations-grid" id="profileCreations">
-                <!-- Rempli par JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== ANIMATION DE PRÉSENTATION ===== -->
-    <div class="demo-overlay" id="demoOverlay">
-        <div class="demo-container">
-            <button class="btn-close-demo" id="closeDemo"><i class="fas fa-times"></i></button>
-            
-            <h2>
-                <i class="fa-solid fa-compass"></i>
-                Découvrez Studio Créatif
-                <span class="demo-badge">Nouveau</span>
-            </h2>
-            <p class="demo-subtitle">Suivez ce guide interactif pour découvrir toutes les fonctionnalités du site en 4 étapes.</p>
-
-            <div class="demo-steps" id="demoSteps">
-                <div class="demo-step" data-step="0">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>🎨 Espace créatif</h4>
-                        <p>Créez et dessinez librement avec différents pinceaux sur votre toile interactive.</p>
-                    </div>
-                    <div class="step-icon">✏️</div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-                </div>
-                <div class="demo-step" data-step="1">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>🔍 Recherche d'utilisateurs</h4>
-                        <p>Trouvez d'autres artistes par leur nom, prénom ou email et explorez leurs créations.</p>
-                    </div>
-                    <div class="step-icon">👤</div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-                </div>
-                <div class="demo-step" data-step="2">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>🎯 Recherche de créations</h4>
-                        <p>Recherchez des dessins par leur nom et découvrez les œuvres des autres utilisateurs.</p>
-                    </div>
-                    <div class="step-icon">🎨</div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-                </div>
-                <div class="demo-step" data-step="3">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h4>👤 Profil utilisateur</h4>
-                        <p>Gérez votre compte, modifiez vos informations et personnalisez votre avatar.</p>
-                    </div>
-                    <div class="step-icon">⚙️</div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-                </div>
-            </div>
-
-            <div class="demo-progress" id="demoProgress">
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-            </div>
-
-            <div class="demo-controls">
-                <button class="btn-demo btn-demo-prev" id="demoPrev">← Précédent</button>
-                <span class="step-counter" id="stepCounter">1 / 4</span>
-                <button class="btn-demo btn-demo-next" id="demoNext">Suivant →</button>
-                <button class="btn-demo btn-demo-start" id="demoStart" style="display:none;">
-                    <i class="fa-solid fa-rocket"></i> Commencer l'aventure !
-                </button>
-            </div>
+            <div class="creations-grid" id="profileCreations"></div>
         </div>
     </div>
 
     <script>
-        // ===== GESTION DU HEADER =====
+        // =============================================
+        // 1. GESTION DU HEADER
+        // =============================================
         function updateHeader() {
             const headerProfile = document.getElementById('headerProfile');
             const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
@@ -1180,168 +1242,122 @@
             }
         }
 
-        // ===== FONCTION POUR RÉCUPÉRER TOUS LES UTILISATEURS =====
+        // =============================================
+        // 2. FONCTION POUR RÉCUPÉRER TOUS LES UTILISATEURS
+        // =============================================
         function getAllUsers() {
+            const users = [];
             const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
-            
-            // 1. Récupérer les utilisateurs simulés (pour la démo)
+
+            // 2.1 Récupérer les utilisateurs enregistrés dans le localStorage
+            const storedUsers = JSON.parse(localStorage.getItem('registered_users') || '[]');
+            console.log('📋 Utilisateurs enregistrés dans localStorage:', storedUsers);
+
+            // 2.2 Ajouter les utilisateurs mock (pour la démo)
             const mockUsers = [
-                { 
-                    nom: 'Martin', 
-                    prenom: 'Sophie', 
-                    email: 'sophie.martin@email.com', 
-                    avatar: 'https://ui-avatars.com/api/?name=Sophie+Martin&background=e5a968&color=fff&size=128',
-                    drawings: []
-                },
-                { 
-                    nom: 'Dubois', 
-                    prenom: 'Thomas', 
-                    email: 'thomas.dubois@email.com', 
-                    avatar: 'https://ui-avatars.com/api/?name=Thomas+Dubois&background=4a2f17&color=fff&size=128',
-                    drawings: []
-                },
-                { 
-                    nom: 'Lefevre', 
-                    prenom: 'Emma', 
-                    email: 'emma.lefevre@email.com', 
-                    avatar: 'https://ui-avatars.com/api/?name=Emma+Lefevre&background=c98a3e&color=fff&size=128',
-                    drawings: []
-                },
-                { 
-                    nom: 'Bernard', 
-                    prenom: 'Lucas', 
-                    email: 'lucas.bernard@email.com', 
-                    avatar: 'https://ui-avatars.com/api/?name=Lucas+Bernard&background=e3a544&color=fff&size=128',
-                    drawings: []
-                },
-                { 
-                    nom: 'Petit', 
-                    prenom: 'Julie', 
-                    email: 'julie.petit@email.com', 
-                    avatar: 'https://ui-avatars.com/api/?name=Julie+Petit&background=ffe9a8&color=4a2f17&size=128',
-                    drawings: []
-                },
-                { 
-                    nom: 'Moreau', 
-                    prenom: 'Antoine', 
-                    email: 'antoine.moreau@email.com', 
-                    avatar: 'https://ui-avatars.com/api/?name=Antoine+Moreau&background=f6c667&color=4a2f17&size=128',
-                    drawings: []
-                },
-                { 
-                    nom: 'Laurent', 
-                    prenom: 'Marie', 
-                    email: 'marie.laurent@email.com', 
-                    avatar: 'https://ui-avatars.com/api/?name=Marie+Laurent&background=c98a3e&color=fff&size=128',
-                    drawings: []
-                },
-                { 
-                    nom: 'Simon', 
-                    prenom: 'Pierre', 
-                    email: 'pierre.simon@email.com', 
-                    avatar: 'https://ui-avatars.com/api/?name=Pierre+Simon&background=4a2f17&color=fff&size=128',
-                    drawings: []
+                { nom: 'Martin', prenom: 'Sophie', email: 'sophie.martin@email.com' },
+                { nom: 'Dubois', prenom: 'Thomas', email: 'thomas.dubois@email.com' },
+                { nom: 'Lefevre', prenom: 'Emma', email: 'emma.lefevre@email.com' },
+                { nom: 'Bernard', prenom: 'Lucas', email: 'lucas.bernard@email.com' },
+                { nom: 'Petit', prenom: 'Julie', email: 'julie.petit@email.com' },
+                { nom: 'Moreau', prenom: 'Antoine', email: 'antoine.moreau@email.com' },
+                { nom: 'Laurent', prenom: 'Marie', email: 'marie.laurent@email.com' },
+                { nom: 'Simon', prenom: 'Pierre', email: 'pierre.simon@email.com' }
+            ];
+
+            // 2.3 Ajouter les utilisateurs mock avec leurs avatars
+            mockUsers.forEach(mock => {
+                const exists = users.some(u => u.email === mock.email);
+                if (!exists) {
+                    users.push({
+                        nom: mock.nom,
+                        prenom: mock.prenom,
+                        email: mock.email,
+                        avatar: `https://ui-avatars.com/api/?name=${mock.prenom}+${mock.nom}&background=e5a968&color=fff&size=128`,
+                        drawings: []
+                    });
                 }
-            ];
+            });
 
-            // 2. Ajouter des dessins simulés pour les utilisateurs mock
-            const drawingNames = [
-                'Crépuscule doré', 'Jardin secret', 'Onde marine', 'Forêt enchantée',
-                'Lumière du matin', 'Rêve d\'été', 'Horizon lointain', 'Mélodie silencieuse',
-                'Danse des feuilles', 'Reflet d\'automne', 'Brume matinale', 'Étoile filante'
-            ];
-
-            mockUsers.forEach((user, index) => {
-                // Vérifier si l'utilisateur a des dessins dans le localStorage
-                const userDrawings = getUserDrawings(user.email);
-                if (userDrawings.length > 0) {
-                    user.drawings = userDrawings;
+            // 2.4 Ajouter les utilisateurs enregistrés
+            storedUsers.forEach(stored => {
+                const exists = users.some(u => u.email === stored.email);
+                if (!exists) {
+                    const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(stored.prenom || '')}+${encodeURIComponent(stored.nom || '')}&background=e5a968&color=fff&size=128`;
+                    users.push({
+                        nom: stored.nom || '',
+                        prenom: stored.prenom || '',
+                        email: stored.email,
+                        avatar: avatar,
+                        drawings: []
+                    });
                 } else {
-                    const numDrawings = Math.floor(Math.random() * 4) + 2;
-                    user.drawings = [];
+                    // Mettre à jour les infos de l'utilisateur existant
+                    const existing = users.find(u => u.email === stored.email);
+                    if (existing) {
+                        existing.nom = stored.nom || existing.nom;
+                        existing.prenom = stored.prenom || existing.prenom;
+                    }
+                }
+            });
+
+            // 2.5 Ajouter l'utilisateur actuellement connecté
+            if (currentUser && currentUser.email) {
+                const exists = users.some(u => u.email === currentUser.email);
+                if (!exists) {
+                    const avatar = localStorage.getItem('userAvatar') || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentUser.prenom || '')}+${encodeURIComponent(currentUser.nom || '')}&background=e5a968&color=fff&size=128`;
+                    users.push({
+                        nom: currentUser.nom || '',
+                        prenom: currentUser.prenom || '',
+                        email: currentUser.email,
+                        avatar: avatar,
+                        drawings: []
+                    });
+                } else {
+                    const existing = users.find(u => u.email === currentUser.email);
+                    if (existing) {
+                        existing.nom = currentUser.nom || existing.nom;
+                        existing.prenom = currentUser.prenom || existing.prenom;
+                        const avatar = localStorage.getItem('userAvatar');
+                        if (avatar) existing.avatar = avatar;
+                    }
+                }
+            }
+
+            // 2.6 Récupérer les dessins pour chaque utilisateur
+            const allDrawings = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
+            users.forEach(user => {
+                user.drawings = allDrawings.filter(d => d.email === user.email);
+                // Si pas de dessins, en créer des simulés pour la démo
+                if (user.drawings.length === 0 && !user.email.includes('@')) {
+                    // Ne pas créer de dessins simulés pour les utilisateurs mock
+                }
+            });
+
+            // 2.7 Ajouter des dessins simulés pour les utilisateurs mock (pour la démo)
+            const drawingNames = ['Crépuscule doré', 'Jardin secret', 'Onde marine', 'Forêt enchantée'];
+            users.forEach((user, index) => {
+                if (user.drawings.length === 0 && mockUsers.some(m => m.email === user.email)) {
+                    const numDrawings = Math.floor(Math.random() * 3) + 1;
                     for (let i = 0; i < numDrawings; i++) {
-                        const nameIndex = (index + i) % drawingNames.length;
                         user.drawings.push({
                             image: `https://picsum.photos/seed/${user.email}${i}/200/200`,
-                            date: new Date(Date.now() - i * 86400000).toLocaleDateString('fr-FR'),
-                            favori: Math.random() > 0.7,
-                            nom: drawingNames[(nameIndex + i * 2) % drawingNames.length]
+                            nom: drawingNames[(index + i) % drawingNames.length],
+                            date: new Date().toLocaleDateString('fr-FR'),
+                            favori: Math.random() > 0.7
                         });
                     }
                 }
             });
 
-            // 3. Récupérer les utilisateurs enregistrés dans le localStorage
-            const storedUsers = JSON.parse(localStorage.getItem('registered_users') || '[]');
-            
-            // Ajouter les utilisateurs stockés à la liste
-            storedUsers.forEach(storedUser => {
-                // Vérifier si l'utilisateur n'est pas déjà dans la liste
-                const exists = mockUsers.some(u => u.email === storedUser.email);
-                if (!exists) {
-                    const userDrawings = getUserDrawings(storedUser.email);
-                    mockUsers.push({
-                        nom: storedUser.nom || '',
-                        prenom: storedUser.prenom || '',
-                        email: storedUser.email,
-                        avatar: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(storedUser.prenom || storedUser.nom || 'User') + '&background=e5a968&color=fff&size=128',
-                        drawings: userDrawings.length > 0 ? userDrawings : []
-                    });
-                } else {
-                    // Mettre à jour les informations de l'utilisateur existant
-                    const existingUser = mockUsers.find(u => u.email === storedUser.email);
-                    if (existingUser) {
-                        existingUser.nom = storedUser.nom || existingUser.nom;
-                        existingUser.prenom = storedUser.prenom || existingUser.prenom;
-                        const userDrawings = getUserDrawings(storedUser.email);
-                        if (userDrawings.length > 0) {
-                            existingUser.drawings = userDrawings;
-                        }
-                    }
-                }
-            });
-
-            // 4. Ajouter l'utilisateur actuellement connecté
-            if (currentUser && currentUser.email) {
-                const exists = mockUsers.some(u => u.email === currentUser.email);
-                if (!exists) {
-                    const userDrawings = getUserDrawings(currentUser.email);
-                    mockUsers.unshift({
-                        nom: currentUser.nom || '',
-                        prenom: currentUser.prenom || '',
-                        email: currentUser.email,
-                        avatar: localStorage.getItem('userAvatar') || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUser.prenom || 'User') + '&background=e5a968&color=fff&size=128',
-                        drawings: userDrawings
-                    });
-                } else {
-                    const existingUser = mockUsers.find(u => u.email === currentUser.email);
-                    if (existingUser) {
-                        const userDrawings = getUserDrawings(currentUser.email);
-                        if (userDrawings.length > 0) {
-                            existingUser.drawings = userDrawings;
-                        }
-                        // Mettre à jour l'avatar
-                        const avatar = localStorage.getItem('userAvatar');
-                        if (avatar) {
-                            existingUser.avatar = avatar;
-                        }
-                        existingUser.nom = currentUser.nom || existingUser.nom;
-                        existingUser.prenom = currentUser.prenom || existingUser.prenom;
-                    }
-                }
-            }
-
-            return mockUsers;
+            console.log('👥 Tous les utilisateurs:', users);
+            return users;
         }
 
-        // ===== RÉCUPÉRER LES DESSINS D'UN UTILISATEUR =====
-        function getUserDrawings(email) {
-            const allDrawings = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
-            return allDrawings.filter(d => d.email === email);
-        }
-
-        // ===== AFFICHER LE PROFIL UTILISATEUR =====
-        function showUserProfile(user, highlightDrawing = null) {
+        // =============================================
+        // 3. AFFICHER LE PROFIL
+        // =============================================
+        function showUserProfile(user) {
             const modal = document.getElementById('profileModal');
             const header = document.getElementById('profileHeader');
             const creations = document.getElementById('profileCreations');
@@ -1362,13 +1378,12 @@
             `;
 
             if (user.drawings && user.drawings.length > 0) {
-                let drawingsHtml = user.drawings.map(d => `
-                    <div class="creation-item" style="${highlightDrawing && d.nom === highlightDrawing ? 'border: 3px solid var(--pink-deep);' : ''}">
+                creations.innerHTML = user.drawings.map(d => `
+                    <div class="creation-item">
                         <img src="${d.image}" alt="${d.nom || 'Création'}">
                         <div class="creation-name">${d.nom || 'Sans nom'}</div>
                     </div>
                 `).join('');
-                creations.innerHTML = drawingsHtml;
             } else {
                 creations.innerHTML = `
                     <div class="no-creations">
@@ -1382,29 +1397,9 @@
             modal.classList.add('active');
         }
 
-        // ===== RECHERCHE =====
-        let searchMode = 'users';
-
-        document.getElementById('searchUsers').addEventListener('click', function() {
-            document.getElementById('searchUsers').classList.add('active');
-            document.getElementById('searchDrawings').classList.remove('active');
-            searchMode = 'users';
-            document.getElementById('searchInputHeader').placeholder = 'Rechercher un utilisateur...';
-            if (document.getElementById('searchInputHeader').value.trim()) {
-                performSearch(document.getElementById('searchInputHeader').value);
-            }
-        });
-
-        document.getElementById('searchDrawings').addEventListener('click', function() {
-            document.getElementById('searchDrawings').classList.add('active');
-            document.getElementById('searchUsers').classList.remove('active');
-            searchMode = 'drawings';
-            document.getElementById('searchInputHeader').placeholder = 'Rechercher une création...';
-            if (document.getElementById('searchInputHeader').value.trim()) {
-                performSearch(document.getElementById('searchInputHeader').value);
-            }
-        });
-
+        // =============================================
+        // 4. RECHERCHE
+        // =============================================
         function performSearch(query) {
             const dropdown = document.getElementById('searchDropdown');
             const dropdownResults = document.getElementById('dropdownResults');
@@ -1416,111 +1411,67 @@
             }
 
             const searchTerm = query.toLowerCase().trim();
+            const users = getAllUsers();
+            const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
 
-            if (searchMode === 'users') {
-                const users = getAllUsers();
-                const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
-                
-                const results = users.filter(user => {
-                    const fullName = (user.prenom + ' ' + user.nom).toLowerCase();
-                    const fullNameReverse = (user.nom + ' ' + user.prenom).toLowerCase();
-                    const match = fullName.includes(searchTerm) || 
-                           fullNameReverse.includes(searchTerm) ||
-                           user.email.toLowerCase().includes(searchTerm) ||
-                           user.prenom.toLowerCase().includes(searchTerm) ||
-                           user.nom.toLowerCase().includes(searchTerm);
-                    // Exclure l'utilisateur actuel des résultats
-                    if (match && currentUser && currentUser.email) {
-                        return user.email !== currentUser.email;
-                    }
-                    return match;
-                });
-
-                dropdown.classList.add('active');
-                dropdownHeader.textContent = `👤 ${results.length} utilisateur${results.length > 1 ? 's' : ''}`;
-
-                if (results.length === 0) {
-                    dropdownResults.innerHTML = `
-                        <div class="no-results-dropdown">
-                            <i class="fas fa-user-slash"></i>
-                            <p>Aucun utilisateur trouvé pour "<strong>${query}</strong>"</p>
-                        </div>
-                    `;
-                    return;
+            // Filtrer les utilisateurs
+            const results = users.filter(user => {
+                const fullName = (user.prenom + ' ' + user.nom).toLowerCase();
+                const fullNameReverse = (user.nom + ' ' + user.prenom).toLowerCase();
+                const match = fullName.includes(searchTerm) || 
+                              fullNameReverse.includes(searchTerm) ||
+                              user.email.toLowerCase().includes(searchTerm) ||
+                              user.prenom.toLowerCase().includes(searchTerm) ||
+                              user.nom.toLowerCase().includes(searchTerm);
+                // Exclure l'utilisateur actuel
+                if (match && currentUser && currentUser.email) {
+                    return user.email !== currentUser.email;
                 }
+                return match;
+            });
 
-                dropdownResults.innerHTML = results.map(user => `
-                    <div class="result-item" data-email="${user.email}" data-type="user">
-                        <img src="${user.avatar}" alt="${user.prenom} ${user.nom}">
-                        <div class="info">
-                            <h4>${user.prenom} ${user.nom}</h4>
-                            <p>${user.email}</p>
-                        </div>
-                        <span class="badge">📸 ${user.drawings ? user.drawings.length : 0}</span>
+            dropdown.classList.add('active');
+            dropdownHeader.textContent = `👤 ${results.length} utilisateur${results.length > 1 ? 's' : ''}`;
+
+            if (results.length === 0) {
+                dropdownResults.innerHTML = `
+                    <div class="no-results-dropdown">
+                        <i class="fas fa-user-slash"></i>
+                        <p>Aucun utilisateur trouvé pour "<strong>${query}</strong>"</p>
                     </div>
-                `).join('');
-
-            } else {
-                const allUsers = getAllUsers();
-                const results = [];
-                allUsers.forEach(user => {
-                    if (user.drawings && user.drawings.length > 0) {
-                        user.drawings.forEach(drawing => {
-                            if (drawing.nom && drawing.nom.toLowerCase().includes(searchTerm)) {
-                                results.push({ drawing, user });
-                            }
-                        });
-                    }
-                });
-
-                dropdown.classList.add('active');
-                dropdownHeader.textContent = `🎨 ${results.length} création${results.length > 1 ? 's' : ''}`;
-
-                if (results.length === 0) {
-                    dropdownResults.innerHTML = `
-                        <div class="no-results-dropdown">
-                            <i class="fas fa-paint-brush"></i>
-                            <p>Aucune création trouvée pour "<strong>${query}</strong>"</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                dropdownResults.innerHTML = results.map(({drawing, user}) => `
-                    <div class="result-item" data-email="${user.email}" data-drawingname="${drawing.nom}" data-type="drawing">
-                        <img src="${drawing.image}" alt="${drawing.nom}" style="border-color:var(--pink-soft);">
-                        <div class="info">
-                            <h4>${drawing.nom}</h4>
-                            <p>par ${user.prenom} ${user.nom}</p>
-                        </div>
-                        <span class="badge">${drawing.favori ? '⭐' : '📸'}</span>
-                    </div>
-                `).join('');
+                `;
+                return;
             }
 
+            dropdownResults.innerHTML = results.map(user => `
+                <div class="result-item" data-email="${user.email}">
+                    <img src="${user.avatar}" alt="${user.prenom} ${user.nom}">
+                    <div class="info">
+                        <h4>${user.prenom} ${user.nom}</h4>
+                        <p>${user.email}</p>
+                    </div>
+                    <span class="badge">📸 ${user.drawings ? user.drawings.length : 0}</span>
+                </div>
+            `).join('');
+
+            // Gestion des clics
             document.querySelectorAll('.result-item').forEach(item => {
                 item.addEventListener('click', function() {
                     const email = this.dataset.email;
-                    const type = this.dataset.type;
                     const user = getAllUsers().find(u => u.email === email);
-                    
                     if (user) {
-                        if (type === 'drawing') {
-                            const drawingName = this.dataset.drawingname;
-                            showUserProfile(user, drawingName);
-                        } else {
-                            showUserProfile(user);
-                        }
+                        showUserProfile(user);
                     }
-                    
-                    document.getElementById('searchDropdown').classList.remove('active');
+                    dropdown.classList.remove('active');
                     document.getElementById('searchInputHeader').value = '';
                     document.getElementById('clearSearchHeader').classList.remove('visible');
                 });
             });
         }
 
-        // ===== ÉVÉNEMENTS RECHERCHE =====
+        // =============================================
+        // 5. ÉVÉNEMENTS
+        // =============================================
         const searchInput = document.getElementById('searchInputHeader');
         const searchBtn = document.getElementById('searchBtnHeader');
         const clearBtn = document.getElementById('clearSearchHeader');
@@ -1568,7 +1519,9 @@
             }
         });
 
-        // ===== FERMER LE MODAL PROFIL =====
+        // =============================================
+        // 6. FERMER LE MODAL PROFIL
+        // =============================================
         document.getElementById('closeProfileModal').addEventListener('click', function() {
             document.getElementById('profileModal').classList.remove('active');
         });
@@ -1579,134 +1532,24 @@
             }
         });
 
-        // ===== BOUTONS ESPACE CRÉATIF =====
+        // =============================================
+        // 7. BOUTONS ESPACE CRÉATIF
+        // =============================================
         document.getElementById('espaceCreatifBtn').addEventListener('click', function(e) {
             e.preventDefault();
             const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
-            if (user && user.prenom) {
-                window.location.href = 'moncompte.html';
-            } else {
-                window.location.href = 'login.html';
-            }
+            window.location.href = user && user.prenom ? 'moncompte.html' : 'login.html';
         });
 
         document.getElementById('openStudioBtn').addEventListener('click', function(e) {
             e.preventDefault();
             const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
-            if (user && user.prenom) {
-                window.location.href = 'moncompte.html';
-            } else {
-                window.location.href = 'login.html';
-            }
+            window.location.href = user && user.prenom ? 'moncompte.html' : 'login.html';
         });
 
-        // ===== ANIMATION DE PRÉSENTATION =====
-        let currentStep = 0;
-        const totalSteps = 4;
-
-        const demoOverlay = document.getElementById('demoOverlay');
-        const demoTrigger = document.getElementById('demoTriggerBtn');
-        const closeDemo = document.getElementById('closeDemo');
-        const demoSteps = document.querySelectorAll('.demo-step');
-        const dots = document.querySelectorAll('.dot');
-        const stepCounter = document.getElementById('stepCounter');
-        const prevBtn = document.getElementById('demoPrev');
-        const nextBtn = document.getElementById('demoNext');
-        const startBtn = document.getElementById('demoStart');
-
-        function updateDemo(step) {
-            demoSteps.forEach((el, index) => {
-                el.style.opacity = index === step ? '1' : '0.5';
-                el.style.transform = index === step ? 'translateX(6px)' : 'translateX(0)';
-                el.style.borderColor = index === step ? 'var(--pink-deep)' : 'rgba(74, 47, 23, 0.06)';
-            });
-
-            dots.forEach((dot, index) => {
-                dot.classList.remove('active', 'done');
-                if (index === step) {
-                    dot.classList.add('active');
-                } else if (index < step) {
-                    dot.classList.add('done');
-                }
-            });
-
-            stepCounter.textContent = `${step + 1} / ${totalSteps}`;
-            prevBtn.style.display = step === 0 ? 'none' : 'block';
-            nextBtn.style.display = step === totalSteps - 1 ? 'none' : 'block';
-            startBtn.style.display = step === totalSteps - 1 ? 'block' : 'none';
-        }
-
-        function nextStep() {
-            if (currentStep < totalSteps - 1) {
-                currentStep++;
-                updateDemo(currentStep);
-            }
-        }
-
-        function prevStep() {
-            if (currentStep > 0) {
-                currentStep--;
-                updateDemo(currentStep);
-            }
-        }
-
-        demoTrigger.addEventListener('click', function() {
-            currentStep = 0;
-            updateDemo(0);
-            demoOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-
-        function closeDemoModal() {
-            demoOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        closeDemo.addEventListener('click', closeDemoModal);
-        demoOverlay.addEventListener('click', function(e) {
-            if (e.target === this) closeDemoModal();
-        });
-
-        nextBtn.addEventListener('click', nextStep);
-        prevBtn.addEventListener('click', prevStep);
-
-        document.addEventListener('keydown', function(e) {
-            if (!demoOverlay.classList.contains('active')) return;
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                e.preventDefault();
-                if (currentStep === totalSteps - 1) {
-                    closeDemoModal();
-                } else {
-                    nextStep();
-                }
-            }
-            if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                prevStep();
-            }
-            if (e.key === 'Escape') {
-                closeDemoModal();
-            }
-        });
-
-        demoSteps.forEach((step, index) => {
-            step.addEventListener('click', function() {
-                currentStep = index;
-                updateDemo(index);
-            });
-        });
-
-        startBtn.addEventListener('click', function() {
-            closeDemoModal();
-            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
-            if (user && user.prenom) {
-                window.location.href = 'moncompte.html';
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
-
-        // ===== MODAL =====
+        // =============================================
+        // 8. MODAL DISCOVERY
+        // =============================================
         const triggerBtn = document.getElementById('trigger-discovery');
         const closeBtn = document.getElementById('close-discovery');
         const modal = document.getElementById('discovery-modal');
@@ -1720,13 +1563,16 @@
         if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
         if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 
-        // ===== AFFICHER TOUS LES UTILISATEURS DANS LA CONSOLE POUR LE DEBUG =====
-        console.log('📋 Liste des utilisateurs enregistrés:');
-        const allUsers = getAllUsers();
-        console.log(allUsers);
-
+        // =============================================
+        // 9. INITIALISATION
+        // =============================================
         updateHeader();
         window.addEventListener('storage', updateHeader);
+
+        // Afficher la liste des utilisateurs dans la console au chargement
+        console.log('🚀 Site chargé !');
+        console.log('📋 Utilisateurs disponibles :', getAllUsers());
+        console.log('💡 Tapez un nom dans la barre de recherche pour trouver un utilisateur.');
     </script>
 </body>
 </html>
