@@ -1,4 +1,4 @@
-<!-- index.html - Version avec affichage des comptes existants -->
+<!-- index.html - Version corrigée avec tous les utilisateurs -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1180,11 +1180,11 @@
             }
         }
 
-        // ===== RÉCUPÉRER TOUS LES UTILISATEURS (Y COMPRIS CEUX DU LOCALSTORAGE) =====
+        // ===== FONCTION POUR RÉCUPÉRER TOUS LES UTILISATEURS =====
         function getAllUsers() {
             const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
             
-            // 1. Récupérer les utilisateurs simulés
+            // 1. Récupérer les utilisateurs simulés (pour la démo)
             const mockUsers = [
                 { 
                     nom: 'Martin', 
@@ -1241,7 +1241,7 @@
                     email: 'pierre.simon@email.com', 
                     avatar: 'https://ui-avatars.com/api/?name=Pierre+Simon&background=4a2f17&color=fff&size=128',
                     drawings: []
-                },
+                }
             ];
 
             // 2. Ajouter des dessins simulés pour les utilisateurs mock
@@ -1252,20 +1252,26 @@
             ];
 
             mockUsers.forEach((user, index) => {
-                const numDrawings = Math.floor(Math.random() * 4) + 2;
-                user.drawings = [];
-                for (let i = 0; i < numDrawings; i++) {
-                    const nameIndex = (index + i) % drawingNames.length;
-                    user.drawings.push({
-                        image: `https://picsum.photos/seed/${user.email}${i}/200/200`,
-                        date: new Date(Date.now() - i * 86400000).toLocaleDateString('fr-FR'),
-                        favori: Math.random() > 0.7,
-                        nom: drawingNames[(nameIndex + i * 2) % drawingNames.length]
-                    });
+                // Vérifier si l'utilisateur a des dessins dans le localStorage
+                const userDrawings = getUserDrawings(user.email);
+                if (userDrawings.length > 0) {
+                    user.drawings = userDrawings;
+                } else {
+                    const numDrawings = Math.floor(Math.random() * 4) + 2;
+                    user.drawings = [];
+                    for (let i = 0; i < numDrawings; i++) {
+                        const nameIndex = (index + i) % drawingNames.length;
+                        user.drawings.push({
+                            image: `https://picsum.photos/seed/${user.email}${i}/200/200`,
+                            date: new Date(Date.now() - i * 86400000).toLocaleDateString('fr-FR'),
+                            favori: Math.random() > 0.7,
+                            nom: drawingNames[(nameIndex + i * 2) % drawingNames.length]
+                        });
+                    }
                 }
             });
 
-            // 3. Récupérer les utilisateurs du localStorage (ceux qui se sont inscrits)
+            // 3. Récupérer les utilisateurs enregistrés dans le localStorage
             const storedUsers = JSON.parse(localStorage.getItem('registered_users') || '[]');
             
             // Ajouter les utilisateurs stockés à la liste
@@ -1278,13 +1284,15 @@
                         nom: storedUser.nom || '',
                         prenom: storedUser.prenom || '',
                         email: storedUser.email,
-                        avatar: storedUser.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(storedUser.prenom || 'User') + '&background=e5a968&color=fff&size=128',
+                        avatar: 'https://ui-avatars.com/api/?name=' + encodeURIComponent(storedUser.prenom || storedUser.nom || 'User') + '&background=e5a968&color=fff&size=128',
                         drawings: userDrawings.length > 0 ? userDrawings : []
                     });
                 } else {
-                    // Mettre à jour les dessins de l'utilisateur existant
+                    // Mettre à jour les informations de l'utilisateur existant
                     const existingUser = mockUsers.find(u => u.email === storedUser.email);
                     if (existingUser) {
+                        existingUser.nom = storedUser.nom || existingUser.nom;
+                        existingUser.prenom = storedUser.prenom || existingUser.prenom;
                         const userDrawings = getUserDrawings(storedUser.email);
                         if (userDrawings.length > 0) {
                             existingUser.drawings = userDrawings;
@@ -1293,7 +1301,7 @@
                 }
             });
 
-            // 4. Ajouter l'utilisateur actuellement connecté s'il n'est pas déjà dans la liste
+            // 4. Ajouter l'utilisateur actuellement connecté
             if (currentUser && currentUser.email) {
                 const exists = mockUsers.some(u => u.email === currentUser.email);
                 if (!exists) {
@@ -1317,6 +1325,8 @@
                         if (avatar) {
                             existingUser.avatar = avatar;
                         }
+                        existingUser.nom = currentUser.nom || existingUser.nom;
+                        existingUser.prenom = currentUser.prenom || existingUser.prenom;
                     }
                 }
             }
@@ -1328,16 +1338,6 @@
         function getUserDrawings(email) {
             const allDrawings = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
             return allDrawings.filter(d => d.email === email);
-        }
-
-        // ===== ENREGISTRER UN NOUVEL UTILISATEUR DANS LE LOCALSTORAGE =====
-        function registerUser(nom, prenom, email) {
-            let users = JSON.parse(localStorage.getItem('registered_users') || '[]');
-            const exists = users.some(u => u.email === email);
-            if (!exists) {
-                users.push({ nom, prenom, email });
-                localStorage.setItem('registered_users', JSON.stringify(users));
-            }
         }
 
         // ===== AFFICHER LE PROFIL UTILISATEUR =====
@@ -1720,23 +1720,13 @@
         if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
         if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 
-        // ===== ENREGISTRER L'UTILISATEUR ACTUEL DANS LA LISTE =====
-        const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
-        if (currentUser && currentUser.email) {
-            registerUser(currentUser.nom || '', currentUser.prenom || '', currentUser.email);
-        }
+        // ===== AFFICHER TOUS LES UTILISATEURS DANS LA CONSOLE POUR LE DEBUG =====
+        console.log('📋 Liste des utilisateurs enregistrés:');
+        const allUsers = getAllUsers();
+        console.log(allUsers);
 
         updateHeader();
-        window.addEventListener('storage', function(e) {
-            if (e.key === 'utilisateur' || e.key === 'userAvatar') {
-                updateHeader();
-                // Réenregistrer l'utilisateur si les infos changent
-                const updatedUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
-                if (updatedUser && updatedUser.email) {
-                    registerUser(updatedUser.nom || '', updatedUser.prenom || '', updatedUser.email);
-                }
-            }
-        });
+        window.addEventListener('storage', updateHeader);
     </script>
 </body>
 </html>
