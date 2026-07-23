@@ -1,4 +1,4 @@
-<!-- moncompte.html - Version avec cadre épais -->
+<!-- moncompte.html - Version corrigée -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -22,6 +22,7 @@
             --gold: #f6c667;
             --bg: #fffdf7;
             --radius: 18px;
+            --shadow: 0 12px 30px rgba(150,100,30,0.06);
         }
 
         html, body {
@@ -30,6 +31,59 @@
             background: var(--bg);
             scroll-behavior: smooth;
             min-height: 100vh;
+        }
+
+        /* TOAST NOTIFICATIONS */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast {
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 500;
+            font-size: 14px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            animation: slideIn 0.3s ease;
+            max-width: 400px;
+            backdrop-filter: blur(10px);
+        }
+
+        .toast-success {
+            background: linear-gradient(135deg, #4caf50, #43a047);
+        }
+
+        .toast-error {
+            background: linear-gradient(135deg, #f44336, #e53935);
+        }
+
+        .toast-warning {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+        }
+
+        .toast-info {
+            background: linear-gradient(135deg, #2196f3, #1976d2);
+        }
+
+        .toast.fade-out {
+            animation: slideOut 0.3s ease forwards;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
         }
 
         /* HEADER */
@@ -124,7 +178,7 @@
             padding: 30px 20px;
             text-align: center;
             border: 1px solid rgba(74, 47, 23, 0.06);
-            box-shadow: 0 12px 30px rgba(150,100,30,0.06);
+            box-shadow: var(--shadow);
             margin-bottom: 20px;
         }
 
@@ -394,6 +448,10 @@
             flex-direction: column;
             gap: 14px;
             animation: fadeInPanel 0.3s ease;
+            display: none;
+        }
+        .image-edit-panel.active {
+            display: flex;
         }
         @keyframes fadeInPanel {
             from { opacity: 0; transform: translateY(-8px); }
@@ -503,14 +561,12 @@
             position: relative;
         }
 
-        /* Cadre épais avec plusieurs couches */
         .canvas-frame {
             position: relative;
             border-radius: 12px;
             overflow: hidden;
             background: #fcfaf7;
             padding: 8px;
-            /* Couche 1 : contour extérieur épais */
             box-shadow: 
                 0 0 0 6px #f5ede4,
                 0 0 0 10px #e8d9cc,
@@ -520,7 +576,6 @@
             transition: box-shadow 0.4s ease;
         }
 
-        /* Effet au survol - le cadre s'illumine */
         .canvas-frame:hover {
             box-shadow: 
                 0 0 0 6px #f5ede4,
@@ -531,7 +586,6 @@
                 0 12px 50px rgba(74, 47, 23, 0.25);
         }
 
-        /* Couche intérieure du cadre avec effet bois/velours */
         .canvas-frame .frame-inner {
             position: absolute;
             inset: 6px;
@@ -541,7 +595,6 @@
             z-index: 2;
         }
 
-        /* Coins décoratifs dorés */
         .canvas-frame .corner {
             position: absolute;
             width: 35px;
@@ -550,40 +603,11 @@
             pointer-events: none;
             opacity: 0.7;
         }
+        .canvas-frame .corner-tl { top: 4px; left: 4px; border-top: 4px solid var(--pink-deep); border-left: 4px solid var(--pink-deep); border-radius: 4px 0 0 0; }
+        .canvas-frame .corner-tr { top: 4px; right: 4px; border-top: 4px solid var(--pink-deep); border-right: 4px solid var(--pink-deep); border-radius: 0 4px 0 0; }
+        .canvas-frame .corner-bl { bottom: 4px; left: 4px; border-bottom: 4px solid var(--pink-deep); border-left: 4px solid var(--pink-deep); border-radius: 0 0 0 4px; }
+        .canvas-frame .corner-br { bottom: 4px; right: 4px; border-bottom: 4px solid var(--pink-deep); border-right: 4px solid var(--pink-deep); border-radius: 0 0 4px 0; }
 
-        .canvas-frame .corner-tl {
-            top: 4px;
-            left: 4px;
-            border-top: 4px solid var(--pink-deep);
-            border-left: 4px solid var(--pink-deep);
-            border-radius: 4px 0 0 0;
-        }
-
-        .canvas-frame .corner-tr {
-            top: 4px;
-            right: 4px;
-            border-top: 4px solid var(--pink-deep);
-            border-right: 4px solid var(--pink-deep);
-            border-radius: 0 4px 0 0;
-        }
-
-        .canvas-frame .corner-bl {
-            bottom: 4px;
-            left: 4px;
-            border-bottom: 4px solid var(--pink-deep);
-            border-left: 4px solid var(--pink-deep);
-            border-radius: 0 0 0 4px;
-        }
-
-        .canvas-frame .corner-br {
-            bottom: 4px;
-            right: 4px;
-            border-bottom: 4px solid var(--pink-deep);
-            border-right: 4px solid var(--pink-deep);
-            border-radius: 0 0 4px 0;
-        }
-
-        /* Ombre intérieure pour effet de profondeur */
         .canvas-frame .inner-shadow {
             position: absolute;
             inset: 8px;
@@ -601,9 +625,9 @@
             z-index: 1;
             background: #fcfaf7;
             cursor: crosshair;
+            touch-action: none;
         }
 
-        /* Badge "Toile" en bas à droite */
         .canvas-badge {
             position: absolute;
             bottom: 24px;
@@ -621,11 +645,7 @@
             pointer-events: none;
             box-shadow: 0 4px 12px rgba(0,0,0,0.06);
         }
-
-        .canvas-badge i {
-            color: var(--pink-deep);
-            margin-right: 6px;
-        }
+        .canvas-badge i { color: var(--pink-deep); margin-right: 6px; }
 
         /* GALERIE */
         .gallery {
@@ -706,21 +726,34 @@
             background: rgba(201, 138, 62, 0.05);
         }
 
+        /* AUTO-SAVE INDICATOR */
+        .autosave-indicator {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .autosave-indicator.visible {
+            opacity: 1;
+        }
+
         /* RESPONSIVE */
         @media (max-width: 1024px) {
-            .container {
-                flex-direction: column;
-            }
-            .sidebar {
-                width: 100%;
-            }
-            .toolbar {
-                justify-content: flex-start;
-            }
-            .toolbar .download {
-                margin-left: 0;
-            }
-            /* Cadre plus fin sur tablette */
+            .container { flex-direction: column; }
+            .sidebar { width: 100%; }
+            .toolbar { justify-content: flex-start; }
+            .toolbar .download { margin-left: 0; }
             .canvas-frame {
                 box-shadow: 
                     0 0 0 4px #f5ede4,
@@ -728,35 +761,15 @@
                     0 0 0 10px #dcc9b8,
                     0 8px 32px rgba(74, 47, 23, 0.15);
             }
-            .canvas-frame .corner {
-                display: none;
-            }
+            .canvas-frame .corner { display: none; }
         }
         @media (max-width: 640px) {
-            header {
-                padding: 0 20px;
-                height: 60px;
-            }
-            main {
-                padding: 0;
-            }
-            .top {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-            .toolbar > div {
-                border-right: none;
-                padding-right: 0;
-            }
-            .toolbar .brush-tools {
-                border-right: none;
-                padding: 0;
-            }
-            .canvas-wrapper {
-                padding: 12px;
-            }
-            /* Cadre plus fin sur mobile */
+            header { padding: 0 20px; height: 60px; }
+            main { padding: 0; }
+            .top { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .toolbar > div { border-right: none; padding-right: 0; }
+            .toolbar .brush-tools { border-right: none; padding: 0; }
+            .canvas-wrapper { padding: 12px; }
             .canvas-frame {
                 padding: 4px;
                 box-shadow: 
@@ -765,31 +778,21 @@
                     0 0 0 7px #dcc9b8,
                     0 4px 20px rgba(74, 47, 23, 0.1);
             }
-            .canvas-frame .corner {
-                display: none;
-            }
-            .canvas-frame .frame-inner {
-                inset: 3px;
-                border-width: 2px;
-            }
-            .canvas-badge {
-                bottom: 12px;
-                right: 12px;
-                padding: 4px 12px;
-                font-size: 9px;
-            }
-            .image-edit-controls {
-                gap: 10px;
-            }
-            .actions-group {
-                margin-left: 0;
-                width: 100%;
-                justify-content: flex-end;
-            }
+            .canvas-frame .corner { display: none; }
+            .canvas-frame .frame-inner { inset: 3px; border-width: 2px; }
+            .canvas-badge { bottom: 12px; right: 12px; padding: 4px 12px; font-size: 9px; }
+            .image-edit-controls { gap: 10px; }
+            .actions-group { margin-left: 0; width: 100%; justify-content: flex-end; }
         }
     </style>
 </head>
 <body>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- AUTO-SAVE INDICATOR -->
+    <div class="autosave-indicator" id="autosaveIndicator">💾 Sauvegarde automatique</div>
 
     <header>
         <div class="logo">
@@ -884,8 +887,8 @@
                 <button id="download" class="download">📥 Télécharger</button>
             </section>
 
-            <!-- ===== PANNEAU D'ÉDITION DE L'IMAGE IMPORTÉE ===== -->
-            <section class="image-edit-panel" id="imageEditPanel" style="display:none;">
+            <!-- PANNEAU D'ÉDITION -->
+            <section class="image-edit-panel" id="imageEditPanel">
                 <div class="image-edit-panel-header">
                     <span><i class="fa-solid fa-image"></i> Modifier l'image importée</span>
                     <span class="image-edit-hint">Astuce : cliquez-glissez l'image sur la toile pour la déplacer</span>
@@ -924,25 +927,16 @@
                 </div>
             </section>
 
-            <!-- ===== CANVAS AVEC CADRE ÉPAIS ===== -->
+            <!-- CANVAS -->
             <section class="canvas-wrapper">
                 <div class="canvas-frame">
-                    <!-- Coins décoratifs -->
                     <div class="corner corner-tl"></div>
                     <div class="corner corner-tr"></div>
                     <div class="corner corner-bl"></div>
                     <div class="corner corner-br"></div>
-                    
-                    <!-- Couche intérieure -->
                     <div class="frame-inner"></div>
-                    
-                    <!-- Ombre intérieure -->
                     <div class="inner-shadow"></div>
-                    
-                    <!-- La toile -->
                     <canvas id="canvas" width="1200" height="700"></canvas>
-                    
-                    <!-- Badge -->
                     <div class="canvas-badge">
                         <i class="fa-solid fa-paintbrush"></i> Toile
                     </div>
@@ -957,6 +951,32 @@
     </div>
 
     <script>
+        // ===== TOAST NOTIFICATIONS =====
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ===== AUTO-SAVE INDICATOR =====
+        let autosaveTimeout;
+
+        function showAutosave() {
+            const indicator = document.getElementById('autosaveIndicator');
+            indicator.classList.add('visible');
+            clearTimeout(autosaveTimeout);
+            autosaveTimeout = setTimeout(() => {
+                indicator.classList.remove('visible');
+            }, 1500);
+        }
+
         // ===== CHARGEMENT DES INFOS UTILISATEUR =====
         function loadUserInfo() {
             const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
@@ -981,6 +1001,7 @@
                     localStorage.setItem('userAvatar', dataUrl);
                     document.getElementById('profileAvatar').src = dataUrl;
                     document.getElementById('headerAvatar').src = dataUrl;
+                    showToast('Photo de profil mise à jour !', 'success');
                 };
                 reader.readAsDataURL(file);
             }
@@ -999,6 +1020,10 @@
             if (e.key === 'utilisateur' || e.key === 'userAvatar') loadUserInfo();
             if (e.key === 'studio_dessins') updateStats();
         });
+
+        // Exposer showToast globalement pour moncompte.js
+        window.showToast = showToast;
+        window.showAutosave = showAutosave;
     </script>
 
     <script src="moncompte.js"></script>
