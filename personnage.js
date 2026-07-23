@@ -1,4 +1,4 @@
-// personnage.js - Assistant virtuel Studio Créatif
+// personnage.js - Version avec réactions au tutoriel
 document.addEventListener("DOMContentLoaded", function() {
     // Créer le conteneur
     const container = document.createElement('div');
@@ -55,6 +55,19 @@ document.addEventListener("DOMContentLoaded", function() {
         "Tu as du talent, c'est certain ! 🌟"
     ];
 
+    const tutorialMessages = [
+        "🎨 La couleur, c'est la vie !",
+        "📏 La taille parfaite !",
+        "🖌️ J'adore ce pinceau !",
+        "✏️ Le crayon, mon préféré !",
+        "🧹 La gomme magique !",
+        "↩️ Ctrl+Z, le meilleur ami des artistes !",
+        "↪️ Ctrl+Y, comme par magie !",
+        "🖼️ Importe une image, c'est amusant !",
+        "💾 Sauvegarde ton chef-d'œuvre !",
+        "📥 Télécharge et partage !"
+    ];
+
     let timeout = null;
 
     function showMessage(msg) {
@@ -102,7 +115,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    // Événements du dessin (écouter les actions)
+    // ===============================
+    // ÉVÉNEMENTS DU DESSIN
+    // ===============================
     document.addEventListener('drawing:saved', function() {
         showMessage("Superbe création ! Sauvegardé ! 💾");
     });
@@ -125,6 +140,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.addEventListener('drawing:downloaded', function() {
         showMessage("Ton œuvre est prête à être partagée ! 📥");
+    });
+
+    // ===============================
+    // ÉVÉNEMENTS DU TUTORIEL
+    // ===============================
+    document.addEventListener('tutorial:start', function() {
+        showMessage("🎓 C'est parti pour le tutoriel ! Je suis là pour t'aider !");
+    });
+
+    document.addEventListener('tutorial:step', function(e) {
+        const step = e.detail?.step || 0;
+        if (tutorialMessages[step]) {
+            setTimeout(() => showMessage(tutorialMessages[step]), 800);
+        }
+    });
+
+    document.addEventListener('tutorial:end', function() {
+        showMessage("🎉 Bravo ! Tu es prêt à créer des merveilles !");
     });
 
     // Message de bienvenue

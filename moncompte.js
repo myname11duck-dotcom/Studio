@@ -1,4 +1,4 @@
-// moncompte.js - Version avec personnage
+// moncompte.js - Version avec tutoriel
 document.addEventListener("DOMContentLoaded", () => {
     // ===============================
     // 1. RÉCUPÉRATION DES ÉLÉMENTS
@@ -812,7 +812,319 @@ document.addEventListener("DOMContentLoaded", () => {
         resizeTimeout = setTimeout(resizeCanvas, 250);
     });
 
+    // ===============================
+    // 14. TUTORIEL INTERACTIF
+    // ===============================
+    const tutorial = {
+        steps: [
+            {
+                element: '#colorPicker',
+                title: '🎨 Choisis ta couleur',
+                message: 'Clique ici pour sélectionner la couleur de ton pinceau. Tu peux choisir n\'importe quelle couleur !',
+                position: 'bottom'
+            },
+            {
+                element: '#brushSize',
+                title: '📏 Ajuste la taille',
+                message: 'Fais glisser ce curseur pour modifier la taille de ton pinceau. Plus le chiffre est grand, plus le trait est épais !',
+                position: 'bottom'
+            },
+            {
+                element: '.brush-type[data-type="classic"]',
+                title: '🖌️ Les pinceaux',
+                message: 'Ici tu as différents pinceaux : classique, marqueur, aérosol, aquarelle, calligraphie et crayon. Essaie-les tous !',
+                position: 'bottom'
+            },
+            {
+                element: '#pencil',
+                title: '✏️ Le crayon',
+                message: 'Le crayon est ton outil principal pour dessiner. Clique dessus pour l\'activer.',
+                position: 'bottom'
+            },
+            {
+                element: '#eraser',
+                title: '🧹 La gomme',
+                message: 'La gomme efface ce que tu as dessiné. Utile pour corriger tes erreurs !',
+                position: 'bottom'
+            },
+            {
+                element: '#undo',
+                title: '↩️ Annuler',
+                message: 'Tu as fait une erreur ? Clique sur "Annuler" pour revenir en arrière. Raccourci : Ctrl+Z',
+                position: 'bottom'
+            },
+            {
+                element: '#redo',
+                title: '↪️ Refaire',
+                message: 'Tu as changé d\'avis ? Clique sur "Refaire" pour rétablir ce que tu as annulé. Raccourci : Ctrl+Y',
+                position: 'bottom'
+            },
+            {
+                element: '#importImageBtn',
+                title: '🖼️ Importer une image',
+                message: 'Tu peux importer une image depuis ton ordinateur pour la modifier ou dessiner dessus !',
+                position: 'bottom'
+            },
+            {
+                element: '#saveBtn',
+                title: '💾 Sauvegarder',
+                message: 'Quand ton chef-d\'œuvre est terminé, clique ici pour le sauvegarder dans ta galerie !',
+                position: 'top'
+            },
+            {
+                element: '#download',
+                title: '📥 Télécharger',
+                message: 'Tu peux aussi télécharger ton dessin en PNG, JPG ou WEBP pour le partager où tu veux !',
+                position: 'top'
+            }
+        ],
+        
+        currentStep: 0,
+        isActive: false,
+        overlay: null,
+        tooltip: null,
+        highlightedElement: null,
+        
+        start() {
+            if (this.isActive) return;
+            
+            // Vérifier si l'utilisateur a déjà vu le tutoriel
+            if (localStorage.getItem('tutorial_seen') === 'true') {
+                const restart = confirm('🔄 Voir le tutoriel à nouveau ?');
+                if (!restart) return;
+            }
+            
+            this.isActive = true;
+            this.currentStep = 0;
+            
+            // Créer l'overlay
+            this.overlay = document.createElement('div');
+            this.overlay.className = 'tutorial-overlay active';
+            document.body.appendChild(this.overlay);
+            
+            // Bloquer le scroll
+            document.body.style.overflow = 'hidden';
+            
+            this.showStep();
+            showToast('🎓 Bienvenue dans le tutoriel ! Suis les étapes.', 'info');
+            
+            // Événement pour le personnage
+            document.dispatchEvent(new CustomEvent('tutorial:start'));
+        },
+        
+        showStep() {
+            if (this.currentStep >= this.steps.length) {
+                this.end();
+                return;
+            }
+            
+            const step = this.steps[this.currentStep];
+            const element = document.querySelector(step.element);
+            
+            if (!element) {
+                // Si l'élément n'existe pas, passer à l'étape suivante
+                this.currentStep++;
+                this.showStep();
+                return;
+            }
+            
+            // Nettoyer l'ancien tooltip
+            if (this.tooltip) {
+                this.tooltip.remove();
+                this.tooltip = null;
+            }
+            
+            // Nettoyer l'ancien highlight
+            if (this.highlightedElement) {
+                this.highlightedElement.classList.remove('tutorial-highlight');
+                this.highlightedElement = null;
+            }
+            
+            // Mettre en surbrillance l'élément
+            element.classList.add('tutorial-highlight');
+            this.highlightedElement = element;
+            
+            // Faire défiler jusqu'à l'élément
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Créer le tooltip
+            this.tooltip = document.createElement('div');
+            this.tooltip.className = 'tutorial-tooltip';
+            
+            const progress = ((this.currentStep + 1) / this.steps.length * 100).toFixed(0);
+            
+            this.tooltip.innerHTML = `
+                <div class="tutorial-progress-bar">
+                    <div class="progress-fill" style="width: ${progress}%"></div>
+                </div>
+                <div class="tutorial-title">${step.title}</div>
+                <div class="tutorial-message">${step.message}</div>
+                <div class="tutorial-progress">Étape ${this.currentStep + 1} / ${this.steps.length}</div>
+                <div class="tutorial-actions">
+                    <button class="btn-skip" id="tutorialSkip">Passer</button>
+                    <button class="btn-next" id="tutorialNext">
+                        ${this.currentStep === this.steps.length - 1 ? '🎉 Terminer' : 'Suivant →'}
+                    </button>
+                </div>
+                <div class="tutorial-arrow ${step.position}"></div>
+            `;
+            
+            // Positionner le tooltip
+            this.positionTooltip(element, step.position);
+            
+            document.body.appendChild(this.tooltip);
+            
+            // Événements
+            this.tooltip.querySelector('#tutorialNext').addEventListener('click', () => {
+                this.nextStep();
+            });
+            
+            this.tooltip.querySelector('#tutorialSkip').addEventListener('click', () => {
+                this.skip();
+            });
+            
+            // Raccourci clavier
+            document.addEventListener('keydown', this.keyHandler = (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.nextStep();
+                }
+                if (e.key === 'Escape') {
+                    this.skip();
+                }
+            });
+            
+            // Événement pour le personnage
+            document.dispatchEvent(new CustomEvent('tutorial:step', { 
+                detail: { step: this.currentStep } 
+            }));
+        },
+        
+        positionTooltip(element, position) {
+            const rect = element.getBoundingClientRect();
+            const tooltip = this.tooltip;
+            
+            // Taille estimée du tooltip
+            const tooltipWidth = Math.min(300, window.innerWidth - 40);
+            const tooltipHeight = 200;
+            
+            let top, left;
+            
+            switch(position) {
+                case 'top':
+                    top = rect.top - tooltipHeight - 20;
+                    left = rect.left + rect.width/2 - tooltipWidth/2;
+                    break;
+                case 'bottom':
+                    top = rect.bottom + 20;
+                    left = rect.left + rect.width/2 - tooltipWidth/2;
+                    break;
+                case 'left':
+                    top = rect.top + rect.height/2 - tooltipHeight/2;
+                    left = rect.left - tooltipWidth - 20;
+                    break;
+                case 'right':
+                    top = rect.top + rect.height/2 - tooltipHeight/2;
+                    left = rect.right + 20;
+                    break;
+                default:
+                    top = rect.bottom + 20;
+                    left = rect.left + rect.width/2 - tooltipWidth/2;
+            }
+            
+            // S'assurer que le tooltip reste dans la fenêtre
+            if (top < 10) top = 10;
+            if (left < 10) left = 10;
+            if (left + tooltipWidth > window.innerWidth - 10) {
+                left = window.innerWidth - tooltipWidth - 10;
+            }
+            if (top + tooltipHeight > window.innerHeight - 10) {
+                top = window.innerHeight - tooltipHeight - 10;
+            }
+            
+            tooltip.style.top = top + 'px';
+            tooltip.style.left = left + 'px';
+            tooltip.style.maxWidth = tooltipWidth + 'px';
+        },
+        
+        nextStep() {
+            this.currentStep++;
+            // Enlever le highlight
+            if (this.highlightedElement) {
+                this.highlightedElement.classList.remove('tutorial-highlight');
+                this.highlightedElement = null;
+            }
+            this.showStep();
+        },
+        
+        skip() {
+            if (confirm('❓ Voulez-vous vraiment arrêter le tutoriel ?')) {
+                this.end();
+            }
+        },
+        
+        end() {
+            this.isActive = false;
+            
+            // Nettoyer
+            if (this.tooltip) {
+                this.tooltip.remove();
+                this.tooltip = null;
+            }
+            if (this.overlay) {
+                this.overlay.remove();
+                this.overlay = null;
+            }
+            if (this.highlightedElement) {
+                this.highlightedElement.classList.remove('tutorial-highlight');
+                this.highlightedElement = null;
+            }
+            if (this.keyHandler) {
+                document.removeEventListener('keydown', this.keyHandler);
+                this.keyHandler = null;
+            }
+            
+            document.body.style.overflow = '';
+            
+            // Marquer comme vu
+            localStorage.setItem('tutorial_seen', 'true');
+            
+            showToast('🎉 Tutoriel terminé ! À toi de créer maintenant !', 'success');
+            
+            // Événement pour le personnage
+            document.dispatchEvent(new CustomEvent('tutorial:end'));
+        }
+    };
+
+    // Bouton tutoriel
+    const tutorialBtn = document.getElementById('tutorialBtn');
+    if (tutorialBtn) {
+        tutorialBtn.addEventListener('click', () => {
+            tutorial.start();
+        });
+    }
+
+    // Raccourci clavier pour lancer le tutoriel
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 't' && !e.ctrlKey && !e.metaKey && !e.target.closest('input, textarea')) {
+            tutorial.start();
+        }
+    });
+
+    // Si c'est la première visite, lancer le tutoriel automatiquement
+    if (!localStorage.getItem('tutorial_seen')) {
+        setTimeout(() => {
+            const start = confirm('🎓 Bienvenue sur Studio Créatif ! Voulez-vous faire le tutoriel ?');
+            if (start) {
+                tutorial.start();
+            } else {
+                localStorage.setItem('tutorial_seen', 'true');
+            }
+        }, 3000);
+    }
+
     console.log('🎨 Studio Créatif chargé !');
     console.log('💡 Raccourcis : Ctrl+Z (annuler), Ctrl+Y (refaire), Ctrl+S (sauvegarder), E (gomme), P (crayon)');
+    console.log('📚 Appuie sur "T" pour lancer le tutoriel !');
     console.log('🧑‍🎨 Appuie sur "?" pour parler au personnage !');
 });

@@ -1,4 +1,4 @@
-<!-- moncompte.html - Version avec personnage -->
+<!-- moncompte.html - Version avec tutoriel -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -435,6 +435,201 @@
             border-color: var(--pink-mid);
         }
 
+        /* ===== TUTORIEL ===== */
+        .tutorial-btn {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe) !important;
+            color: #fff !important;
+            border-color: #6c5ce7 !important;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tutorial-btn::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe, #fd79a8, #6c5ce7);
+            background-size: 300% 300%;
+            border-radius: inherit;
+            z-index: -1;
+            animation: gradientMove 3s ease infinite;
+            opacity: 0.5;
+        }
+        
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .tutorial-btn:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.4);
+        }
+
+        /* Tooltip tutoriel */
+        .tutorial-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .tutorial-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        
+        .tutorial-highlight {
+            position: relative;
+            z-index: 9999 !important;
+            animation: pulseHighlight 1.5s ease-in-out infinite;
+            box-shadow: 0 0 0 4px #6c5ce7, 0 0 30px rgba(108, 92, 231, 0.4) !important;
+            border-radius: 8px;
+        }
+        
+        @keyframes pulseHighlight {
+            0%, 100% { box-shadow: 0 0 0 4px #6c5ce7, 0 0 30px rgba(108, 92, 231, 0.4); }
+            50% { box-shadow: 0 0 0 8px #6c5ce7, 0 0 50px rgba(108, 92, 231, 0.6); }
+        }
+        
+        .tutorial-tooltip {
+            position: fixed;
+            z-index: 10000;
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px 24px;
+            max-width: 300px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: tooltipIn 0.4s ease;
+            border: 2px solid #6c5ce7;
+        }
+        
+        @keyframes tooltipIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        .tutorial-tooltip .tutorial-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #6c5ce7;
+            margin-bottom: 4px;
+        }
+        
+        .tutorial-tooltip .tutorial-message {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #4a2f17;
+            margin-bottom: 12px;
+        }
+        
+        .tutorial-tooltip .tutorial-progress {
+            font-size: 11px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        .tutorial-tooltip .tutorial-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+        
+        .tutorial-tooltip .tutorial-actions button {
+            padding: 8px 18px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .tutorial-tooltip .tutorial-actions .btn-next {
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            color: #fff;
+        }
+        
+        .tutorial-tooltip .tutorial-actions .btn-next:hover {
+            transform: scale(1.05);
+        }
+        
+        .tutorial-tooltip .tutorial-actions .btn-skip {
+            background: #f5f5f5;
+            color: #999;
+        }
+        
+        .tutorial-tooltip .tutorial-actions .btn-skip:hover {
+            background: #eee;
+        }
+        
+        .tutorial-tooltip .tutorial-arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+        }
+        
+        .tutorial-tooltip .tutorial-arrow.top {
+            bottom: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-top: 12px solid #fff;
+            border-bottom: none;
+        }
+        
+        .tutorial-tooltip .tutorial-arrow.bottom {
+            top: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-bottom: 12px solid #fff;
+            border-top: none;
+        }
+        
+        .tutorial-tooltip .tutorial-arrow.left {
+            right: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-left: 12px solid #fff;
+            border-right: none;
+        }
+        
+        .tutorial-tooltip .tutorial-arrow.right {
+            left: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-right: 12px solid #fff;
+            border-left: none;
+        }
+
+        .tutorial-progress-bar {
+            height: 4px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 12px;
+            overflow: hidden;
+        }
+        
+        .tutorial-progress-bar .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #6c5ce7, #a29bfe);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
         /* IMAGE EDIT PANEL */
         .image-edit-panel {
             background: #fff;
@@ -747,6 +942,24 @@
             .canvas-badge { bottom: 12px; right: 12px; padding: 4px 12px; font-size: 9px; }
             .image-edit-controls { gap: 10px; }
             .actions-group { margin-left: 0; width: 100%; justify-content: flex-end; }
+            
+            .tutorial-tooltip {
+                max-width: 260px;
+                padding: 16px 18px;
+                margin: 10px;
+            }
+            
+            .tutorial-tooltip .tutorial-title {
+                font-size: 16px;
+            }
+            
+            .tutorial-tooltip .tutorial-message {
+                font-size: 12px;
+            }
+            
+            .tutorial-highlight {
+                box-shadow: 0 0 0 3px #6c5ce7 !important;
+            }
         }
     </style>
 </head>
@@ -849,6 +1062,10 @@
                 <button id="importImageBtn">🖼️ Importer une image</button>
                 <input type="file" id="importImageInput" accept="image/*" style="display:none">
                 <button id="download" class="download">📥 Télécharger</button>
+                <!-- BOUTON TUTORIEL -->
+                <button id="tutorialBtn" class="tutorial-btn" title="Lancer le tutoriel (T)">
+                    <i class="fa-solid fa-graduation-cap"></i> Tutoriel
+                </button>
             </section>
 
             <!-- IMAGE EDIT PANEL -->
