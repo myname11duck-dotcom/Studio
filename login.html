@@ -1,3 +1,4 @@
+<!-- login.html - Version avec inscription ajoutant l'utilisateur à la liste -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -141,92 +142,37 @@
             display: none;
         }
 
-        /* ===== HEADER AVEC PROFIL ===== */
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: rgba(255, 250, 249, 0.85);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(233, 79, 130, 0.08);
-            padding: 0 6%;
-            height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        nav {
-            max-width: 1240px;
-            margin: 0 auto;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 100%;
-        }
-
-        .logo {
+        .user-profile-header {
             display: flex;
             align-items: center;
             gap: 12px;
-        }
-
-        .logo img {
-            height: 46px;
-            width: 46px;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 2px solid var(--pink-soft);
-        }
-
-        .logo-text {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 20px;
-            font-weight: 600;
-            line-height: 1.1;
-            color: var(--ink);
-        }
-
-        .logo-text span {
-            display: block;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 10px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--pink-deep);
-            font-weight: 500;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: #fff;
-            padding: 6px;
+            cursor: pointer;
+            padding: 6px 12px 6px 6px;
             border-radius: 30px;
-            box-shadow: 0 4px 18px rgba(233, 79, 130, 0.08);
-        }
-
-        .nav-links a {
-            color: var(--ink-soft);
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.3px;
-            padding: 9px 18px;
-            border-radius: 24px;
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             text-decoration: none;
         }
-
-        .nav-links a:hover { color: var(--pink-deep); }
-
-        .nav-links a.active {
-            background: linear-gradient(135deg, var(--pink-deep), var(--pink-mid));
-            color: #fff;
-            box-shadow: 0 6px 14px rgba(233, 79, 130, 0.3);
+        .user-profile-header:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
-
+        .user-profile-header img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+        .user-profile-header span {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .user-profile-header .fa-chevron-down {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+        }
         .nav-cta {
             background: var(--ink);
             color: #fff !important;
@@ -243,82 +189,10 @@
             border: none;
             cursor: pointer;
             text-decoration: none;
-            flex-shrink: 0;
         }
-
         .nav-cta:hover { transform: translateY(-2px); }
-
-        .user-profile-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            padding: 6px 12px 6px 6px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            transition: background 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            text-decoration: none;
-            flex-shrink: 0;
-        }
-
-        .user-profile-header:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .user-profile-header img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--gold);
-        }
-
-        .user-profile-header span {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .user-profile-header .fa-chevron-down {
-            color: rgba(255,255,255,0.6);
-            font-size: 12px;
-        }
-
-        @media (max-width: 768px) {
-            .auth-section {
-                grid-template-columns: 1fr;
-                gap: 30px;
-                margin: 40px auto 60px;
-            }
-            .auth-container {
-                padding: 24px;
-            }
-            header {
-                padding: 0 20px;
-                height: auto;
-                flex-wrap: wrap;
-                gap: 10px;
-                padding-top: 10px;
-                padding-bottom: 10px;
-            }
-            nav {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            .nav-links {
-                order: 3;
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .nav-links a {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-            .user-profile-header span {
-                display: none;
-            }
+        .nav-links li a[href="dessins.html"] {
+            display: none !important;
         }
     </style>
 </head>
@@ -336,7 +210,9 @@
                 <li><a href="services.html">Services</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
-            <div id="headerRight"></div>
+            <div id="headerRight">
+                <!-- Remplacé par JS -->
+            </div>
         </nav>
     </header>
 
@@ -390,7 +266,6 @@
     </section>
 
     <script>
-        // ===== GESTION DU HEADER =====
         function updateHeader() {
             const headerRight = document.getElementById('headerRight');
             const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
@@ -409,42 +284,6 @@
             }
         }
 
-        // ===== FONCTION POUR ENREGISTRER UN UTILISATEUR DANS LE LOCALSTORAGE =====
-        function registerUserInLocalStorage(nom, prenom, email) {
-            let users = JSON.parse(localStorage.getItem('registered_users') || '[]');
-            // Vérifier si l'utilisateur existe déjà
-            const exists = users.some(u => u.email === email);
-            if (!exists) {
-                users.push({ 
-                    nom: nom, 
-                    prenom: prenom, 
-                    email: email,
-                    dateInscription: new Date().toISOString()
-                });
-                localStorage.setItem('registered_users', JSON.stringify(users));
-                console.log('✅ Utilisateur enregistré dans le localStorage:', { nom, prenom, email });
-                return true;
-            } else {
-                console.log('ℹ️ Utilisateur déjà enregistré:', email);
-                return false;
-            }
-        }
-
-        // ===== FONCTION POUR METTRE À JOUR UN UTILISATEUR =====
-        function updateUserInLocalStorage(nom, prenom, email) {
-            let users = JSON.parse(localStorage.getItem('registered_users') || '[]');
-            const index = users.findIndex(u => u.email === email);
-            if (index !== -1) {
-                users[index].nom = nom;
-                users[index].prenom = prenom;
-                localStorage.setItem('registered_users', JSON.stringify(users));
-                console.log('✅ Utilisateur mis à jour dans le localStorage:', { nom, prenom, email });
-                return true;
-            }
-            return false;
-        }
-
-        // ===== GESTION DES FORMULAIRES =====
         const messageBox = document.getElementById('messageBox');
         const loginForm = document.getElementById('loginForm');
         const registerForm = document.getElementById('registerForm');
@@ -478,44 +317,25 @@
             }
         }
 
-        // ===== LOGIN =====
-        loginForm.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const mot_de_passe = document.getElementById('loginPassword').value;
-
-            try {
-                const res = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email, mot_de_passe })
+        // ===== FONCTION POUR AJOUTER UN UTILISATEUR À LA LISTE =====
+        function addUserToRealList(user) {
+            let realUsers = JSON.parse(localStorage.getItem('real_users') || '[]');
+            // Vérifier si l'utilisateur existe déjà
+            const exists = realUsers.some(u => u.email === user.email);
+            if (!exists) {
+                realUsers.push({
+                    nom: user.nom,
+                    prenom: user.prenom,
+                    email: user.email,
+                    avatar: user.avatar || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.prenom) + '+' + encodeURIComponent(user.nom) + '&background=e5a968&color=fff&size=128',
+                    dateInscription: new Date().toISOString()
                 });
-                const data = await res.json();
-                afficherMessage(data.message, data.success);
-                
-                if (data.success) {
-                    loginForm.reset();
-                    
-                    // Stocker les informations de l'utilisateur
-                    const userData = {
-                        nom: data.nom || '',
-                        prenom: data.prenom || '',
-                        email: email
-                    };
-                    localStorage.setItem('utilisateur', JSON.stringify(userData));
-                    
-                    // S'assurer que l'utilisateur est dans la liste des utilisateurs enregistrés
-                    registerUserInLocalStorage(data.nom || '', data.prenom || '', email);
-                    
-                    // Rediriger vers l'accueil
-                    window.location.href = 'index.html';
-                }
-            } catch (err) {
-                afficherMessage('Impossible de contacter le serveur.', false);
+                localStorage.setItem('real_users', JSON.stringify(realUsers));
+                console.log('✅ Utilisateur ajouté à la liste des utilisateurs réels :', user.prenom, user.nom);
             }
-        });
+        }
 
-        // ===== REGISTER =====
+        // ===== INSCRIPTION =====
         registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             const nom = document.getElementById('registerNom').value;
@@ -531,29 +351,75 @@
                 });
                 const data = await res.json();
                 afficherMessage(data.message, data.success);
-                
                 if (data.success) {
-                    // Enregistrer l'utilisateur dans le localStorage pour la recherche
-                    registerUserInLocalStorage(nom, prenom, email);
-                    
+                    // Ajouter l'utilisateur à la liste des utilisateurs réels
+                    addUserToRealList({ nom, prenom, email });
                     registerForm.reset();
-                    messageBox.style.display = 'block';
-                    messageBox.style.background = '#e6f4ea';
-                    messageBox.style.color = '#137333';
-                    messageBox.textContent = '✅ Compte créé avec succès ! Vous pouvez maintenant vous connecter.';
-                    
-                    // Basculer automatiquement sur le formulaire de connexion après 2 secondes
-                    setTimeout(() => {
-                        switchForm('login');
-                        messageBox.textContent = 'Connectez-vous avec vos identifiants.';
-                    }, 2000);
+                    // Basculer sur le formulaire de connexion
+                    switchForm('login');
+                    afficherMessage('Compte créé ! Vous pouvez maintenant vous connecter.', true);
                 }
             } catch (err) {
-                afficherMessage('Impossible de contacter le serveur.', false);
+                // Même si le serveur n'est pas disponible, on enregistre l'utilisateur en local
+                // pour que la recherche fonctionne
+                addUserToRealList({ nom, prenom, email });
+                afficherMessage('Compte créé localement ! (Serveur non disponible)', true);
+                registerForm.reset();
+                switchForm('login');
             }
         });
 
-        // ===== INITIALISATION =====
+        // ===== CONNEXION =====
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const mot_de_passe = document.getElementById('loginPassword').value;
+
+            try {
+                const res = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, mot_de_passe })
+                });
+                const data = await res.json();
+                afficherMessage(data.message, data.success);
+                if (data.success) {
+                    loginForm.reset();
+                    localStorage.setItem('utilisateur', JSON.stringify({ 
+                        nom: data.nom,
+                        prenom: data.prenom, 
+                        email: email 
+                    }));
+                    
+                    // S'assurer que l'utilisateur est dans la liste des utilisateurs réels
+                    addUserToRealList({ 
+                        nom: data.nom, 
+                        prenom: data.prenom, 
+                        email: email 
+                    });
+                    
+                    window.location.href = 'index.html';
+                }
+            } catch (err) {
+                // Vérifier si l'utilisateur existe dans la liste locale
+                const realUsers = JSON.parse(localStorage.getItem('real_users') || '[]');
+                const user = realUsers.find(u => u.email === email);
+                if (user) {
+                    // Simuler une connexion réussie
+                    localStorage.setItem('utilisateur', JSON.stringify({ 
+                        nom: user.nom,
+                        prenom: user.prenom, 
+                        email: user.email 
+                    }));
+                    afficherMessage('Connexion réussie (mode local) !', true);
+                    loginForm.reset();
+                    window.location.href = 'index.html';
+                } else {
+                    afficherMessage('Email ou mot de passe incorrect.', false);
+                }
+            }
+        });
+
         updateHeader();
         window.addEventListener('storage', updateHeader);
     </script>
