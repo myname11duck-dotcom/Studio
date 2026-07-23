@@ -778,4 +778,221 @@
                 <div class="profile-avatar-upload" id="avatarUpload">
                     <img src="images/avatar.png" alt="Profil" id="profileAvatar">
                     <div class="upload-overlay"><i class="fa-solid fa-camera"></i></div>
-                    <input type="file" accept="image/*" id="
+                    <input type="file" accept="image/*" id="avatarInput">
+                </div>
+                <h2 id="profileNom">Mon compte</h2>
+                <span id="profileEmail">email@exemple.com</span>
+                <div class="stats">
+                    <div>
+                        <h3 id="statsDessins">0</h3>
+                        <p>Dessins</p>
+                    </div>
+                    <div>
+                        <h3 id="statsFavoris">0</h3>
+                        <p>Favoris</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav>
+                <a href="index.html">
+                    <i class="fa-solid fa-house"></i>
+                    Accueil
+                </a>
+                <a href="moncompte.html" class="active">
+                    <i class="fa-solid fa-palette"></i>
+                    Mon espace
+                </a>
+                <a href="parametres.html">
+                    <i class="fa-solid fa-gear"></i>
+                    Paramètres
+                </a>
+            </nav>
+        </aside>
+
+        <main>
+            <section class="top">
+                <div>
+                    <h1>Mon espace créatif</h1>
+                    <p>Laissez parler votre imagination.</p>
+                </div>
+                <button class="save" id="saveBtn">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                    Sauvegarder
+                </button>
+            </section>
+
+            <section class="toolbar">
+                <div>
+                    <label>Couleur</label>
+                    <input type="color" id="colorPicker" value="#4a2f17">
+                </div>
+                <div>
+                    <label>Taille</label>
+                    <input type="range" id="brushSize" min="1" max="50" value="5">
+                </div>
+                <div class="brush-tools">
+                    <span class="brush-label">Pinceau</span>
+                    <button class="brush-type active" data-type="classic" title="Classique">✏️</button>
+                    <button class="brush-type" data-type="marker" title="Marqueur">🖊️</button>
+                    <button class="brush-type" data-type="spray" title="Aérosol">💨</button>
+                    <button class="brush-type" data-type="watercolor" title="Aquarelle">🎨</button>
+                    <button class="brush-type" data-type="calligraphy" title="Calligraphie">🖋️</button>
+                    <button class="brush-type" data-type="pencil" title="Crayon">✎</button>
+                </div>
+                <button id="pencil" class="active">✏️ Crayon</button>
+                <button id="eraser">🩹 Gomme</button>
+                <button id="newCanvasBtn">📄 Nouvelle toile</button>
+                <button id="undo">↩ Annuler</button>
+                <button id="redo">↪ Refaire</button>
+                <button id="clear">🗑 Effacer</button>
+                <button id="importImageBtn">🖼️ Importer une image</button>
+                <input type="file" id="importImageInput" accept="image/*" style="display:none">
+                <button id="download" class="download">📥 Télécharger</button>
+            </section>
+
+            <!-- IMAGE EDIT PANEL -->
+            <section class="image-edit-panel" id="imageEditPanel">
+                <div class="image-edit-panel-header">
+                    <span><i class="fa-solid fa-image"></i> Modifier l'image importée</span>
+                    <span class="image-edit-hint">Astuce : cliquez-glissez l'image sur la toile pour la déplacer</span>
+                </div>
+                <div class="image-edit-controls">
+                    <div class="edit-group">
+                        <label for="imgBrightness">Luminosité</label>
+                        <input type="range" id="imgBrightness" min="0" max="200" value="100">
+                    </div>
+                    <div class="edit-group">
+                        <label for="imgContrast">Contraste</label>
+                        <input type="range" id="imgContrast" min="0" max="200" value="100">
+                    </div>
+                    <div class="edit-group">
+                        <label for="imgSaturation">Saturation</label>
+                        <input type="range" id="imgSaturation" min="0" max="200" value="100">
+                    </div>
+                    <div class="edit-group">
+                        <label for="imgScale">Taille</label>
+                        <input type="range" id="imgScale" min="10" max="200" value="100">
+                    </div>
+                    <div class="edit-group buttons-group">
+                        <button type="button" id="imgGrayscale" class="edit-toggle" title="Niveaux de gris"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                        <button type="button" id="imgSepia" class="edit-toggle" title="Sépia"><i class="fa-solid fa-droplet"></i></button>
+                        <button type="button" id="imgInvert" class="edit-toggle" title="Inverser les couleurs"><i class="fa-solid fa-yin-yang"></i></button>
+                        <button type="button" id="imgRotateLeft" title="Rotation gauche"><i class="fa-solid fa-rotate-left"></i></button>
+                        <button type="button" id="imgRotateRight" title="Rotation droite"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button type="button" id="imgFlipH" title="Miroir horizontal"><i class="fa-solid fa-left-right"></i></button>
+                        <button type="button" id="imgFlipV" title="Miroir vertical"><i class="fa-solid fa-up-down"></i></button>
+                        <button type="button" id="imgResetFilters" title="Réinitialiser les réglages"><i class="fa-solid fa-arrow-rotate-left"></i> Réinitialiser</button>
+                    </div>
+                    <div class="edit-group actions-group">
+                        <button type="button" id="imgCancelBtn" class="img-cancel">✕ Annuler</button>
+                        <button type="button" id="imgApplyBtn" class="img-apply">✓ Appliquer à la toile</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CANVAS -->
+            <section class="canvas-wrapper">
+                <div class="canvas-frame">
+                    <div class="corner corner-tl"></div>
+                    <div class="corner corner-tr"></div>
+                    <div class="corner corner-bl"></div>
+                    <div class="corner corner-br"></div>
+                    <div class="frame-inner"></div>
+                    <div class="inner-shadow"></div>
+                    <canvas id="canvas" width="1200" height="700"></canvas>
+                    <div class="canvas-badge">
+                        <i class="fa-solid fa-paintbrush"></i> Toile
+                    </div>
+                </div>
+            </section>
+
+            <section class="gallery">
+                <h2>Mes créations</h2>
+                <div class="gallery-grid" id="galleryGrid"></div>
+            </section>
+        </main>
+    </div>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        // ===== TOAST NOTIFICATIONS =====
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('fade-out');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // ===== AUTO-SAVE INDICATOR =====
+        let autosaveTimeout;
+        function showAutosave() {
+            const indicator = document.getElementById('autosaveIndicator');
+            indicator.classList.add('visible');
+            clearTimeout(autosaveTimeout);
+            autosaveTimeout = setTimeout(() => {
+                indicator.classList.remove('visible');
+            }, 1500);
+        }
+
+        // ===== CHARGEMENT DES INFOS UTILISATEUR =====
+        function loadUserInfo() {
+            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+            if (user) {
+                document.getElementById('profileNom').textContent = user.prenom || 'Mon compte';
+                document.getElementById('profileEmail').textContent = user.email || '';
+                document.getElementById('headerNom').textContent = user.prenom || 'Mon compte';
+                
+                const avatar = localStorage.getItem('userAvatar') || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(user.prenom || 'User') + '&background=c98a3e&color=fff&size=128';
+                document.getElementById('profileAvatar').src = avatar;
+                document.getElementById('headerAvatar').src = avatar;
+            }
+        }
+
+        // ===== UPLOAD AVATAR =====
+        document.getElementById('avatarInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    const dataUrl = event.target.result;
+                    localStorage.setItem('userAvatar', dataUrl);
+                    document.getElementById('profileAvatar').src = dataUrl;
+                    document.getElementById('headerAvatar').src = dataUrl;
+                    showToast('Photo de profil mise à jour !', 'success');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // ===== STATS =====
+        function updateStats() {
+            const dessins = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
+            document.getElementById('statsDessins').textContent = dessins.length;
+            document.getElementById('statsFavoris').textContent = dessins.filter(d => d.favori).length;
+        }
+
+        loadUserInfo();
+        updateStats();
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'utilisateur' || e.key === 'userAvatar') loadUserInfo();
+            if (e.key === 'studio_dessins') updateStats();
+        });
+
+        // Exposer globalement
+        window.showToast = showToast;
+        window.showAutosave = showAutosave;
+    </script>
+
+    <script src="moncompte.js"></script>
+    
+    <!-- ===== PERSONNAGE ASSISTANT ===== -->
+    <script src="personnage.js"></script>
+</body>
+</html>
