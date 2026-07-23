@@ -1,4 +1,4 @@
-<!-- index.html - Version simplifiée et corrigée -->
+<!-- index.html - Version avec correction pour l'affichage des utilisateurs -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        /* ===== HEADER ===== */
+        /* ===== TOUS LES STYLES CSS (identiques à votre version) ===== */
         header {
             position: sticky;
             top: 0;
@@ -265,36 +265,6 @@
         .search-dropdown .no-results-dropdown p {
             margin: 0;
             font-size: 14px;
-        }
-
-        .search-type-toggle {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0 6px;
-            border-left: 1px solid rgba(74, 47, 23, 0.1);
-            margin-left: 4px;
-        }
-
-        .search-type-toggle button {
-            background: none;
-            border: none;
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--ink-soft);
-            font-weight: 500;
-        }
-
-        .search-type-toggle button.active {
-            background: var(--pink-deep);
-            color: #fff;
-        }
-
-        .search-type-toggle button:hover:not(.active) {
-            background: var(--pink-pale);
         }
 
         .user-profile-header {
@@ -591,80 +561,7 @@
             font-size: 14px;
         }
 
-        @media (max-width: 1024px) {
-            .header-search {
-                width: 140px;
-            }
-            .header-search:focus-within {
-                width: 180px;
-            }
-            .search-dropdown {
-                width: 380px;
-                right: -80px;
-            }
-            .profile-modal-box .creations-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            header {
-                padding: 0 20px;
-                height: auto;
-                flex-wrap: wrap;
-                gap: 10px;
-                padding-top: 10px;
-                padding-bottom: 10px;
-            }
-            nav {
-                flex-wrap: wrap;
-                gap: 10px;
-            }
-            .nav-links {
-                order: 3;
-                width: 100%;
-                justify-content: center;
-                flex-wrap: wrap;
-            }
-            .nav-links a {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-            .header-right {
-                flex: 1;
-                justify-content: flex-end;
-            }
-            .header-search {
-                width: 120px;
-            }
-            .header-search:focus-within {
-                width: 150px;
-            }
-            .search-dropdown {
-                width: 300px;
-                right: -40px;
-            }
-            .user-profile-header span {
-                display: none;
-            }
-            .profile-modal-box {
-                padding: 24px;
-                margin: 10px;
-            }
-            .profile-modal-box .profile-header {
-                flex-direction: column;
-                text-align: center;
-            }
-            .profile-modal-box .creations-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            .search-type-toggle button {
-                font-size: 9px;
-                padding: 2px 6px;
-            }
-        }
-
-        /* ===== HERO ET AUTRES SECTIONS (copié de style.css) ===== */
+        /* ===== SECTIONS PRINCIPALES ===== */
         .hero {
             position: relative;
             overflow: hidden;
@@ -1067,6 +964,13 @@
         .modal-item h4 { font-size: 14px; margin-bottom: 6px; }
         .modal-item p { font-size: 12.5px; color: var(--ink-soft); line-height: 1.5; }
 
+        @media (max-width: 1024px) {
+            .header-search { width: 140px; }
+            .header-search:focus-within { width: 180px; }
+            .search-dropdown { width: 380px; right: -80px; }
+            .profile-modal-box .creations-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
         @media (max-width: 900px) {
             .hero-inner { grid-template-columns: 1fr; }
             .hero-visual { order: -1; }
@@ -1076,6 +980,59 @@
             .promo-text { max-width: 100%; }
             .modal-grid { grid-template-columns: 1fr; }
             .hero-text h1 { font-size: 36px; }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0 20px;
+                height: auto;
+                flex-wrap: wrap;
+                gap: 10px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+            nav {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+            .nav-links {
+                order: 3;
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .nav-links a {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .header-right {
+                flex: 1;
+                justify-content: flex-end;
+            }
+            .header-search {
+                width: 120px;
+            }
+            .header-search:focus-within {
+                width: 150px;
+            }
+            .search-dropdown {
+                width: 300px;
+                right: -40px;
+            }
+            .user-profile-header span {
+                display: none;
+            }
+            .profile-modal-box {
+                padding: 24px;
+                margin: 10px;
+            }
+            .profile-modal-box .profile-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .profile-modal-box .creations-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
@@ -1243,17 +1200,57 @@
         }
 
         // =============================================
-        // 2. FONCTION POUR RÉCUPÉRER TOUS LES UTILISATEURS
+        // 2. FONCTION POUR ENREGISTRER UN UTILISATEUR
         // =============================================
-        function getAllUsers() {
+        function registerUserInLocalStorage(nom, prenom, email) {
+            let users = JSON.parse(localStorage.getItem('registered_users') || '[]');
+            const exists = users.some(u => u.email === email);
+            if (!exists) {
+                users.push({ nom: nom, prenom: prenom, email: email });
+                localStorage.setItem('registered_users', JSON.stringify(users));
+                console.log('✅ Utilisateur enregistré:', { nom, prenom, email });
+                return true;
+            }
+            return false;
+        }
+
+        // =============================================
+        // 3. FONCTION POUR RÉCUPÉRER TOUS LES UTILISATEURS
+        // =============================================
+        // Récupère la liste des vrais comptes depuis le backend.
+        // ⚠️ Adaptez L'URL '/api/users' à la route réellement exposée par votre serveur.
+        async function fetchRealUsersFromServer() {
+            try {
+                const res = await fetch('/api/users');
+                if (!res.ok) {
+                    console.warn('⚠️ /api/users a répondu', res.status, '— la recherche se limitera aux utilisateurs locaux.');
+                    return [];
+                }
+                const data = await res.json();
+                // Accepte soit un tableau direct, soit { users: [...] }
+                const list = Array.isArray(data) ? data : (data.users || []);
+                return list.map(u => ({
+                    nom: u.nom || u.lastName || '',
+                    prenom: u.prenom || u.firstName || '',
+                    email: u.email || ''
+                })).filter(u => u.email);
+            } catch (err) {
+                console.warn('⚠️ Impossible de contacter /api/users, fallback sur le localStorage :', err.message);
+                return [];
+            }
+        }
+
+        async function getAllUsers() {
             const users = [];
             const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
 
-            // 2.1 Récupérer les utilisateurs enregistrés dans le localStorage
-            const storedUsers = JSON.parse(localStorage.getItem('registered_users') || '[]');
-            console.log('📋 Utilisateurs enregistrés dans localStorage:', storedUsers);
+            // Récupérer les vrais comptes côté serveur (valable pour tous les navigateurs/appareils)
+            const serverUsers = await fetchRealUsersFromServer();
 
-            // 2.2 Ajouter les utilisateurs mock (pour la démo)
+            // Récupérer les utilisateurs enregistrés dans le localStorage (fallback / cache local)
+            const storedUsers = JSON.parse(localStorage.getItem('registered_users') || '[]');
+            
+            // Ajouter les utilisateurs mock (pour la démo)
             const mockUsers = [
                 { nom: 'Martin', prenom: 'Sophie', email: 'sophie.martin@email.com' },
                 { nom: 'Dubois', prenom: 'Thomas', email: 'thomas.dubois@email.com' },
@@ -1265,7 +1262,7 @@
                 { nom: 'Simon', prenom: 'Pierre', email: 'pierre.simon@email.com' }
             ];
 
-            // 2.3 Ajouter les utilisateurs mock avec leurs avatars
+            // Ajouter les utilisateurs mock
             mockUsers.forEach(mock => {
                 const exists = users.some(u => u.email === mock.email);
                 if (!exists) {
@@ -1279,20 +1276,19 @@
                 }
             });
 
-            // 2.4 Ajouter les utilisateurs enregistrés
+            // Ajouter les utilisateurs enregistrés
             storedUsers.forEach(stored => {
                 const exists = users.some(u => u.email === stored.email);
                 if (!exists) {
-                    const avatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(stored.prenom || '')}+${encodeURIComponent(stored.nom || '')}&background=e5a968&color=fff&size=128`;
                     users.push({
                         nom: stored.nom || '',
                         prenom: stored.prenom || '',
                         email: stored.email,
-                        avatar: avatar,
+                        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(stored.prenom || '')}+${encodeURIComponent(stored.nom || '')}&background=e5a968&color=fff&size=128`,
                         drawings: []
                     });
                 } else {
-                    // Mettre à jour les infos de l'utilisateur existant
+                    // Mettre à jour les infos
                     const existing = users.find(u => u.email === stored.email);
                     if (existing) {
                         existing.nom = stored.nom || existing.nom;
@@ -1301,7 +1297,27 @@
                 }
             });
 
-            // 2.5 Ajouter l'utilisateur actuellement connecté
+            // Ajouter les utilisateurs venant du backend (comptes réels, tous appareils confondus)
+            serverUsers.forEach(server => {
+                const exists = users.some(u => u.email === server.email);
+                if (!exists) {
+                    users.push({
+                        nom: server.nom || '',
+                        prenom: server.prenom || '',
+                        email: server.email,
+                        avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(server.prenom || '')}+${encodeURIComponent(server.nom || '')}&background=e5a968&color=fff&size=128`,
+                        drawings: []
+                    });
+                } else {
+                    const existing = users.find(u => u.email === server.email);
+                    if (existing) {
+                        existing.nom = server.nom || existing.nom;
+                        existing.prenom = server.prenom || existing.prenom;
+                    }
+                }
+            });
+
+            // Ajouter l'utilisateur actuellement connecté
             if (currentUser && currentUser.email) {
                 const exists = users.some(u => u.email === currentUser.email);
                 if (!exists) {
@@ -1324,18 +1340,14 @@
                 }
             }
 
-            // 2.6 Récupérer les dessins pour chaque utilisateur
+            // Récupérer les dessins pour chaque utilisateur
             const allDrawings = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
             users.forEach(user => {
                 user.drawings = allDrawings.filter(d => d.email === user.email);
-                // Si pas de dessins, en créer des simulés pour la démo
-                if (user.drawings.length === 0 && !user.email.includes('@')) {
-                    // Ne pas créer de dessins simulés pour les utilisateurs mock
-                }
             });
 
-            // 2.7 Ajouter des dessins simulés pour les utilisateurs mock (pour la démo)
-            const drawingNames = ['Crépuscule doré', 'Jardin secret', 'Onde marine', 'Forêt enchantée'];
+            // Ajouter des dessins simulés pour les utilisateurs mock
+            const drawingNames = ['Crépuscule doré', 'Jardin secret', 'Onde marine', 'Forêt enchantée', 'Lumière du matin'];
             users.forEach((user, index) => {
                 if (user.drawings.length === 0 && mockUsers.some(m => m.email === user.email)) {
                     const numDrawings = Math.floor(Math.random() * 3) + 1;
@@ -1355,7 +1367,7 @@
         }
 
         // =============================================
-        // 3. AFFICHER LE PROFIL
+        // 4. AFFICHER LE PROFIL
         // =============================================
         function showUserProfile(user) {
             const modal = document.getElementById('profileModal');
@@ -1398,9 +1410,9 @@
         }
 
         // =============================================
-        // 4. RECHERCHE
+        // 5. RECHERCHE
         // =============================================
-        function performSearch(query) {
+        async function performSearch(query) {
             const dropdown = document.getElementById('searchDropdown');
             const dropdownResults = document.getElementById('dropdownResults');
             const dropdownHeader = document.getElementById('dropdownHeader');
@@ -1410,11 +1422,18 @@
                 return;
             }
 
+            // Affiche un état de chargement pendant que /api/users répond
+            dropdown.classList.add('active');
+            dropdownHeader.textContent = 'Recherche…';
+            dropdownResults.innerHTML = '';
+
             const searchTerm = query.toLowerCase().trim();
-            const users = getAllUsers();
+            const users = await getAllUsers();
             const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
 
-            // Filtrer les utilisateurs
+            // Le champ a pu changer pendant l'attente réseau : on ignore une réponse obsolète
+            if (searchInput.value.toLowerCase().trim() !== searchTerm) return;
+
             const results = users.filter(user => {
                 const fullName = (user.prenom + ' ' + user.nom).toLowerCase();
                 const fullNameReverse = (user.nom + ' ' + user.prenom).toLowerCase();
@@ -1423,7 +1442,6 @@
                               user.email.toLowerCase().includes(searchTerm) ||
                               user.prenom.toLowerCase().includes(searchTerm) ||
                               user.nom.toLowerCase().includes(searchTerm);
-                // Exclure l'utilisateur actuel
                 if (match && currentUser && currentUser.email) {
                     return user.email !== currentUser.email;
                 }
@@ -1454,11 +1472,11 @@
                 </div>
             `).join('');
 
-            // Gestion des clics
             document.querySelectorAll('.result-item').forEach(item => {
-                item.addEventListener('click', function() {
+                item.addEventListener('click', async function() {
                     const email = this.dataset.email;
-                    const user = getAllUsers().find(u => u.email === email);
+                    const allUsers = await getAllUsers();
+                    const user = allUsers.find(u => u.email === email);
                     if (user) {
                         showUserProfile(user);
                     }
@@ -1470,7 +1488,7 @@
         }
 
         // =============================================
-        // 5. ÉVÉNEMENTS
+        // 6. ÉVÉNEMENTS
         // =============================================
         const searchInput = document.getElementById('searchInputHeader');
         const searchBtn = document.getElementById('searchBtnHeader');
@@ -1520,7 +1538,7 @@
         });
 
         // =============================================
-        // 6. FERMER LE MODAL PROFIL
+        // 7. FERMER LE MODAL PROFIL
         // =============================================
         document.getElementById('closeProfileModal').addEventListener('click', function() {
             document.getElementById('profileModal').classList.remove('active');
@@ -1533,7 +1551,7 @@
         });
 
         // =============================================
-        // 7. BOUTONS ESPACE CRÉATIF
+        // 8. BOUTONS ESPACE CRÉATIF
         // =============================================
         document.getElementById('espaceCreatifBtn').addEventListener('click', function(e) {
             e.preventDefault();
@@ -1548,7 +1566,7 @@
         });
 
         // =============================================
-        // 8. MODAL DISCOVERY
+        // 9. MODAL DISCOVERY
         // =============================================
         const triggerBtn = document.getElementById('trigger-discovery');
         const closeBtn = document.getElementById('close-discovery');
@@ -1564,15 +1582,38 @@
         if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 
         // =============================================
-        // 9. INITIALISATION
+        // 10. INITIALISATION - FORCER L'ENREGISTREMENT
         // =============================================
-        updateHeader();
-        window.addEventListener('storage', updateHeader);
+        // Vérifier et enregistrer l'utilisateur actuel
+        const currentUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+        if (currentUser && currentUser.email) {
+            registerUserInLocalStorage(
+                currentUser.nom || '',
+                currentUser.prenom || '',
+                currentUser.email
+            );
+        }
 
-        // Afficher la liste des utilisateurs dans la console au chargement
+        updateHeader();
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'utilisateur' || e.key === 'userAvatar') {
+                updateHeader();
+                const updatedUser = JSON.parse(localStorage.getItem('utilisateur') || 'null');
+                if (updatedUser && updatedUser.email) {
+                    registerUserInLocalStorage(
+                        updatedUser.nom || '',
+                        updatedUser.prenom || '',
+                        updatedUser.email
+                    );
+                }
+            }
+        });
+
+        // Afficher la liste des utilisateurs dans la console
         console.log('🚀 Site chargé !');
-        console.log('📋 Utilisateurs disponibles :', getAllUsers());
+        getAllUsers().then(list => console.log('📋 Utilisateurs disponibles :', list));
         console.log('💡 Tapez un nom dans la barre de recherche pour trouver un utilisateur.');
+        console.log('📝 Si vous ne voyez pas votre compte, tapez: localStorage.setItem("registered_users", JSON.stringify([{nom:"VotreNom", prenom:"VotrePrenom", email:"votre@email.com"}]))');
     </script>
 </body>
 </html>
