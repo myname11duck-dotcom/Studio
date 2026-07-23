@@ -383,6 +383,116 @@
             border-color: var(--pink-mid);
         }
 
+        /* ===== PANNEAU D'ÉDITION D'IMAGE IMPORTÉE ===== */
+        .image-edit-panel {
+            background: #fff;
+            border-radius: var(--radius);
+            padding: 18px 20px;
+            border: 1px solid rgba(74, 47, 23, 0.08);
+            box-shadow: 0 4px 15px rgba(150,100,30,0.06);
+            margin-bottom: 25px;
+            flex-direction: column;
+            gap: 14px;
+            animation: fadeInPanel 0.3s ease;
+        }
+        @keyframes fadeInPanel {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .image-edit-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-weight: 600;
+            color: var(--pink-deep);
+            font-size: 14px;
+        }
+        .image-edit-panel-header i { margin-right: 6px; }
+        .image-edit-hint {
+            font-weight: 400;
+            font-size: 12px;
+            color: var(--ink-soft);
+        }
+        .image-edit-controls {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+        .edit-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .edit-group label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--ink-soft);
+            white-space: nowrap;
+        }
+        .buttons-group {
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .buttons-group button {
+            border: 1px solid rgba(74, 47, 23, 0.1);
+            background: #fff;
+            color: var(--ink-soft);
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .buttons-group button:hover {
+            background: var(--pink-pale);
+            color: var(--pink-deep);
+        }
+        .edit-toggle.active {
+            background: var(--pink-deep);
+            color: #fff;
+            border-color: var(--pink-deep);
+        }
+        .actions-group {
+            margin-left: auto;
+            gap: 10px;
+        }
+        .img-apply {
+            background: linear-gradient(135deg, var(--pink-deep), var(--pink-mid));
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            box-shadow: 0 6px 16px rgba(212, 139, 71, 0.3);
+            transition: all 0.3s ease;
+        }
+        .img-apply:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 139, 71, 0.4);
+        }
+        .img-cancel {
+            background: #fff;
+            border: 1px solid rgba(74, 47, 23, 0.15);
+            color: var(--ink-soft);
+            padding: 10px 18px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+        .img-cancel:hover {
+            background: rgba(200, 60, 60, 0.08);
+            color: #c83c3c;
+            border-color: rgba(200,60,60,0.3);
+        }
+
         /* ===== CANVAS AVEC CADRE ÉPAIS ===== */
         .canvas-wrapper {
             background: #fff;
@@ -668,6 +778,14 @@
                 padding: 4px 12px;
                 font-size: 9px;
             }
+            .image-edit-controls {
+                gap: 10px;
+            }
+            .actions-group {
+                margin-left: 0;
+                width: 100%;
+                justify-content: flex-end;
+            }
         }
     </style>
 </head>
@@ -761,7 +879,49 @@
                 <button id="undo">↩ Annuler</button>
                 <button id="redo">↪ Refaire</button>
                 <button id="clear">🗑 Effacer</button>
+                <button id="importImageBtn">🖼️ Importer une image</button>
+                <input type="file" id="importImageInput" accept="image/*" style="display:none">
                 <button id="download" class="download">📥 Télécharger</button>
+            </section>
+
+            <!-- ===== PANNEAU D'ÉDITION DE L'IMAGE IMPORTÉE ===== -->
+            <section class="image-edit-panel" id="imageEditPanel" style="display:none;">
+                <div class="image-edit-panel-header">
+                    <span><i class="fa-solid fa-image"></i> Modifier l'image importée</span>
+                    <span class="image-edit-hint">Astuce : cliquez-glissez l'image sur la toile pour la déplacer</span>
+                </div>
+                <div class="image-edit-controls">
+                    <div class="edit-group">
+                        <label for="imgBrightness">Luminosité</label>
+                        <input type="range" id="imgBrightness" min="0" max="200" value="100">
+                    </div>
+                    <div class="edit-group">
+                        <label for="imgContrast">Contraste</label>
+                        <input type="range" id="imgContrast" min="0" max="200" value="100">
+                    </div>
+                    <div class="edit-group">
+                        <label for="imgSaturation">Saturation</label>
+                        <input type="range" id="imgSaturation" min="0" max="200" value="100">
+                    </div>
+                    <div class="edit-group">
+                        <label for="imgScale">Taille</label>
+                        <input type="range" id="imgScale" min="10" max="200" value="100">
+                    </div>
+                    <div class="edit-group buttons-group">
+                        <button type="button" id="imgGrayscale" class="edit-toggle" title="Niveaux de gris"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                        <button type="button" id="imgSepia" class="edit-toggle" title="Sépia"><i class="fa-solid fa-droplet"></i></button>
+                        <button type="button" id="imgInvert" class="edit-toggle" title="Inverser les couleurs"><i class="fa-solid fa-yin-yang"></i></button>
+                        <button type="button" id="imgRotateLeft" title="Rotation gauche"><i class="fa-solid fa-rotate-left"></i></button>
+                        <button type="button" id="imgRotateRight" title="Rotation droite"><i class="fa-solid fa-rotate-right"></i></button>
+                        <button type="button" id="imgFlipH" title="Miroir horizontal"><i class="fa-solid fa-left-right"></i></button>
+                        <button type="button" id="imgFlipV" title="Miroir vertical"><i class="fa-solid fa-up-down"></i></button>
+                        <button type="button" id="imgResetFilters" title="Réinitialiser les réglages"><i class="fa-solid fa-arrow-rotate-left"></i> Réinitialiser</button>
+                    </div>
+                    <div class="edit-group actions-group">
+                        <button type="button" id="imgCancelBtn" class="img-cancel">✕ Annuler</button>
+                        <button type="button" id="imgApplyBtn" class="img-apply">✓ Appliquer à la toile</button>
+                    </div>
+                </div>
             </section>
 
             <!-- ===== CANVAS AVEC CADRE ÉPAIS ===== -->

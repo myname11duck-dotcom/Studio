@@ -27,6 +27,201 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentBrush = 'classic';
 
     // ===============================
+    // IMPORT & ÉDITION D'IMAGE
+    // ===============================
+    const importImageBtn = document.getElementById("importImageBtn");
+    const importImageInput = document.getElementById("importImageInput");
+    const imageEditPanel = document.getElementById("imageEditPanel");
+    const imgBrightness = document.getElementById("imgBrightness");
+    const imgContrast = document.getElementById("imgContrast");
+    const imgSaturation = document.getElementById("imgSaturation");
+    const imgScale = document.getElementById("imgScale");
+    const imgGrayscaleBtn = document.getElementById("imgGrayscale");
+    const imgSepiaBtn = document.getElementById("imgSepia");
+    const imgInvertBtn = document.getElementById("imgInvert");
+    const imgRotateLeftBtn = document.getElementById("imgRotateLeft");
+    const imgRotateRightBtn = document.getElementById("imgRotateRight");
+    const imgFlipHBtn = document.getElementById("imgFlipH");
+    const imgFlipVBtn = document.getElementById("imgFlipV");
+    const imgResetFiltersBtn = document.getElementById("imgResetFilters");
+    const imgCancelBtn = document.getElementById("imgCancelBtn");
+    const imgApplyBtn = document.getElementById("imgApplyBtn");
+
+    let imageEditMode = false;
+    let importedImage = null; // { img, x, y, w, h, baseW, baseH, rotation, flipH, flipV }
+    let baseImg = null; // image de la toile telle qu'elle était avant l'import (pour prévisualiser sans accumuler)
+    let isDraggingImage = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let imageFilters = { brightness: 100, contrast: 100, saturation: 100, grayscale: 0, sepia: 0, invert: 0 };
+
+    function buildFilterString() {
+        const f = imageFilters;
+        return `brightness(${f.brightness}%) contrast(${f.contrast}%) saturate(${f.saturation}%) grayscale(${f.grayscale}%) sepia(${f.sepia}%) invert(${f.invert}%)`;
+    }
+
+    function renderImagePreview() {
+        if (!importedImage || !baseImg) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
+
+        const { img, x, y, w, h, rotation, flipH, flipV } = importedImage;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate((rotation * Math.PI) / 180);
+        ctx.scale(flipH, flipV);
+        ctx.filter = buildFilterString();
+        ctx.drawImage(img, -w / 2, -h / 2, w, h);
+        ctx.restore();
+        ctx.filter = "none";
+    }
+
+    function isPointInsideImage(pos) {
+        if (!importedImage) return false;
+        const { x, y, w, h } = importedImage;
+        return pos.x >= x - w / 2 && pos.x <= x + w / 2 && pos.y >= y - h / 2 && pos.y <= y + h / 2;
+    }
+
+    function resetFilterControls() {
+        imageFilters = { brightness: 100, contrast: 100, saturation: 100, grayscale: 0, sepia: 0, invert: 0 };
+        if (imgBrightness) imgBrightness.value = 100;
+        if (imgContrast) imgContrast.value = 100;
+        if (imgSaturation) imgSaturation.value = 100;
+        if (imgScale) imgScale.value = 100;
+        [imgGrayscaleBtn, imgSepiaBtn, imgInvertBtn].forEach(b => b && b.classList.remove("active"));
+    }
+
+    function startImageImport(img) {
+        // Sauvegarde de l'état actuel de la toile pour prévisualiser sans l'altérer
+        const backupSrc = canvas.toDataURL();
+        baseImg = new Image();
+        baseImg.onload = () => renderImagePreview();
+        baseImg.src = backupSrc;
+
+        // On ajuste l'image pour qu'elle rentre dans la toile (mode "contenir"), centrée
+        const maxW = canvas.width * 0.8;
+        const maxH = canvas.height * 0.8;
+        const ratio = Math.min(maxW / img.width, maxH / img.height, 1);
+        const w = img.width * ratio;
+        const h = img.height * ratio;
+
+        importedImage = {
+            img,
+            x: canvas.width / 2,
+            y: canvas.height / 2,
+            w, h,
+            baseW: w,
+            baseH: h,
+            rotation: 0,
+            flipH: 1,
+            flipV: 1
+        };
+
+        resetFilterControls();
+        imageEditMode = true;
+        if (imageEditPanel) imageEditPanel.style.display = "flex";
+        canvas.style.cursor = "move";
+    }
+
+    function endImageImport(commit) {
+        if (commit) {
+            // L'image est déjà dessinée sur la toile (dernier rendu de renderImagePreview)
+            saveState();
+        } else if (baseImg) {
+            // On restaure la toile telle qu'elle était avant l'import
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(baseImg, 0, 0, canvas.width, canvas.height);
+        }
+        imageEditMode = false;
+        importedImage = null;
+        baseImg = null;
+        isDraggingImage = false;
+        canvas.style.cursor = "crosshair";
+        if (imageEditPanel) imageEditPanel.style.display = "none";
+    }
+
+    if (importImageBtn && importImageInput) {
+        importImageBtn.addEventListener("click", () => importImageInput.click());
+        importImageInput.addEventListener("change", (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            if (!file.type.startsWith("image/")) {
+                alert("Merci de sélectionner un fichier image.");
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                const img = new Image();
+                img.onload = () => startImageImport(img);
+                img.src = event.target.result;
+            };
+            reader.readAsDataURL(file);
+            importImageInput.value = ""; // permet de réimporter le même fichier
+        });
+    }
+
+    if (imgBrightness) imgBrightness.addEventListener("input", () => { imageFilters.brightness = imgBrightness.value; renderImagePreview(); });
+    if (imgContrast) imgContrast.addEventListener("input", () => { imageFilters.contrast = imgContrast.value; renderImagePreview(); });
+    if (imgSaturation) imgSaturation.addEventListener("input", () => { imageFilters.saturation = imgSaturation.value; renderImagePreview(); });
+    if (imgScale) imgScale.addEventListener("input", () => {
+        if (!importedImage) return;
+        const scale = imgScale.value / 100;
+        importedImage.w = importedImage.baseW * scale;
+        importedImage.h = importedImage.baseH * scale;
+        renderImagePreview();
+    });
+
+    if (imgGrayscaleBtn) imgGrayscaleBtn.addEventListener("click", () => {
+        imageFilters.grayscale = imageFilters.grayscale ? 0 : 100;
+        imgGrayscaleBtn.classList.toggle("active", !!imageFilters.grayscale);
+        renderImagePreview();
+    });
+    if (imgSepiaBtn) imgSepiaBtn.addEventListener("click", () => {
+        imageFilters.sepia = imageFilters.sepia ? 0 : 100;
+        imgSepiaBtn.classList.toggle("active", !!imageFilters.sepia);
+        renderImagePreview();
+    });
+    if (imgInvertBtn) imgInvertBtn.addEventListener("click", () => {
+        imageFilters.invert = imageFilters.invert ? 0 : 100;
+        imgInvertBtn.classList.toggle("active", !!imageFilters.invert);
+        renderImagePreview();
+    });
+    if (imgRotateLeftBtn) imgRotateLeftBtn.addEventListener("click", () => {
+        if (!importedImage) return;
+        importedImage.rotation -= 90;
+        renderImagePreview();
+    });
+    if (imgRotateRightBtn) imgRotateRightBtn.addEventListener("click", () => {
+        if (!importedImage) return;
+        importedImage.rotation += 90;
+        renderImagePreview();
+    });
+    if (imgFlipHBtn) imgFlipHBtn.addEventListener("click", () => {
+        if (!importedImage) return;
+        importedImage.flipH *= -1;
+        renderImagePreview();
+    });
+    if (imgFlipVBtn) imgFlipVBtn.addEventListener("click", () => {
+        if (!importedImage) return;
+        importedImage.flipV *= -1;
+        renderImagePreview();
+    });
+    if (imgResetFiltersBtn) imgResetFiltersBtn.addEventListener("click", () => {
+        if (!importedImage) return;
+        importedImage.rotation = 0;
+        importedImage.flipH = 1;
+        importedImage.flipV = 1;
+        importedImage.w = importedImage.baseW;
+        importedImage.h = importedImage.baseH;
+        importedImage.x = canvas.width / 2;
+        importedImage.y = canvas.height / 2;
+        resetFilterControls();
+        renderImagePreview();
+    });
+    if (imgCancelBtn) imgCancelBtn.addEventListener("click", () => endImageImport(false));
+    if (imgApplyBtn) imgApplyBtn.addEventListener("click", () => endImageImport(true));
+
+    // ===============================
     // 2. GESTION DES PINCEAUX
     // ===============================
     const brushTypes = document.querySelectorAll('.brush-type');
@@ -109,8 +304,18 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function startDrawing(e) {
-        isDrawing = true;
         const pos = getCoordinates(e);
+
+        if (imageEditMode) {
+            if (isPointInsideImage(pos)) {
+                isDraggingImage = true;
+                dragOffsetX = pos.x - importedImage.x;
+                dragOffsetY = pos.y - importedImage.y;
+            }
+            return;
+        }
+
+        isDrawing = true;
 
         const style = getBrushStyle();
         ctx.globalAlpha = style.opacity;
@@ -138,6 +343,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function draw(e) {
+        if (imageEditMode) {
+            if (!isDraggingImage || !importedImage) return;
+            const pos = getCoordinates(e);
+            importedImage.x = pos.x - dragOffsetX;
+            importedImage.y = pos.y - dragOffsetY;
+            renderImagePreview();
+            return;
+        }
+
         if (!isDrawing) return;
 
         const pos = getCoordinates(e);
@@ -199,6 +413,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function stopDrawing() {
+        if (imageEditMode) {
+            isDraggingImage = false;
+            return;
+        }
         if (isDrawing) {
             isDrawing = false;
             ctx.beginPath();
@@ -250,6 +468,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // ===============================
     function createNewCanvas() {
         if (confirm("Créer une nouvelle canvas ? Le dessin actuel sera effacé.")) {
+            if (imageEditMode) endImageImport(false);
             resetCanvas();
             history = [];
             historyStep = -1;
@@ -263,6 +482,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (clearBtn) {
         clearBtn.addEventListener("click", () => {
             if (confirm("Effacer tout le dessin ?")) {
+                if (imageEditMode) endImageImport(false);
                 resetCanvas();
                 saveState();
             }
@@ -330,6 +550,7 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             
             div.querySelector("img").addEventListener("click", () => {
+                if (imageEditMode) endImageImport(false);
                 const img = new Image();
                 img.src = dataUrl.image || dataUrl;
                 img.onload = () => {
