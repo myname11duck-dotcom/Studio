@@ -1,4 +1,4 @@
-<!-- index.html - Version corrigée avec profils utilisateurs -->
+<!-- index.html - Version avec noms des créations et recherche -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -98,12 +98,14 @@
             display: none !important;
         }
 
+        /* ===== DROITE DU HEADER ===== */
         .header-right {
             display: flex;
             align-items: center;
             gap: 16px;
         }
 
+        /* ===== RECHERCHE HEADER ===== */
         .header-search {
             position: relative;
             display: flex;
@@ -169,6 +171,7 @@
             display: block;
         }
 
+        /* ===== DROPDOWN RÉSULTATS ===== */
         .search-dropdown {
             position: absolute;
             top: calc(100% + 8px);
@@ -264,428 +267,6 @@
 
         .search-dropdown .no-results-dropdown p {
             margin: 0;
-            font-size: 14px;
-        }
-
-        .search-type-toggle {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 0 6px;
-            border-left: 1px solid rgba(74, 47, 23, 0.1);
-            margin-left: 4px;
-        }
-
-        .search-type-toggle button {
-            background: none;
-            border: none;
-            font-size: 11px;
-            padding: 4px 10px;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            color: var(--ink-soft);
-            font-weight: 500;
-        }
-
-        .search-type-toggle button.active {
-            background: var(--pink-deep);
-            color: #fff;
-        }
-
-        .search-type-toggle button:hover:not(.active) {
-            background: var(--pink-pale);
-        }
-
-        .user-profile-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            padding: 6px 12px 6px 6px;
-            border-radius: 30px;
-            background: rgba(255, 255, 255, 0.1);
-            transition: background 0.3s;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            text-decoration: none;
-            flex-shrink: 0;
-        }
-
-        .user-profile-header:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .user-profile-header img {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--gold);
-        }
-
-        .user-profile-header span {
-            color: #fff;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .user-profile-header .fa-chevron-down {
-            color: rgba(255,255,255,0.6);
-            font-size: 12px;
-        }
-
-        .nav-cta {
-            background: var(--ink);
-            color: #fff !important;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 12px 22px;
-            border-radius: 30px;
-            transition: transform 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: none;
-            cursor: pointer;
-            text-decoration: none;
-            flex-shrink: 0;
-        }
-
-        .nav-cta:hover { transform: translateY(-2px); }
-
-        .btn-espace-creatif {
-            background: var(--gold);
-            color: var(--ink) !important;
-            font-weight: 700;
-            border: none;
-            padding: 15px 30px;
-            font-size: 12.5px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.35s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            text-decoration: none;
-        }
-
-        .btn-espace-creatif:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 14px 28px rgba(0,0,0,0.25);
-            background: #f7d17a;
-        }
-
-        .btn-outline {
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.7);
-            color: #fff;
-            padding: 15px 28px;
-            font-size: 12.5px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            border-radius: 40px;
-            cursor: pointer;
-            transition: all 0.35s ease;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .btn-outline:hover { background: #fff; color: var(--pink-deep); }
-
-        /* ===== ANIMATION DE PRÉSENTATION ===== */
-        .demo-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(26, 20, 18, 0.85);
-            backdrop-filter: blur(8px);
-            z-index: 999;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 30px;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .demo-overlay.active {
-            display: flex;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
-        }
-
-        .demo-container {
-            background: #fff;
-            border-radius: 24px;
-            max-width: 900px;
-            width: 100%;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 40px;
-            position: relative;
-            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
-        }
-
-        .demo-container .btn-close-demo {
-            position: absolute;
-            top: 16px;
-            right: 20px;
-            background: var(--pink-pale);
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            color: var(--pink-deep);
-            font-size: 22px;
-            cursor: pointer;
-            transition: background 0.3s;
-            z-index: 10;
-        }
-
-        .demo-container .btn-close-demo:hover {
-            background: var(--pink-soft);
-        }
-
-        .demo-container h2 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 32px;
-            font-weight: 600;
-            color: var(--ink);
-            margin-bottom: 6px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .demo-container h2 i {
-            color: var(--pink-deep);
-        }
-
-        .demo-container .demo-subtitle {
-            color: var(--ink-soft);
-            font-size: 15px;
-            margin-bottom: 30px;
-        }
-
-        .demo-steps {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .demo-step {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            padding: 16px 20px;
-            border-radius: 16px;
-            background: var(--pink-pale);
-            border: 1px solid rgba(74, 47, 23, 0.06);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .demo-step:hover {
-            transform: translateX(6px);
-            border-color: var(--pink-deep);
-            box-shadow: 0 4px 15px rgba(201, 138, 62, 0.1);
-        }
-
-        .demo-step .step-number {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--pink-deep), var(--pink-mid));
-            color: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 700;
-            flex-shrink: 0;
-            font-family: 'Cormorant Garamond', serif;
-        }
-
-        .demo-step .step-content {
-            flex: 1;
-        }
-
-        .demo-step .step-content h4 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--ink);
-            margin: 0 0 2px;
-        }
-
-        .demo-step .step-content p {
-            font-size: 13px;
-            color: var(--ink-soft);
-            margin: 0;
-        }
-
-        .demo-step .step-icon {
-            font-size: 28px;
-            opacity: 0.4;
-            transition: opacity 0.3s;
-        }
-
-        .demo-step:hover .step-icon {
-            opacity: 1;
-        }
-
-        .demo-step .step-arrow {
-            color: var(--pink-deep);
-            font-size: 14px;
-            opacity: 0;
-            transform: translateX(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .demo-step:hover .step-arrow {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .demo-progress {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 24px 0 20px;
-        }
-
-        .demo-progress .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--pink-soft);
-            transition: all 0.3s ease;
-        }
-
-        .demo-progress .dot.active {
-            background: var(--pink-deep);
-            width: 28px;
-            border-radius: 20px;
-        }
-
-        .demo-progress .dot.done {
-            background: var(--pink-mid);
-        }
-
-        .demo-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(74, 47, 23, 0.06);
-        }
-
-        .demo-controls .btn-demo {
-            padding: 10px 28px;
-            border-radius: 30px;
-            border: none;
-            font-weight: 600;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Montserrat', sans-serif;
-        }
-
-        .demo-controls .btn-demo-prev {
-            background: var(--pink-pale);
-            color: var(--ink-soft);
-        }
-
-        .demo-controls .btn-demo-prev:hover {
-            background: var(--pink-soft);
-        }
-
-        .demo-controls .btn-demo-next {
-            background: linear-gradient(135deg, var(--pink-deep), var(--pink-mid));
-            color: #fff;
-            box-shadow: 0 4px 15px rgba(201, 138, 62, 0.3);
-        }
-
-        .demo-controls .btn-demo-next:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(201, 138, 62, 0.4);
-        }
-
-        .demo-controls .btn-demo-start {
-            background: linear-gradient(135deg, var(--pink-deep), var(--pink-mid));
-            color: #fff;
-            padding: 12px 40px;
-            box-shadow: 0 4px 15px rgba(201, 138, 62, 0.3);
-        }
-
-        .demo-controls .btn-demo-start:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(201, 138, 62, 0.4);
-        }
-
-        .demo-controls .step-counter {
-            font-size: 13px;
-            color: var(--ink-soft);
-            font-weight: 500;
-        }
-
-        .demo-badge {
-            display: inline-block;
-            background: #e74c3c;
-            color: #fff;
-            font-size: 9px;
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 20px;
-            margin-left: 8px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: pulse-badge 2s infinite;
-        }
-
-        @keyframes pulse-badge {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .demo-trigger-btn {
-            background: linear-gradient(135deg, #e74c3c, #c0392b);
-            color: #fff;
-            border: none;
-            padding: 8px 18px;
-            border-radius: 30px;
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: 'Montserrat', sans-serif;
-            animation: pulse-btn 2s infinite;
-        }
-
-        .demo-trigger-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 4px 20px rgba(231, 76, 60, 0.4);
-        }
-
-        @keyframes pulse-btn {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
-            50% { box-shadow: 0 0 0 8px rgba(231, 76, 60, 0); }
-        }
-
-        .demo-trigger-btn i {
             font-size: 14px;
         }
 
@@ -849,6 +430,139 @@
             font-size: 14px;
         }
 
+        .user-profile-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 6px 12px 6px 6px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .user-profile-header:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .user-profile-header img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+        }
+
+        .user-profile-header span {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .user-profile-header .fa-chevron-down {
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+        }
+
+        .nav-cta {
+            background: var(--ink);
+            color: #fff !important;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 12px 22px;
+            border-radius: 30px;
+            transition: transform 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .nav-cta:hover { transform: translateY(-2px); }
+
+        .btn-espace-creatif {
+            background: var(--gold);
+            color: var(--ink) !important;
+            font-weight: 700;
+            border: none;
+            padding: 15px 30px;
+            font-size: 12.5px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-espace-creatif:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.25);
+            background: #f7d17a;
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            color: #fff;
+            padding: 15px 28px;
+            font-size: 12.5px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outline:hover { background: #fff; color: var(--pink-deep); }
+
+        /* ===== BADGE DE RECHERCHE PAR NOM ===== */
+        .search-type-toggle {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0 6px;
+            border-left: 1px solid rgba(74, 47, 23, 0.1);
+            margin-left: 4px;
+        }
+
+        .search-type-toggle button {
+            background: none;
+            border: none;
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--ink-soft);
+            font-weight: 500;
+        }
+
+        .search-type-toggle button.active {
+            background: var(--pink-deep);
+            color: #fff;
+        }
+
+        .search-type-toggle button:hover:not(.active) {
+            background: var(--pink-pale);
+        }
+
         @media (max-width: 1024px) {
             .header-search {
                 width: 140px;
@@ -905,29 +619,6 @@
             .user-profile-header span {
                 display: none;
             }
-            .demo-container {
-                padding: 24px;
-                margin: 10px;
-            }
-            .demo-container h2 {
-                font-size: 24px;
-            }
-            .demo-step {
-                padding: 12px 16px;
-                flex-wrap: wrap;
-            }
-            .demo-step .step-icon {
-                display: none;
-            }
-            .demo-controls {
-                flex-wrap: wrap;
-                gap: 12px;
-                justify-content: center;
-            }
-            .search-type-toggle button {
-                font-size: 9px;
-                padding: 2px 6px;
-            }
             .profile-modal-box {
                 padding: 24px;
                 margin: 10px;
@@ -938,6 +629,10 @@
             }
             .profile-modal-box .creations-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            .search-type-toggle button {
+                font-size: 9px;
+                padding: 2px 6px;
             }
         }
     </style>
@@ -957,9 +652,7 @@
                 <li><a href="contact.html">Contact</a></li>
             </ul>
             <div class="header-right">
-                <button class="demo-trigger-btn" id="demoTriggerBtn">
-                    <i class="fa-solid fa-play"></i> Visite guidée
-                </button>
+                <!-- ===== RECHERCHE ===== -->
                 <div class="header-search" id="headerSearch">
                     <input type="text" id="searchInputHeader" placeholder="Rechercher...">
                     <button class="clear-btn-header" id="clearSearchHeader"><i class="fas fa-times"></i></button>
@@ -968,11 +661,13 @@
                         <button data-type="drawings" id="searchDrawings">🎨</button>
                     </div>
                     <button class="search-icon-btn" id="searchBtnHeader"><i class="fas fa-search"></i></button>
+                    <!-- Dropdown résultats -->
                     <div class="search-dropdown" id="searchDropdown">
                         <div class="dropdown-header" id="dropdownHeader">Résultats</div>
                         <div id="dropdownResults"></div>
                     </div>
                 </div>
+                <!-- ===== PROFIL ===== -->
                 <div id="headerProfile"></div>
             </div>
         </nav>
@@ -1091,75 +786,6 @@
         </div>
     </div>
 
-    <!-- ===== ANIMATION DE PRÉSENTATION ===== -->
-    <div class="demo-overlay" id="demoOverlay">
-        <div class="demo-container">
-            <button class="btn-close-demo" id="closeDemo"><i class="fas fa-times"></i></button>
-            
-            <h2>
-                <i class="fa-solid fa-compass"></i>
-                Découvrez Studio Créatif
-                <span class="demo-badge">Nouveau</span>
-            </h2>
-            <p class="demo-subtitle">Suivez ce guide interactif pour découvrir toutes les fonctionnalités du site en 4 étapes.</p>
-
-            <div class="demo-steps" id="demoSteps">
-                <div class="demo-step" data-step="0">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h4>🎨 Espace créatif</h4>
-                        <p>Créez et dessinez librement avec différents pinceaux sur votre toile interactive.</p>
-                    </div>
-                    <div class="step-icon">✏️</div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-                </div>
-                <div class="demo-step" data-step="1">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h4>🔍 Recherche d'utilisateurs</h4>
-                        <p>Trouvez d'autres artistes par leur nom, prénom ou email et explorez leurs créations.</p>
-                    </div>
-                    <div class="step-icon">👤</div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-                </div>
-                <div class="demo-step" data-step="2">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h4>🎯 Recherche de créations</h4>
-                        <p>Recherchez des dessins par leur nom et découvrez les œuvres des autres utilisateurs.</p>
-                    </div>
-                    <div class="step-icon">🎨</div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-                </div>
-                <div class="demo-step" data-step="3">
-                    <div class="step-number">4</div>
-                    <div class="step-content">
-                        <h4>👤 Profil utilisateur</h4>
-                        <p>Gérez votre compte, modifiez vos informations et personnalisez votre avatar.</p>
-                    </div>
-                    <div class="step-icon">⚙️</div>
-                    <div class="step-arrow"><i class="fas fa-arrow-right"></i></div>
-                </div>
-            </div>
-
-            <div class="demo-progress" id="demoProgress">
-                <span class="dot active"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-                <span class="dot"></span>
-            </div>
-
-            <div class="demo-controls">
-                <button class="btn-demo btn-demo-prev" id="demoPrev">← Précédent</button>
-                <span class="step-counter" id="stepCounter">1 / 4</span>
-                <button class="btn-demo btn-demo-next" id="demoNext">Suivant →</button>
-                <button class="btn-demo btn-demo-start" id="demoStart" style="display:none;">
-                    <i class="fa-solid fa-rocket"></i> Commencer l'aventure !
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script>
         // ===== GESTION DU HEADER =====
         function updateHeader() {
@@ -1178,6 +804,12 @@
             } else {
                 headerProfile.innerHTML = `<a href="login.html" class="nav-cta">Connexion</a>`;
             }
+        }
+
+        // ===== RÉCUPÉRER LES DESSINS D'UN UTILISATEUR =====
+        function getUserDrawings(email) {
+            const allDrawings = JSON.parse(localStorage.getItem('studio_dessins') || '[]');
+            return allDrawings.filter(d => d.email === email);
         }
 
         // ===== RÉCUPÉRER TOUS LES UTILISATEURS =====
@@ -1243,6 +875,7 @@
                 },
             ];
 
+            // Ajouter des dessins simulés avec noms
             const drawingNames = [
                 'Crépuscule doré', 'Jardin secret', 'Onde marine', 'Forêt enchantée',
                 'Lumière du matin', 'Rêve d\'été', 'Horizon lointain', 'Mélodie silencieuse',
@@ -1250,16 +883,21 @@
             ];
 
             mockUsers.forEach((user, index) => {
-                const numDrawings = Math.floor(Math.random() * 4) + 2;
-                user.drawings = [];
-                for (let i = 0; i < numDrawings; i++) {
-                    const nameIndex = (index + i) % drawingNames.length;
-                    user.drawings.push({
-                        image: `https://picsum.photos/seed/${user.email}${i}/200/200`,
-                        date: new Date(Date.now() - i * 86400000).toLocaleDateString('fr-FR'),
-                        favori: Math.random() > 0.7,
-                        nom: drawingNames[(nameIndex + i * 2) % drawingNames.length]
-                    });
+                const userDrawings = getUserDrawings(user.email);
+                if (userDrawings.length > 0) {
+                    user.drawings = userDrawings;
+                } else {
+                    const numDrawings = Math.floor(Math.random() * 4) + 2;
+                    user.drawings = [];
+                    for (let i = 0; i < numDrawings; i++) {
+                        const nameIndex = (index + i) % drawingNames.length;
+                        user.drawings.push({
+                            image: `https://picsum.photos/seed/${user.email}${i}/200/200`,
+                            date: new Date(Date.now() - i * 86400000).toLocaleDateString('fr-FR'),
+                            favori: Math.random() > 0.7,
+                            nom: drawingNames[(nameIndex + i * 2) % drawingNames.length]
+                        });
+                    }
                 }
             });
 
@@ -1267,16 +905,45 @@
             if (currentUser && currentUser.email) {
                 const exists = users.some(u => u.email === currentUser.email);
                 if (!exists) {
+                    const userDrawings = getUserDrawings(currentUser.email);
                     users.unshift({
                         nom: currentUser.nom || '',
                         prenom: currentUser.prenom || '',
                         email: currentUser.email,
                         avatar: localStorage.getItem('userAvatar') || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(currentUser.prenom || 'User') + '&background=e5a968&color=fff&size=128',
-                        drawings: []
+                        drawings: userDrawings
                     });
+                } else {
+                    const existingUser = users.find(u => u.email === currentUser.email);
+                    if (existingUser) {
+                        const userDrawings = getUserDrawings(currentUser.email);
+                        existingUser.drawings = userDrawings.length > 0 ? userDrawings : existingUser.drawings;
+                    }
                 }
             }
             return users;
+        }
+
+        // ===== RECHERCHE DE DESSINS PAR NOM =====
+        function searchDrawingsByName(query) {
+            const allUsers = getAllUsers();
+            const searchTerm = query.toLowerCase().trim();
+            const results = [];
+
+            allUsers.forEach(user => {
+                if (user.drawings && user.drawings.length > 0) {
+                    user.drawings.forEach(drawing => {
+                        if (drawing.nom && drawing.nom.toLowerCase().includes(searchTerm)) {
+                            results.push({
+                                drawing: drawing,
+                                user: user
+                            });
+                        }
+                    });
+                }
+            });
+
+            return results;
         }
 
         // ===== AFFICHER LE PROFIL UTILISATEUR =====
@@ -1321,14 +988,16 @@
             modal.classList.add('active');
         }
 
-        // ===== RECHERCHE =====
-        let searchMode = 'users';
+        // ===== RECHERCHE PRINCIPALE =====
+        let searchMode = 'users'; // 'users' ou 'drawings'
 
+        // Toggle de recherche
         document.getElementById('searchUsers').addEventListener('click', function() {
             document.getElementById('searchUsers').classList.add('active');
             document.getElementById('searchDrawings').classList.remove('active');
             searchMode = 'users';
             document.getElementById('searchInputHeader').placeholder = 'Rechercher un utilisateur...';
+            // Si un texte est déjà présent, relancer la recherche
             if (document.getElementById('searchInputHeader').value.trim()) {
                 performSearch(document.getElementById('searchInputHeader').value);
             }
@@ -1357,6 +1026,7 @@
             const searchTerm = query.toLowerCase().trim();
 
             if (searchMode === 'users') {
+                // Recherche d'utilisateurs
                 const users = getAllUsers();
                 const results = users.filter(user => {
                     const fullName = (user.prenom + ' ' + user.nom).toLowerCase();
@@ -1381,34 +1051,28 @@
                     return;
                 }
 
-                dropdownResults.innerHTML = results.map(user => `
-                    <div class="result-item" data-email="${user.email}" data-type="user">
-                        <img src="${user.avatar}" alt="${user.prenom} ${user.nom}">
-                        <div class="info">
-                            <h4>${user.prenom} ${user.nom}</h4>
-                            <p>${user.email}</p>
+                dropdownResults.innerHTML = results.map(user => {
+                    const numDrawings = user.drawings ? user.drawings.length : 0;
+                    return `
+                        <div class="result-item" data-email="${user.email}" data-type="user">
+                            <img src="${user.avatar}" alt="${user.prenom} ${user.nom}">
+                            <div class="info">
+                                <h4>${user.prenom} ${user.nom}</h4>
+                                <p>${user.email}</p>
+                            </div>
+                            <span class="badge">📸 ${numDrawings}</span>
                         </div>
-                        <span class="badge">📸 ${user.drawings ? user.drawings.length : 0}</span>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
 
             } else {
-                const allUsers = getAllUsers();
-                const results = [];
-                allUsers.forEach(user => {
-                    if (user.drawings && user.drawings.length > 0) {
-                        user.drawings.forEach(drawing => {
-                            if (drawing.nom && drawing.nom.toLowerCase().includes(searchTerm)) {
-                                results.push({ drawing, user });
-                            }
-                        });
-                    }
-                });
-
+                // Recherche de dessins par nom
+                const drawingResults = searchDrawingsByName(query);
+                
                 dropdown.classList.add('active');
-                dropdownHeader.textContent = `🎨 ${results.length} création${results.length > 1 ? 's' : ''}`;
+                dropdownHeader.textContent = `🎨 ${drawingResults.length} création${drawingResults.length > 1 ? 's' : ''}`;
 
-                if (results.length === 0) {
+                if (drawingResults.length === 0) {
                     dropdownResults.innerHTML = `
                         <div class="no-results-dropdown">
                             <i class="fas fa-paint-brush"></i>
@@ -1418,7 +1082,7 @@
                     return;
                 }
 
-                dropdownResults.innerHTML = results.map(({drawing, user}) => `
+                dropdownResults.innerHTML = drawingResults.map(({drawing, user}) => `
                     <div class="result-item" data-email="${user.email}" data-drawingname="${drawing.nom}" data-type="drawing">
                         <img src="${drawing.image}" alt="${drawing.nom}" style="border-color:var(--pink-soft);">
                         <div class="info">
@@ -1430,6 +1094,7 @@
                 `).join('');
             }
 
+            // Gestion des clics sur les résultats
             document.querySelectorAll('.result-item').forEach(item => {
                 item.addEventListener('click', function() {
                     const email = this.dataset.email;
@@ -1531,126 +1196,6 @@
                 window.location.href = 'login.html';
             }
         });
-
-        // ===== ANIMATION DE PRÉSENTATION =====
-        let currentStep = 0;
-        const totalSteps = 4;
-
-        const demoOverlay = document.getElementById('demoOverlay');
-        const demoTrigger = document.getElementById('demoTriggerBtn');
-        const closeDemo = document.getElementById('closeDemo');
-        const demoSteps = document.querySelectorAll('.demo-step');
-        const dots = document.querySelectorAll('.dot');
-        const stepCounter = document.getElementById('stepCounter');
-        const prevBtn = document.getElementById('demoPrev');
-        const nextBtn = document.getElementById('demoNext');
-        const startBtn = document.getElementById('demoStart');
-
-        function updateDemo(step) {
-            demoSteps.forEach((el, index) => {
-                el.style.opacity = index === step ? '1' : '0.5';
-                el.style.transform = index === step ? 'translateX(6px)' : 'translateX(0)';
-                el.style.borderColor = index === step ? 'var(--pink-deep)' : 'rgba(74, 47, 23, 0.06)';
-            });
-
-            dots.forEach((dot, index) => {
-                dot.classList.remove('active', 'done');
-                if (index === step) {
-                    dot.classList.add('active');
-                } else if (index < step) {
-                    dot.classList.add('done');
-                }
-            });
-
-            stepCounter.textContent = `${step + 1} / ${totalSteps}`;
-            prevBtn.style.display = step === 0 ? 'none' : 'block';
-            nextBtn.style.display = step === totalSteps - 1 ? 'none' : 'block';
-            startBtn.style.display = step === totalSteps - 1 ? 'block' : 'none';
-        }
-
-        function nextStep() {
-            if (currentStep < totalSteps - 1) {
-                currentStep++;
-                updateDemo(currentStep);
-            }
-        }
-
-        function prevStep() {
-            if (currentStep > 0) {
-                currentStep--;
-                updateDemo(currentStep);
-            }
-        }
-
-        demoTrigger.addEventListener('click', function() {
-            currentStep = 0;
-            updateDemo(0);
-            demoOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        });
-
-        function closeDemoModal() {
-            demoOverlay.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        closeDemo.addEventListener('click', closeDemoModal);
-        demoOverlay.addEventListener('click', function(e) {
-            if (e.target === this) closeDemoModal();
-        });
-
-        nextBtn.addEventListener('click', nextStep);
-        prevBtn.addEventListener('click', prevStep);
-
-        document.addEventListener('keydown', function(e) {
-            if (!demoOverlay.classList.contains('active')) return;
-            if (e.key === 'ArrowRight' || e.key === ' ') {
-                e.preventDefault();
-                if (currentStep === totalSteps - 1) {
-                    closeDemoModal();
-                } else {
-                    nextStep();
-                }
-            }
-            if (e.key === 'ArrowLeft') {
-                e.preventDefault();
-                prevStep();
-            }
-            if (e.key === 'Escape') {
-                closeDemoModal();
-            }
-        });
-
-        demoSteps.forEach((step, index) => {
-            step.addEventListener('click', function() {
-                currentStep = index;
-                updateDemo(index);
-            });
-        });
-
-        startBtn.addEventListener('click', function() {
-            closeDemoModal();
-            const user = JSON.parse(localStorage.getItem('utilisateur') || 'null');
-            if (user && user.prenom) {
-                window.location.href = 'moncompte.html';
-            } else {
-                window.location.href = 'login.html';
-            }
-        });
-
-        // ===== MODAL =====
-        const triggerBtn = document.getElementById('trigger-discovery');
-        const closeBtn = document.getElementById('close-discovery');
-        const modal = document.getElementById('discovery-modal');
-        if (triggerBtn) {
-            triggerBtn.addEventListener('click', function(e) {
-                if (!e.target.closest('.btn-primary')) {
-                    modal.classList.add('active');
-                }
-            });
-        }
-        if (closeBtn) closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-        if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
 
         updateHeader();
         window.addEventListener('storage', updateHeader);
